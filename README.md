@@ -34,7 +34,6 @@ I find Wikipedia a bit too sparse to reasonably support students learning introd
   script/
     discussion.js   -- JS code to support the pages `/discussion/*.html` and `/proof/*.html`.
     glossary.js     -- JS code to support `/glossary.html`. Contains list of hyperlinks rendered on `glossary.html`.
-    suggestions.js  -- JS code to support `/suggestions.html`.
     -- All JS code can be found here.
   .gitignore
   README.md         -- This file.
