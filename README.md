@@ -47,6 +47,9 @@ I find Wikipedia a bit too sparse to reasonably support students learning introd
 
 # TODO LIST:
 
+Old repository:
+  - [ ] Port it all over!
+
 Missing content:
   - [ ] More Discussion-family pages
     - [ ] Fill out the current glossary
