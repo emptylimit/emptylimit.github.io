@@ -47,20 +47,6 @@ I find Wikipedia a bit too sparse to reasonably support students learning introd
 
 # TODO LIST:
 
-Port from old repository:
-  - [x] `index.html`
-  - [x] `style.css`
-  - [x] `about.html`
-  - [x] `glossary.html`
-  - [x] `script/glossary.js`
-
-  - [ ] `page-generation/*`
-  - [ ] `buildPages.sh`
-
-  - [ ] `discussion/*`
-  - [ ] `proof/*`
-  - [ ] `script/discussion.js`
-
 Inaccurate content:
   - [ ] The glossary lol
 
