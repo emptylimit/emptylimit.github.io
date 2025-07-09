@@ -48,9 +48,9 @@ I find Wikipedia a bit too sparse to reasonably support students learning introd
 # TODO LIST:
 
 Port from old repository:
-  - [ ] `index.html`
-  - [ ] `style.css`
-  - [ ] `about.html`
+  - [x] `index.html`
+  - [x] `style.css`
+  - [x] `about.html`
   - [ ] `glossary.html`
   - [ ] `script/glossary.js`
 
