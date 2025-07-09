@@ -51,8 +51,8 @@ Port from old repository:
   - [x] `index.html`
   - [x] `style.css`
   - [x] `about.html`
-  - [ ] `glossary.html`
-  - [ ] `script/glossary.js`
+  - [x] `glossary.html`
+  - [x] `script/glossary.js`
 
   - [ ] `page-generation/*`
   - [ ] `buildPages.sh`
@@ -60,6 +60,9 @@ Port from old repository:
   - [ ] `discussion/*`
   - [ ] `proof/*`
   - [ ] `script/discussion.js`
+
+Inaccurate content:
+  - [ ] The glossary lol
 
 Missing content:
   - [ ] More Discussion-family pages
