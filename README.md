@@ -16,7 +16,7 @@ I find Wikipedia a bit too sparse to reasonably support students learning introd
 /
   asset/
     hero-art/
-      -- Various copies of hero art for `about.html`, `index.html` and `suggestions.html`.
+      -- Various copies of hero art for `about.html` and `index.html`.
     loading-spinner/
       -- Loading spinner for `glossary.html`.
     logo/
