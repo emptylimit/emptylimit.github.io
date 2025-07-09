@@ -3,6 +3,8 @@ Empty Limit is a website dedicated to supplementing the learning of students in 
 
 I find Wikipedia a bit too sparse to reasonably support students learning introductory category theory. For the same demographic, the nLab is typically too dense. Empty Limit strikes a balance between these two.
 
+*This website is a work-in-progress! See `/todo.md`.*
+
 # Sitemap
 - `index.html`: Landing page.
   - `about.html`: A brief "About" page.
