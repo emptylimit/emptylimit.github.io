@@ -1,0 +1,13 @@
+name = "inset"
+version = "0.1.0"
+defaultTargets = ["inset"]
+
+[[lean_lib]]
+name = "Inset"
+
+[[lean_lib]]
+name = "Pages"
+
+[[lean_exe]]
+name = "inset"
+root = "Main"
