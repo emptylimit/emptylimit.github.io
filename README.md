@@ -47,8 +47,16 @@ I find Wikipedia a bit too sparse to reasonably support students learning introd
 
 # TODO LIST:
 
-Old repository:
-  - [ ] Port it all over!
+Port from old repository:
+  - [ ] `index.html`
+  - [ ] `style.css`
+  - [ ] `about.html`
+
+  - [ ] `glossary.html`
+  - [ ] `script/glossary.js`
+  - [ ] `discussion/*`
+  - [ ] `proof/*`
+  - [ ] `script/discussion.js`
 
 Missing content:
   - [ ] More Discussion-family pages
