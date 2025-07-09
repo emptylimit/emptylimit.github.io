@@ -59,3 +59,4 @@ Missing functionality:
   - [ ] `inset` should **REQUIRE** a list of (external) references at the bottom of each page
     - [ ] A small dictionary of known sources can be mantained in some `inset` source file so that full URLs etc don't need to be re-typed on each page
     - [ ] The current pages should be updated to list sources at the bottom
+  - [ ] `inset` should support "Exercise" `.block-section-element`s
