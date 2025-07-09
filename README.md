@@ -51,9 +51,12 @@ Port from old repository:
   - [ ] `index.html`
   - [ ] `style.css`
   - [ ] `about.html`
-
   - [ ] `glossary.html`
   - [ ] `script/glossary.js`
+
+  - [ ] `page-generation/*`
+  - [ ] `buildPages.sh`
+
   - [ ] `discussion/*`
   - [ ] `proof/*`
   - [ ] `script/discussion.js`
@@ -63,3 +66,6 @@ Missing content:
     - [ ] Fill out the current glossary
   - [ ] More Proof-family pages
     - [ ] Add relevant proofs for the elements in the glossary
+
+Missing functionality:
+  - [ ] `inset` should update `script/glossary.js`'s list of all pages
