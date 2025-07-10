@@ -307,6 +307,8 @@ structure SeeAlso : Type where
 structure Page : Type where
   /-- The title of the `Page`. -/
   title : String
+  /-- The authors. -/
+  authors : List String
   /-- The sections within a `Page`. -/
   sections : List Section
   /-- The "see also" section. -/
