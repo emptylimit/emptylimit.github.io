@@ -5,16 +5,12 @@
 
 /- IMPORTS: -/
 
+import Inset.Bibliography
+import Inset.Util.Url
+
 
 
 /- SECTION: Basic type aliases -/
-
-/--
-  A URL.
-
-  `abbrev` for `String`.
--/
-abbrev URL : Type := String
 
 /--
   An single-line display-style `$$ ⋯ $$` equation.
@@ -315,14 +311,5 @@ structure Page : Type where
   sections : List Section
   /-- The "see also" section. -/
   seeAlso : SeeAlso
--- /--
---   Construct a `Page`.
-
---   **Parameter `(title : String)`:**
---     The title of the section.
-
---   **Parameter `(sections : List Element := [])`:**
---     The underlying list of sections.
--- -/
--- def Page.mk (title : String) (sections : List Section := []) : Page :=
---   { title := title, list := sections }
+  /-- The "bibliography" section. -/
+  bibliography : Bibliography
