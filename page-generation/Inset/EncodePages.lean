@@ -203,6 +203,8 @@ inductive Block.Kind : Type where
   | exa : Kind
   /-- Designates a **Remark**. -/
   | rmk : Kind
+  /-- Designates an **Exercise**. -/
+  | exr : Kind
   /-- Designates something else, to be rendered using the provided `title`. -/
   | other (title : String) : Kind
 /-- Extract the title of a `Block` from its `.Kind`. -/
@@ -213,6 +215,7 @@ def Block.Kind.toString : Block.Kind → String
   | .dfn      => "Definition"
   | .exa      => "Example"
   | .rmk      => "Remark"
+  | .exr      => "Exercise"
   | .other t  => t
 
 /--

@@ -7,4 +7,3 @@
 
 # Missing functionality:
   - [ ] `inset` should update `script/glossary.js`'s list of all pages
-  - [ ] `inset` should support "Exercise" `.block-section-element`s
