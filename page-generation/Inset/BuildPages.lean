@@ -384,6 +384,9 @@ private def contentsBar.list (sections : List Section) (pageTitle : String) : St
     inTag' "li" do
       inTag "a" [.mk "href" "#See-also"] do
         appendHtml "See also"
+    inTag' "li" do
+      inTag "a" [.mk "href" "#Bibliography"] do
+        appendHtml "Bibliography"
 
 /-- Write the contents bar. The `sections` are used to generate the `<li>`s in the `<ul>`. The `pageTitle` is used for a "top of page" link. -/
 private def contentsBar (sections : List Section) (pageTitle : String) : StateT WriterState Id Unit := do
@@ -605,14 +608,68 @@ private def seeAlso (s : SeeAlso) : StateT WriterState Id Unit := do
               inTag "a" [.mk "href" href] do
                 appendHtml title
 
+/-- Write the text of a bibliography entry. -/
+private def bibliography.entry (it : Bibliography.Entry) : StateT WriterState Id Unit := do
+  -- Start new indented line
+  newLine
+  writeIndentation
+  -- Write authors
+  match h: it.authors with
+  | [] => do
+    appendHtml' "No Author."
+  | [a] => do
+    appendHtml' <| a.toString ++ "."
+  | (_::_::_) => do
+    let last   := it.authors.getLast (by simp only [h, ne_eq, reduceCtorEq, not_false_eq_true])
+    let others := it.authors.dropLast
+    others.forM (appendHtml' <| ·.toString ++ ", ")
+    appendHtml' <| "and " ++ last.toString ++ "."
+  -- Write title
+  match it.title with
+  | none => do
+    inlineTag' "em" do
+      appendHtml' " Untitled."
+  | some t => do
+    inlineTag' "em" do
+      appendHtml' <| " " ++ t ++ "."
+  -- Write access date
+  match it.accessDate with
+  | none => pure ()
+  | some date => do
+    appendHtml' <| " Accessed " ++ date.toString ++ "."
+  -- Write URL
+  match it.url with
+  | none => pure ()
+  | some url => do
+    appendHtml' " URL: "
+    inlineTag "a" [.mk "href" url] do
+      appendHtml' url
+    appendHtml' "."
+
+/-- Write the "bibliography" section. -/
+private def bibliography (b : Bibliography) : StateT WriterState Id Unit := do
+  inTag "section" [.mk "id" "Bibliography"] do
+    inTag' "h2" do
+      appendHtml "Bibliography"
+    inTag' "p" do
+      inTag "ol" [.mk "class" "bibliography"] do
+        for entry in b.mergeSort (le := Bibliography.Entry.ble) do
+          inTag' "li" do
+            bibliography.entry entry
+
 /-- Write the main `<article>`. -/
 private def article (page : Page) : StateT WriterState Id Unit := do
   inTag "article" [.mk "id" "content"] do
-    inTag' "h1" do
-      appendHtml page.title
+    inTag' "div" do
+      inTag' "h1" do
+        appendHtml page.title
+      inTag' "p" do
+        inTag' "em" do
+          appendHtml <| "Written by: " ++ Name.writeNames page.authors ++ "."
     for it in page.sections do
       writeSection it
     seeAlso page.seeAlso
+    bibliography page.bibliography
 
 /-- Write the `<main> ⋯ </main>`. -/
 private def main (page : Page) : StateT WriterState Id Unit := do

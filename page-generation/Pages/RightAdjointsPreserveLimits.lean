@@ -56,6 +56,10 @@ namespace RightAdjointsPreserveLimits
   def it : Page :=
     { title :=
         "Right Adjoints Preserve Limits"
+    , authors :=
+        [ Name.gabe ]
+    , bibliography :=
+        [ Bib.context ]
     , sections :=
         [ .mk
             "Theorem statement"

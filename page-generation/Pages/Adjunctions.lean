@@ -36,6 +36,10 @@ namespace Adjunctions
   def it : Page :=
     { title :=
         "Adjunctions"
+    , authors :=
+        [ Name.gabe ]
+    , bibliography :=
+        [ Bib.context ]
     , sections :=
         [ .mk
             "Hom-set definition"

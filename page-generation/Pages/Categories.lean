@@ -20,6 +20,10 @@ namespace Categories
   def it : Page :=
     { title :=
         "Categories"
+    , authors :=
+        [ Name.gabe ]
+    , bibliography :=
+        [ Bib.context ]
     , sections :=
         [ .mk
             "Definition"

@@ -1,6 +1,6 @@
 /-
   **FILE:** `Inset/Bibliography.lean`
-  **PURPOSE:** Encode bibliography entries with types, and provide a standard list of referencess
+  **PURPOSE:** Define and manage the site-wide bibliography
 -/
 
 /- IMPORTS: -/
@@ -23,6 +23,13 @@ structure Bibliography.Entry : Type where
   title : Option String
   /-- URL to item being referenced. -/
   url : Option URL
+
+/-- Lexicographic comparison on author lists, with identical lists broken by comparing titles (`none` titles come first). -/
+def Bibliography.Entry.ble (b₁ b₂ : Bibliography.Entry) : Bool :=
+    if b₁.authors.map Name.toString = b₂.authors.map Name.toString
+    then  b₁.title.toList ≤ b₂.title.toList
+    else  b₁.authors.map Name.toString
+          ≤ b₂.authors.map Name.toString
 
 /-- A bibliography (encoded as a `List Bibliography.Entry`). -/
 abbrev Bibliography : Type := List Bibliography.Entry

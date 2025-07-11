@@ -768,6 +768,12 @@ main.family ul.see-also {
 }
 
 
+main.family ol.bibliography {
+  width: 100%;
+  margin: 0;
+}
+
+
 
 /* SECTION: Proof-family pages: Interactive diagrams */
 

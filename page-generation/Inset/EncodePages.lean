@@ -6,6 +6,7 @@
 /- IMPORTS: -/
 
 import Inset.Bibliography
+import Inset.Util.Name
 import Inset.Util.Url
 
 
@@ -308,7 +309,7 @@ structure Page : Type where
   /-- The title of the `Page`. -/
   title : String
   /-- The authors. -/
-  authors : List String
+  authors : List Name
   /-- The sections within a `Page`. -/
   sections : List Section
   /-- The "see also" section. -/
