@@ -131,10 +131,10 @@
             Definition
           </h2>
           <p>
-            When we study various kinds of mathematical objects, it turns out that the various relationships between them are captured by the transformations between them. For example, we compare the cardinality of sets using injective, surjective and bijective functions, and we declare that two groups are the same when there is an isomorphism between them.
+            Transformations between mathematical objects capture the relationships between them. For example, we compare cardinalities using injective, surjective and bijective functions, and we declare groups to be "the same" using isomorphisms.
           </p>
           <p>
-            The central thesis of category theory is that <em>understanding the objects we care about requires understanding the arrows the arrows between them</em>, and the definition of a <em>category</em> captures this notion well.
+            The central thesis of category theory is that <em>understanding the objects we care about requires understanding the transformations between them</em>. A <em>category</em> therefore abstracts this relationship of "transformations between objects".
           </p>
           <div class="block-section-element">
             <h3>
@@ -148,13 +148,15 @@
                 A collection $\mathrm{ob}\ \mathsf{C}$ of <strong>objects</strong>;
               </li>
               <li>
-                For each pair of objects $x \in \mathrm{ob}\ \mathsf{C}$, a collection $\mathsf{C}(x, y)$ called the <strong>hom-set from $x$ to $y$</strong>;
+                For each pair of objects $x, y \in \mathrm{ob}\ \mathsf{C}$, a collection $\mathsf{C}(x, y)$ called the <strong>hom-set from $x$ to $y$</strong><span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-1>[1]</a></sup><span class=sidenote id=sidenote-1>
+                [1]
+                The elements of the hom-sets go by various names including <em>arrow</em>, <em>morphism</em> and <em>map</em>.</span></span>;
               </li>
               <li>
                 For each object $x \in \mathrm{ob}\ \mathsf{C}$, an <strong>identity arrow</strong> $1_x \in \mathsf{C}(x, x)$;
               </li>
               <li>
-                For each triple of objects $x, y, z \in \mathrm{ob}\ \mathsf{C}$, a <strong>composition operation</strong> $\mathsf{C}(y, z) \times \mathsf{C}(x, y) \to \mathsf{C}(x, z)$;
+                For each triple of objects $x, y, z \in \mathrm{ob}\ \mathsf{C}$, a <strong>composition operation</strong> $\circ : \mathsf{C}(y, z) \times \mathsf{C}(x, y) \to \mathsf{C}(x, z)$;
               </li>
             </ul>
             <p>
@@ -178,13 +180,13 @@
             </ul>
           </div>
           <p>
-            The elements of the hom-sets go by various names<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-1>[1]</a></sup><span class=sidenote id=sidenote-1>
-            [1]
-            Such as <em>arrow</em>, <em>morphism</em> and <em>map</em>.</span></span>. It is also common to write expressions such as $\text{``}a \xrightarrow{f} b \text{ in } \mathsf{C}\text{''}$ to refer to objects $a, b \in \mathrm{ob}\ \mathsf{C}$ and an arrow $f \in \mathsf{C}(a, b)$. In light of this, the associativity and unitality axioms can be rewritten as 
+            The subscripts on each $1_a$ are sometimes omitted, as is the $\circ$ symbol entirely. As further shorthand, it is common to write expressions such as $\text{``}a \xrightarrow{f} b \text{ in } \mathsf{C}\text{''}$ to refer to objects $a, b \in \mathrm{ob}\ \mathsf{C}$ and an arrow $f \in \mathsf{C}(a, b)$. In light of this, the associativity and unitality axioms can be rewritten as<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-2>[2]</a></sup><span class=sidenote id=sidenote-2>
+            [2]
+            The first of these conditions highlights why some category theorists prefer writing $fg$ to mean "$f$ then $g$" rather than the conventional "$f$ after $g$" &mdash; the conventional order is backwards to the diagrams!</span></span>
             <span class="block-equation">
               $$\begin{align*}
                 \forall a \xrightarrow{f} b \xrightarrow{g} c \xrightarrow{h} d \text{ in } \mathsf{C},\quad
-                &(f \circ g) \circ h = f \circ (g \circ h)
+                &(h \circ g) \circ f = h \circ (g \circ f)
                 \\
                 \forall a \xrightarrow{f} b \text{ in } \mathsf{C},\quad
                 &1_b \circ f = f = f \circ 1_a
@@ -205,8 +207,8 @@
               Example. ($\mathbf{Set}$)
             </h3>
             <p>
-              The most important example of a category<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-2>[2]</a></sup><span class=sidenote id=sidenote-2>
-              [2]
+              The most important example of a category<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-3>[3]</a></sup><span class=sidenote id=sidenote-3>
+              [3]
               The <a href=./yoneda-lemma>Yoneda lemma</a> makes this precise.</span></span> is the category $\mathbf{Set}$. Its objects are sets, and the collection $\mathbf{Set}(X, Y) := Y^X$ is the set of all functions $X \to Y$. The identity arrows $1_X := \mathrm{id}_X$ are the identity functions, and the composition operation is function composition. You should check that this is a category!
             </p>
           </div>
@@ -229,7 +231,7 @@
               A particular kind of algebraic structure you may not be familiar with is a <em>based set</em>. Each based set is a pair $(X, x)$ of a set $X$ and an element $x \in X$, called its <em>basepoint</em>. A <em>based set homomorphism</em> from $(X, x)$ to $(Y, y)$ is a function $f : X \to Y$ which preserves the endpoint: $x \xmapsto{f} y$. These form a category $\mathrm{Set}_{*}$ where the objects are based sets and the arrows between them are based set homomorphisms; as before, the identities and composition operations are given by identity functions and function composition.
             </p>
             <p>
-              It is also worth noting that $\mathrm{Set}$ can be described as a category of algebraic structures. Sets are algebraic structures with no operations. With no operations, the homomorphisms between sets don't need to preserve any structure at all; thus, they are simply the functions.
+              It is also worth noting that $\mathrm{Set}$ can be described as a category of algebraic structures. Sets are algebraic structures with no operations, and the homomorphisms are functions (which don't need to preserve any structure at all!).
             </p>
           </div>
           <div class="block-section-element">
@@ -254,8 +256,8 @@
               Another category of algebraic structures worth explicitly mentioning is the category $\mathbf{Vect}_K^{\text{fd}}$ whose objects are finite-dimensional vector spaces over the field $K$, and whose arrows are the linear transformations between them. If you have studied linear algebra, you will know that these linear transformations may be encoded using matrices. Accordingly, there is a category $\mathbf{Mat}_K$ defined as follows. The collection $\mathrm{ob}\ \mathbf{Mat}_K := \mathbb{Z}_{\geq 0}$ is the set of natural numbers, and each hom-set $\mathbf{Mat}_K (n, k)$ is the set of $k \times n$ matrices with elements in $K$. You could think of the objects $n, k$ as representing the standard vector spaces $K^n$ and $K^k$, and the matrices $M \in \mathbf{Mat}_K (n, k)$ as encoding linear transformations $K^n \to K^k$. Can you guess what the identity and composite arrows are?
             </p>
             <p>
-              On the surface, these two categories seem very different. $\mathbf{Vect}_K^{\text{fd}}$ has as many objects as there are sets<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-3>[3]</a></sup><span class=sidenote id=sidenote-3>
-              [3]
+              On the surface, these two categories seem very different. $\mathbf{Vect}_K^{\text{fd}}$ has as many objects as there are sets<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-4>[4]</a></sup><span class=sidenote id=sidenote-4>
+              [4]
               See the section on <a href=#Size-issues>size issues</a></span></span> whereas $\mathbf{Mat}_K$ only has countably many objects, and the arrows in $\mathbf{Mat}_K$ aren't even functions. However, as any linear algebra student is acutely aware, <em>studying linear transformations is the same as studying matrices</em>. This idea appears in category theory as an <a href=./equivalences.html>equivalence of categories</a> between the categories $\mathbf{Vect}_K^{\text{fd}}$ and $\mathbf{Mat}_K$.
             </p>
           </div>
@@ -293,8 +295,8 @@
               The fact that preorders form categories allows us to apply category theory to <a href=https://en.wikipedia.org/wiki/Order_theory>order theory</a>, and it allows us to borrow ideas from order theory when developing category theory. For example, <a href=./adjunctions.html>adjunctions</a> can be inspired by <a href=https://en.wikipedia.org/wiki/Galois_connection>Galois connections</a>, and the fact that <a href=../proof/rapl.html>right adjoints preserve limits</a> can be used to establish that upper/lower adjoints of Galois connections are semilattice homomorphisms.
             </p>
             <p>
-              Preorders also represent an extreme kind of category when discussing <a href=#Size-issues>size issues</a>. For example, any $\kappa$-small category that admits all $\kappa$-small <a href=./limits.html>limits</a> is a preorder<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-4>[4]</a></sup><span class=sidenote id=sidenote-4>
-              [4]
+              Preorders also represent an extreme kind of category when discussing <a href=#Size-issues>size issues</a>. For example, any $\kappa$-small category that admits all $\kappa$-small <a href=./limits.html>limits</a> is a preorder<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-5>[5]</a></sup><span class=sidenote id=sidenote-5>
+              [5]
               <a href=../proof/kappa-small-with-kappa-small-limits-implies-preorder.html>Proof</a></span></span>.
             </p>
           </div>
@@ -312,22 +314,39 @@
               This sort of recursiveness is a common theme in category theory&hellip;
             </p>
           </div>
+          <p>
+            
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Check that the above examples do indeed form categories. Only check the ones which interest you :)
+            </p>
+          </div>
         </section>
         <section id="Size-issues">
           <h2>
             Size issues
           </h2>
           <p>
-            Many categories that arise 'in nature' have at least as many objects as there are sets. The most important category, $\mathbf{Set}$, is such an example. Of course, there is no set of all sets, so we cannot expect $\mathbf{Set}$ to have a <em>set</em> of objects.There are a couple of solutions. Perhaps the easiest to explain is the idea of a <a href=https://en.wikipedia.org/wiki/Grothendieck_universe>Grothendieck universe</a><span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-5>[5]</a></sup><span class=sidenote id=sidenote-5>
-            [5]
-            I hate these, though</span></span>, although there are other solutions offered, for instance, by <a href=https://en.wikipedia.org/wiki/Type_theory>type theories</a>.
+            Many categories that arise 'in nature' have at least as many objects as there are sets. The most important category, $\mathbf{Set}$, is such an example. Of course, there is no set of all sets, so we cannot expect $\mathbf{Set}$ to have a <em>set</em> of objects. There are a couple of solutions. Perhaps the easiest to explain is the idea of a <a href=https://en.wikipedia.org/wiki/Grothendieck_universe>Grothendieck universe</a><span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-6>[6]</a></sup><span class=sidenote id=sidenote-6>
+            [6]
+            I hate these, though</span></span>, although others such as <a href=https://en.wikipedia.org/wiki/Type_theory>type theories</a> also exist.
           </p>
           <p>
             In any case, it is worth making the following definition. Fix a cardinal $\kappa$. A set is <strong>$\kappa$-small</strong> when its cardinality is $< \kappa$. A category $\mathsf{C}$ is <strong>$\kappa$-small</strong> just when the cardinality of the union of all its hom-sets is $\kappa$-small:
             <span class="block-equation">$$
                 \left\lvert \bigcup_{x, y \in \mathrm{ob}\ \mathsf{C}} \left( \mathsf{C}(x, y) \right) \right\rvert < \kappa
               $$
-            </span>In practice, we fix an <a href=https://en.wikipedia.org/wiki/Inaccessible_cardinal>inaccessible cardinal</a> $\kappa$, use the word <strong>small</strong> to mean <em>$\kappa$-small</em>, and immediately forget about the cardinal $\kappa$. We then adjust our definitions &mdash; $\mathbf{Set}$ is redefined to be the category of <em>small</em> sets and functions between them, $\mathbf{Group}$ is the category of <em>small</em> groups and their homomorphisms, etc. A <strong>large</strong> set is one that is not small.This also allows us to make an important definition. A category $\mathsf{C}$ is <strong>locally small</strong> just when each hom-set $\mathsf{C}(x, y)$ is small. Whilst many categories do not have a small collection of objects, they turn out to be locally small. All of the categories listed in the <a href=#Examples>previous section</a> are locally small. It is somewhat fruitless to think of large categories; for a different choice of the cardinal $\kappa$ (which we immediately forgot about), some previously large categories may be small categories. In general, results that hold for small or locally small hold for slightly larger categories or those with slightly larger hom-sets if you pass to a larger inaccessible cardinal.
+            </span>In practice, we fix an <a href=https://en.wikipedia.org/wiki/Inaccessible_cardinal>inaccessible cardinal</a> $\kappa$, use the word <strong>small</strong> to mean <em>$\kappa$-small</em>, and immediately forget about the cardinal $\kappa$. We then adjust our definitions &mdash; $\mathbf{Set}$ is redefined to be the category of <em>small</em> sets and functions between them, $\mathbf{Group}$ is the category of <em>small</em> groups and their homomorphisms, etc. A <strong>large</strong> set is one that is not small. 
+          </p>
+          <p>
+            This distinction facilitates an important definition; a category $\mathsf{C}$ is <strong>locally small</strong> just when each hom-set $\mathsf{C}(x, y)$ is small. Whilst many categories do not have a small collection of objects, they turn out to be locally small. All of the categories listed in the <a href=#Examples>previous section</a> are locally small.
+          </p>
+          <p>
+            It is somewhat fruitless to think of large categories; for a different choice of the cardinal $\kappa$, some previously large categories may be small categories. In general, results that hold for small or locally small hold for slightly larger categories or those with slightly larger hom-sets if you pass to a larger inaccessible cardinal.
           </p>
           <p>
             As a related point, it is worth emphasising that the term 'hom-set' can be somewhat misleading. The hom-sets $\mathsf{C}$ of a category $\mathsf{C}$ are only ever required to be <em>collections</em> &mdash; a catch-all term to evade size issues. In particular, they need not form (small) sets. It is exactly the <em>locally small categories</em> for which the name 'hom-set' is not misleading.

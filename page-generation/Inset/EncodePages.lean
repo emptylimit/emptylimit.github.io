@@ -180,6 +180,9 @@ inductive BodyElement : Type where
 /-- Shorthand for including a single `String` as a `<p>` tag. -/
 def BodyElement.ps : String → BodyElement := BodyElement.p ∘ ([·]) ∘TextContent.s
 
+/-- Shorthand for including a newline (implemented as an empty paragraph). -/
+def BodyElement.nl : BodyElement := .ps ""
+
 /-- The body of an `Element` or a `Block`. -/
 def Body : Type := List BodyElement
 /-- Extract the underlying `List BodyElement` of a `Body`. -/
