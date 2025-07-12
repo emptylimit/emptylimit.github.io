@@ -40,12 +40,28 @@ abbrev Bibliography : Type := List Bibliography.Entry
 
 namespace Bib
 
-  /-- *Category Theory in Context* by Emily Riehl. No access date; override by instead using `{ context with accessDate := some YOURDATEHERE }`. -/
+  /--
+    *Category Theory in Context* by Emily Riehl.
+
+    No access date; override by instead using `{ context with accessDate := some YOURDATEHERE }`.
+  -/
   def context : Bibliography.Entry :=
     { accessDate  := none
     , authors     := [.real "Emily" "Riehl"]
     , title       := "Category Theory in Context"
     , url         := "https://emilyriehl.github.io/files/context.pdf"
+    }
+
+  /--
+    *Basic Category Theory* by Tom Leinster.
+
+    No access date; override by instead using `{ context with accessDate := some YOURDATEHERE }`.
+  -/
+  def adjointsBeforeLimits : Bibliography.Entry :=
+    { accessDate  := none
+    , authors     := [.real "Tom" "Leinster"]
+    , title       := "Basic Category Theory"
+    , url         := "https://arxiv.org/abs/1612.09375"
     }
 
 end Bib

@@ -54,7 +54,7 @@
   font-family: var(--font-family);
   font-size: medium;
   /* Default colours */
-  background-color: #fefefe;
+  background-color: var(--default-background-colour);
   color: var(--default-text-colour);
   /* Default overscroll behaviour */
   overscroll-behavior-y: none; /* No "bouncing" when you scroll too far */

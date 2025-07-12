@@ -11,35 +11,97 @@ namespace «authoring defs»
   /-- The string used instead of TeX's `\` by `inset` rendering strings. -/
   private def escapeSequence : String := "|"
 
+  /-- Prepend the escape sequence to a string. -/
+  private def esc : String → String := (escapeSequence ++ ·)
+
   /--
     The main dictionary (`(key, value)` array) of translations used by `inset` rendering strings.
 
-    Each pair `(key, value)` represents a translation of any substring `s!"{escapeSequence}{key}"` to the value `value`.
+    Each pair `(key, value)` represents a translation of any substring `s!"{key}"` to the value `value`.
 
     NOTE: When editing this dictionary, ensure all values are fully fleshed-out `KaTeX`.
+
+    NOTE: When editing this dictionary, it'd be nice to sort by values alphabetically. The order of things in
+          the dictionary is overridden later anyway, so this shouldn't cause problems (but will make it easier
+          to find problematic bindings later).
   -/
   def translations : Array (String × String) :=
-    #[  ("", "\\") -- Just `s!"{escapeSequence}"` will get replaced with `"\\"`
-        -- Typefaces
-    ,   ("cat", "\\mathsf")
-    ,   ("cat!", "\\mathbf") -- Concrete category
-        -- Standard categories
-    ,   ("A", "\\mathsf{C}")
-    ,   ("B", "\\mathsf{C}")
-    ,   ("C", "\\mathsf{C}")
-    ,   ("D", "\\mathsf{C}")
-    ,   ("E", "\\mathsf{C}")
-    ,   ("Set", "\\mathbf{Set}")
-    ,   ("Cat", "\\mathbf{Cat}")
-    ,   ("Group", "\\mathbf{Group}")
-    ,   ("Monoid", "\\mathbf{Monoid}")
+    #[  -- [1.] Manually escaped sequences
+        (esc "", "\\") -- Just `s!"{escapeSequence}"` will get replaced with `"\\"`
+        -- Accents/Decorations
+    ,   (esc "tl", "\\tilde")
+    ,   (esc "wtl", "\\widetilde")
+        -- Delimiters
+    ,   (esc "given", "\\;\\middle\\vert\\;")
+        -- Letters
+    ,   (esc "yo", "よ")
         -- Operators
-    ,   ("lim", "\\lim")
-    ,   ("colim", "\\mathrm{colim}") -- not `\\DeclareMathOperator`'ed, because `KaTeX` doesn't support that
+    ,   (esc "colim", "\\mathrm{colim}") -- not `\\DeclareMathOperator`'ed, because `KaTeX` doesn't support that
+    ,   (esc "Im", "\\mathrm{Im}") -- not `\\DeclareMathOperator`'ed, because `KaTeX` doesn't support that
+    ,   (esc "op", "\\mathrm{op}")
+        -- Standard categories
+    ,   (esc "A", "\\mathsf{A}")
+    ,   (esc "B", "\\mathsf{B}")
+    ,   (esc "C", "\\mathsf{C}")
+    ,   (esc "D", "\\mathsf{D}")
+    ,   (esc "E", "\\mathsf{E}")
+    ,   (esc "Cat", "\\mathbf{Cat}")
+    ,   (esc "Graph", "\\mathbf{Graph}")
+    ,   (esc "Group", "\\mathbf{Group}")
+    ,   (esc "Monoid", "\\mathbf{Monoid}")
+    ,   (esc "Set", "\\mathbf{Set}")
+    ,   (esc "SimpleGraph", "\\mathbf{SimpleGraph}")
+    ,   (esc "Top", "\\mathbf{Top}")
+    ,   (esc "Vect", "\\mathbf{Vect}")
+        -- Typefaces
+    ,   (esc "cat!", "\\mathbf") -- Concrete category
+    ,   (esc "cat", "\\mathsf")
         -- Relationships
-    ,   ("→", "\\to")
+    ,   (esc "→", "\\xrightarrow")
+        -- [2.] Unicode symbols
+        -- Binary operators
+    ,   ("∘", "\\circ")
+    ,   ("×", "\\times")
+        -- Letters (Greek)
+    ,   ("α", "\\alpha")
+    ,   ("β", "\\beta")
+    ,   ("γ", "\\gamma")
+    ,   ("δ", "\\delta")
+    ,   ("ε", "\\varepsilon")
+    ,   ("φ", "\\varphi")
+    ,   ("κ", "\\kappa")
+    ,   ("λ", "\\lambda")
+    ,   ("μ", "\\mu")
+    ,   ("ν", "\\nu")
+    ,   ("π", "\\pi")
+    ,   ("ρ", "\\rho")
+    ,   ("σ", "\\sigma")
+    ,   ("τ", "\\tau")
+    ,   ("θ", "\\theta")
+    ,   ("ζ", "\\zeta")
+    ,   ("ξ", "\\xi")
+    ,   ("ω", "\\omega")
+        -- Letters (Japanese)
+    ,   ("¥", "よ")
+        -- Letters (`\mathbb`)
+    ,   ("ℕ", "\\mathbb{N}")
+    ,   ("ℝ", "\\mathbb{R}")
+    ,   ("𝕊", "\\mathbb{S}")
+    ,   ("ℤ", "\\mathbb{Z}")
+        -- Relationships
     ,   ("⊣", "\\dashv")
-    ].qsort (fun (k₁, _) (k₂, _) => k₁ ≥ k₂) -- Replace longer keys first
+    ,   ("≥", "\\geq")
+    ,   ("∈", "\\in")
+    ,   ("←", "\\leftarrow")
+    ,   ("≤", "\\leq")
+    ,   ("↦", "\\mapsto")
+    ,   ("∼", "\\sim")
+    ,   ("≃", "\\simeq")
+    ,   ("⊆", "\\subseteq")
+    ,   ("→", "\\to")
+        -- Stand-ins
+    ,   ("⋯", "\\cdots")
+    ].qsort (fun (k₁, _) (k₂, _) => k₁.length ≥ k₂.length) -- Replace superstrings first
 
   /--
     Turn `inset`-escaped text into `KaTeX`-ready text.
@@ -59,6 +121,6 @@ namespace «authoring defs»
       The un-escaped text.
   -/
   def unescape (text : String) (dictionary : Array (String × String) := translations) : String :=
-    dictionary.foldl (fun s (key, value) => s.replace s!"{escapeSequence}{key}" value) text
+    dictionary.foldl (fun s (key, value) => s.replace s!"{key}" value) text
 
 end «authoring defs»

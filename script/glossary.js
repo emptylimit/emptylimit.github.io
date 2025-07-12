@@ -37,23 +37,63 @@ document.addEventListener('DOMContentLoaded', () => {
       topicUniversalConstructions,
     ],
     pages: [
+      // Discussion-family
       { title:  "Categories",
         topic:  topicCategoriesFunctorsNaturalTransformations,
         href:   "discussion/categories.html",
         tags:   [ "category",
                   "categories", ],
       },
+      { title:  "Generalised Elements",
+        topic:  topicCategoriesFunctorsNaturalTransformations,
+        href:   "discussion/generalised-elements.html",
+        tags:   [ "generalised elements", ], // Don't match `' '` characters
+      },
+      // { title:  "(co-)Products",
+      //   topic:  topicUniversalConstructions,
+      //   href:   "discussion/products.html",
+      //   tags:   [ "coproducts", // Also matches "products"
+      //             "colimits", ], // "limits"
+      // },
+      // { title:  "(co-)Limits",
+      //   topic:  topicUniversalConstructions,
+      //   href:   "discussion/limits.html",
+      //   tags:   [ "colimits" ], // "limits"
+      // },
       { title:  "Adjunctions",
         topic:  topicUniversalConstructions,
         href:   "discussion/adjunctions.html",
         tags:   [ "adjunctions",
                   "adjoints", ],
       },
+      // Proof-family
       { title:  "Right Adjoints Preserve Limits",
         topic:  topicUniversalConstructions,
         href:   "proof/right-adjoints-preserve-limits.html",
         tags:   [ "adjunctions",
-                  "right adjoints preserve limits", ], // Also matches "adjoints" and "limits"
+                  "right adjoints preserve limits", ], // "adjoints", "limits"
+      },
+      { title:  "Fully Faithful Functors Reflect Isomorphisms",
+        topic:  topicCategoriesFunctorsNaturalTransformations,
+        href:   "proof/fully-faithful-functors-reflect-isomorphisms.html",
+        tags:   [ "fully faithful functors reflect isomorphisms", ], // "fully faithful", "functors", "reflect", "isomorphisms"
+      },
+      { title:  "Functors Preserve Commutative Diagrams",
+        topic:  topicCategoriesFunctorsNaturalTransformations,
+        href:   "proof/functors-preserve-commutative-diagrams.html",
+        tags:   [ "functors preserve commutative diagrams", // "functors", "diagrams"
+                  "commutes", ],
+      },
+      { title:  "Functors Preserve Isomorphisms",
+        topic:  topicCategoriesFunctorsNaturalTransformations,
+        href:   "proof/functors-preserve-isomorphisms.html",
+        tags:   [ "functors preserve isomorphisms" ], // "functors", "isomorphisms"
+      },
+      { title:  "Generalised Elements Determine Objects",
+        topic:  topicUniversalConstructions,
+        href:   "proof/generalised-elements-determine-objects.html",
+        tags:   [ "generalised elements determine objects",
+                  "yoneda lemma", ], // "yoneda"
       },
       // NOTE: These commented out pages don't exist, but I would really like them to exist.
       // { title:  "Functors",
@@ -75,11 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
       //   topic:  topicUniversalConstructions,
       //   href:   "discussion/initial-terminal-objects.html",
       //   tags:   [ "initial and terminal objects" ],  // also matches "initial", "terminal" and "object"
-      // },
-      // { title:  "Limits",
-      //   topic:  topicUniversalConstructions,
-      //   href:   "discussion/limits.html",
-      //   tags:   [ "limits" ],
       // },
       // { title:  "Absolute Limits",
       //   topic:  topicUniversalConstructions,
@@ -270,6 +305,18 @@ document.addEventListener('DOMContentLoaded', () => {
   /* SECTION: Split the `pages` into groups to be rendered */
 
   /**
+   * Remove a `"(co-)"` prefix from a string.
+   * @param {string} string
+   *  String to have prefix stripped from.
+   * @returns {string}
+   *  The `string`, but without a leading `"(co-)"` prefix (if there was one).
+   */
+  function noco(string) {
+    // SRC: https://stackoverflow.com/a/9928725
+    return string.replace(/^(\(co\-\))/,"");
+  }
+
+  /**
    * Compare strings lexicographically. To be used with `Array.prototype.sort`.
    * @param {string} a
    *  First string to be compared
@@ -297,7 +344,7 @@ document.addEventListener('DOMContentLoaded', () => {
    *  The pages, sorted alphabetically by `title`
    */
   function sortAlphabetically(pages) {
-    pages.sort((a, b) => (compare(a.title, b.title)));
+    pages.sort((a, b) => (compare(noco(a.title), noco(b.title))));
     return pages;
   }
 
@@ -312,11 +359,11 @@ document.addEventListener('DOMContentLoaded', () => {
   function groupAlphabetically(pages) {
     return pages.reduce((groupsSoFar, page) => {
       // Bail if something has gone wrong
-      if (groupsSoFar === null || !page.title || page.title.length === 0) {
+      if (groupsSoFar === null || !page.title || page.title.length === 0 || noco(page.title).length === 0) {
         return null;
       }
       // Find the group whose name is the first character of the `title` of the current `page`
-      const firstTitleCharacter = page.title.charAt(0);
+      const firstTitleCharacter = noco(page.title).charAt(0);
       const groupIndex = groupsSoFar.findIndex((group) => (group.groupName === firstTitleCharacter));
       // Add the `page` to that group, creating a new group if necessary
       if (groupIndex === -1) {
