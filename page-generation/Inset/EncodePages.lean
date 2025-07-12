@@ -5,6 +5,7 @@
 
 /- IMPORTS: -/
 
+import Inset.AuthorPages
 import Inset.Bibliography
 import Inset.Util.Name
 import Inset.Util.Url
@@ -322,3 +323,67 @@ structure Page : Type where
   seeAlso : SeeAlso
   /-- The "bibliography" section. -/
   bibliography : Bibliography
+  /--
+    The list of `inset`-to-`KaTeX` translations to perform.
+
+    NOTE: This dictionary MUST BE SORTED by `(·.qsort (fun (k₁, _) (k₂, _) => k₁ ≥ k₂))` prior to being passed as
+    an argument to this function. So, for example, one should not pass `t := #[("Set", "\\mathbf{Set}")] ++ translations`,
+    but should instead pass `t.qsort (fun (k₁, _) (k₂, _) => k₁ ≥ k₂)`.
+
+    **Default**: `«authoring defs».translations`, found in `Inset.AuthorPages`.
+  -/
+  preamble : Array (String × String) := «authoring defs».translations
+
+/--
+  Do all `inset`-to-`KaTeX` translations on a `Page`, using its `.preamble` to do so.
+
+  This recursively calls `«authoring defs».unescape` on all appropriate `String`s that make up the given `Page`.
+-/
+def Page.unescape (page : Page) : Page :=
+  let TextElement.unescape (te : TextElement) : TextElement :=
+        match te with
+        | .s s            => .s («authoring defs».unescape s)
+        | .a href content => .a href («authoring defs».unescape content)
+        | .al al          => .al (al.map «authoring defs».unescape)
+        | .eqn e          => .eqn («authoring defs».unescape e)
+  let Sidenote.unescape (sn : Sidenote) : Sidenote :=
+        sn.map TextElement.unescape
+  let TextContent.unescape (tc : TextContent) : TextContent :=
+        match tc with
+        | .e e => .e (TextElement.unescape e)
+        | .sn s => .sn (Sidenote.unescape s)
+  let Text.unescape (t : Text) : Text :=
+        t.map TextContent.unescape
+  let IDFrame.unescape (f : IDFrame) : IDFrame :=
+        { f
+        with  text      := f.text.map Text.unescape
+        ,     sidenote  := f.sidenote.map Text.unescape
+        }
+  let InteractiveDiagram.unescape (d : InteractiveDiagram) : InteractiveDiagram :=
+        d.map IDFrame.unescape
+  let BodyElement.unescape (be : BodyElement) : BodyElement :=
+        match be with
+        | .p t =>
+          .p (Text.unescape t)
+        | .ul ts =>
+          .ul (ts.map Text.unescape)
+        | .cda d =>
+          .cda d
+        | .ida d =>
+          .ida (InteractiveDiagram.unescape d)
+  let Element.unescape (e : Element) : Element :=
+        match e with
+        | .body b =>
+          .body (b.map BodyElement.unescape)
+        | .block b =>
+          .block
+            { b
+            with  title := b.title.map «authoring defs».unescape
+            ,     body  := b.body.map BodyElement.unescape
+            }
+  let Section.unescape (s : Section) : Section :=
+        { s with
+          title := «authoring defs».unescape s.title
+          list := s.elements.map Element.unescape
+        }
+  { page with sections := page.sections.map Section.unescape }

@@ -698,7 +698,7 @@ private def Page.write (page : Page) : StateT WriterState Id Unit := do
 
 /-- Convert the `page` to a string encoding an `HTML` document. -/
 private def Page.toHtml (page : Page) : String :=
-  page.write |>.run {} |>.snd  |>.currentHtml
+  page |>.unescape |>.write |>.run {} |>.snd  |>.currentHtml
 
 
 
