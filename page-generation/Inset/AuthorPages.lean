@@ -3,7 +3,7 @@
   **PURPOSE:**
     Provide useful definitions for writing pages in a pain-free way.
     In particular, avoid the need to type `\\mathrm{ob}\\ \\mathsf{C}`, or `\\` in a string.
-    This is all exported by `namespace «AUTHORING»`.
+    This is all exported by `namespace «authoring defs»`.
 -/
 
 namespace «authoring defs»
