@@ -563,7 +563,7 @@ namespace Coinduction
                     ]
                 }
             , .body
-                [ .ps "FIXME: The rest of the owl! Simple corecursion!"
+                [ .ps "FIXME: The rest of the owl! Simple corecursion! Show how the conatural numbers measure non-terminating evolutions (i.e. \"colists\", without saying that word)!"
                 ]
             ]
         -- FIXME: Section `"Terminal Coalgebras and Coinductive Types: Further Examples"`
