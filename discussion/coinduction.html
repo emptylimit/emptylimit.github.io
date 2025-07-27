@@ -107,6 +107,11 @@
                 </a>
               </li>
               <li>
+                <a href="#Terminal-Coalgebras-and-Coinductive-Types:-Further-Examples">
+                  Terminal Coalgebras and Coinductive Types: Further Examples
+                </a>
+              </li>
+              <li>
                 <a href="#See-also">
                   See also
                 </a>
@@ -263,7 +268,7 @@
           </p>
           <div class="block-section-element">
             <h3>
-              Recursion principle for $ℕ$.
+              Recursion principle for $\mathbb{N}$.
             </h3>
             <p>
               Fix a type $X$. To define a function $f : \mathbb{N} \to X$, one needs only define a value $x_0 \in X$ to represent $f\ 0$ and a function $u : X \to X$ to update a value $f\ n$ to the value of its successor $f\ (\texttt{Succ}\ n)$. The defined function then satisfies:
@@ -659,7 +664,7 @@
               Example.
             </h3>
             <p>
-              Specialise to $T : X \mapsto \{\text{no}\} + X$ (here $\text{no}$ is a special symbol, whose name will be useful later). Let $V$ be the vertex set of a maze, equipped with a special vertex $v_{\text{exit}}$ marking the exit of the maze. We can model a simple strategy for solving the maze as follows. Construct a function $\alpha : V \to T\ V$ by setting $\alpha\ v_{\text{exit}} := \text{no}$, and letting $\alpha\ v$ be any element of $V$ with an edge connecting $v$ to $\alpha\ v$, for $v ≠ v_{\text{exit}}$. A strategy of this kind has no memory. From a starting vertex $v_{0} \in V$, the trace
+              Specialise to $T : X \mapsto \{\text{no}\} + X$ (here $\text{no}$ is a special symbol, whose name will be useful later). Let $V$ be the vertex set of a maze, equipped with a special vertex $v_{\text{exit}}$ marking the exit of the maze. We can model a simple strategy for solving the maze as follows. Construct a function $\alpha : V \to T\ V$ by setting $\alpha\ v_{\text{exit}} := \text{no}$, and letting $\alpha\ v$ be any element of $V$ with an edge connecting $v$ to $\alpha\ v$, for $v \neq v_{\text{exit}}$. A strategy of this kind has no memory. From a starting vertex $v_{0} \in V$, the trace
               <span class="block-equation">
                 $$\begin{align*}
                   v_{0}
@@ -693,7 +698,7 @@
                   \to \cdots
                 \end{align*}$$
               </span>
-              The first arrow sends $v \in V$ to $\texttt{Left}\ 0$ if $v = v_{\text{end}}$, or to $\texttt{Right}\ (\alpha\ v)$ otherwise. The second arrow maps $\texttt{Left}\ 0$ to $\texttt{Left}\ 0$, it maps $\texttt{Right}\ v_{\text{end}}$ to $\texttt{Left}\ 1$, and it maps $\texttt{Right}\ v$ to $\texttt{Right}\ (\alpha\ v)$ for $v ≠ v_{\text{end}}$. The third arrow operates similarly, sending $\texttt{Left}\ i$ to $\texttt{Left}\ i$, sending $\texttt{Right}\ v_{\text{end}}$ to $\texttt{Left}\ 2$, and sending $\texttt{Right}\ v$ to $\texttt{Right}\ (\alpha\ v)$ for $v ≠ v_{\text{end}}$; etc. In this light, the evolution of our starting vertex $v_0$ would be
+              The first arrow sends $v \in V$ to $\texttt{Left}\ 0$ if $v = v_{\text{end}}$, or to $\texttt{Right}\ (\alpha\ v)$ otherwise. The second arrow maps $\texttt{Left}\ 0$ to $\texttt{Left}\ 0$, it maps $\texttt{Right}\ v_{\text{end}}$ to $\texttt{Left}\ 1$, and it maps $\texttt{Right}\ v$ to $\texttt{Right}\ (\alpha\ v)$ for $v \neq v_{\text{end}}$. The third arrow operates similarly, sending $\texttt{Left}\ i$ to $\texttt{Left}\ i$, sending $\texttt{Right}\ v_{\text{end}}$ to $\texttt{Left}\ 2$, and sending $\texttt{Right}\ v$ to $\texttt{Right}\ (\alpha\ v)$ for $v \neq v_{\text{end}}$; etc. In this light, the evolution of our starting vertex $v_0$ would be
               <span class="block-equation">
                 $$\begin{align*}
                   v_0
@@ -886,7 +891,222 @@
             </p>
           </div>
           <p>
-            FIXME: The rest of the owl! Simple corecursion!
+            We saw previously that the recursion principle for the natural numbers was encoded by the fact that $1 + \mathbb{N} \xrightarrow{(0, \texttt{Succ})} \mathbb{N}$ is an initial algebra for $X \mapsto 1 + X$. Duality allows us to define a <strong>corecursion principle</strong> for the conatural numbers, useful for constructing maps into $\mathrm{co}\mathbb{N}$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Corecursion principle for $\mathrm{co}\mathbb{N}$.
+            </h3>
+            <p>
+              Let $A$ be a set. To define a function $f : A \to \mathrm{co}\mathbb{N}$, it suffices to define a map $\alpha : A \to \{\text{no}\} + A$. The defined map $f$ is the unique function $A \to \mathrm{co}\mathbb{N}$ such that
+            </p>
+            <div class="block-static-diagram-container">
+              <iframe
+                height="302"
+                class="quiver-embed block-static-diagram"
+                src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzIsMCwiXFx7XFx0ZXh0e25vfVxcfSArIEEiXSxbMCwyLCJcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFsyLDIsIlxce1xcdGV4dHtub31cXH0gKyBcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFswLDEsIlxcYWxwaGEiXSxbMCwyLCJmIiwyXSxbMiwzLCJcXG1hdGhybXtwcmVkfSIsMl0sWzEsMywiMV97XFx7XFx0ZXh0e25vfVxcfX0gKyBmIl1d&embed"
+                data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzIsMCwiXFx7XFx0ZXh0e25vfVxcfSArIEEiXSxbMCwyLCJcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFsyLDIsIlxce1xcdGV4dHtub31cXH0gKyBcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFswLDEsIlxcYWxwaGEiXSxbMCwyLCJmIiwyXSxbMiwzLCJcXG1hdGhybXtwcmVkfSIsMl0sWzEsMywiMV97XFx7XFx0ZXh0e25vfVxcfX0gKyBmIl1d&embed"
+              ></iframe>
+            </div>
+            <p>
+              i.e.
+              <span class="block-equation">
+                $$\begin{align*}
+                  \mathrm{pred}\ (f\ a)
+                  &= \texttt{case}\ \alpha\ a\ \texttt{of}
+                   \\
+                  &\quad\quad \texttt{Left}\ \text{no}
+                  \to \texttt{Left}\ \text{no}
+                   \\
+                  &\quad\quad \texttt{Right}\ b
+                  \to \texttt{Right}\ (f\ b)
+                \end{align*}$$
+              </span>
+              for all $a \in A$. Importantly, the only way to have $\mathrm{pred}\ (f\ a) = \text{no}$ is to have $\alpha\ a = \text{no}$.
+            </p>
+            <p>
+              When we wish to define a function into $\mathrm{co}\mathbb{N}$ corecursively in this article, we will write $f := \texttt{corec}\ \alpha$. A Haskell implementation of $\texttt{corec}$ is
+              <span class="block-equation">
+                $$\begin{align*}
+                  &\texttt{corec} :: (A \to \texttt{Either}\ \{\text{no}\}\ A) \to A \to \mathrm{co}\mathbb{N}
+                   \\
+                  &\texttt{corec}\ \alpha\ a =
+                   \\
+                  &\quad\quad\texttt{case}\ \alpha\ a\ \texttt{of}
+                   \\
+                  &\quad\quad\quad\quad \texttt{Left}\ \text{no} \to 0
+                   \\
+                  &\quad\quad\quad\quad \texttt{Right}\ b \to \texttt{Right}\ (\texttt{Succ}\ (f\ b))
+                \end{align*}$$
+              </span>
+              where, thanks to Haskell's laziness, one may use the type $\texttt{data CoNat = Zero } \vert\ \texttt{ Succ\ CoNat}$ in place of $\mathrm{co}\mathbb{N}$ (albeit computation of the term $\infty$ will never terminate).
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Example. (Defining $0 \in \mathrm{co}\mathbb{N}$ corecursively)
+            </h3>
+            <p>
+              The element $\texttt{Zero} \in \mathrm{co}\mathbb{N}$ is given by $\texttt{Zero} := \texttt{corec}\ (\lambda\ \texttt{\textunderscore} \to \text{no})\ 0$. In the above diagram, we have taken $\alpha : 1 \to \{\text{no}\} + 1$ by setting $\alpha\ 0 := \text{no}$. We will henceforth write $0$ instead of $\texttt{Zero}$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Check that $0$ is the unique element of $\mathrm{co}\mathbb{N}$ with $\mathrm{pred}\ 0 = \text{no}$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Example. (Defining $\infty \in \mathrm{co}\mathbb{N}$ corecursively)
+            </h3>
+            <p>
+              The only other choice for a function $\alpha : 1 \to \{\text{no}\} + 1$ is given by setting $\alpha\ 0 := 0$. The element $x := \texttt{corec}\ (\lambda\ \texttt{\textunderscore} \to 0)\ 0$ of $\mathrm{co}\mathbb{N}$ is the unique element satisfying $\mathrm{pred}\ x = x$, which is $x = \infty$.
+            </p>
+          </div>
+          <p>
+            We saw earlier that $\mathrm{co}\mathbb{N} = \mathbb{N} + \{\infty\}$, and have been able to construct the elements $0, \infty \in \mathrm{co}\mathbb{N}$. We now show how to corecursively identify all the elements of $\mathrm{co}\mathbb{N}$ which lie in $\mathrm{co}\mathbb{N}$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Identifying $\mathbb{N}$ within $\mathrm{co}\mathbb{N}$)
+            </h3>
+            <p>
+              The constructors of $\mathbb{N}$ are a bijection $(0, \texttt{Succ}) : 1 + \mathbb{N} \simeq \mathbb{N}$, whose inverse is the <em>predecessor</em> map $\mathrm{pred} : \mathbb{N} \to \{\text{no}\} + \mathbb{N}$ (with $\mathrm{pred}\ 0 := \text{no}$). Define $ι : \mathbb{N} \to \mathrm{co}\mathbb{N}$ by $ι := \texttt{corec}\ \mathrm{pred}$. Show that $ι$ is an injection, and it maps the elements of $\mathbb{N}$ to the corresponding elements of $\mathrm{co}\mathbb{N}$ (i.e. $\mathrm{pred}\ (ι\ 0) = \text{no}$, $\mathrm{pred}\ (ι\ 1) = 0$, $\mathrm{pred}\ (ι\ 2) = 1$, etc.).
+            </p>
+          </div>
+          <p>
+            To conclude this section, we return to our example on using coalgebras for $X \mapsto \{\text{no}\} + X$ to model memoryless maze-solving strategies. We saw that a strategy $\alpha : V \to \{\text{no}\} + V$ generates a chain
+            <span class="block-equation">
+              $$\begin{align*}
+                V
+                \longrightarrow \{0\} + V
+                \longrightarrow \{0, 1\} + V
+                \longrightarrow \{0, 1, 2\} + V
+                \longrightarrow \{0, 1, 2, 3\} + V
+                \longrightarrow \cdots
+              \end{align*}$$
+            </span>
+            and various starting vertices $u_0, v_0, w_0 \in V$ evolved through the chain, perhaps arriving at the exit vertex $v_{\text{exit}}$:
+            <span class="block-equation">$$
+                 \begin{array}{ccccccccc}
+                            V
+                            & \longrightarrow
+                            & \{0\} + V
+                            & \longrightarrow
+                            & \{0, 1\} + V
+                            & \longrightarrow
+                            & \{0, 1, 2\} + V
+                            & \longrightarrow
+                            & \{0, 1, 2, 3\} + V
+                            & \longrightarrow
+                            & \cdots
+                            \\
+                            u_0 = v_{\text{exit}}
+                            & \longmapsto
+                            & \texttt{Left}\ \text{no}
+                            & \longmapsto
+                            & \texttt{Left}\ \text{no}
+                            & \longmapsto
+                            & \texttt{Left}\ \text{no}
+                            & \longmapsto
+                            & \texttt{Left}\ \text{no}
+                            & \longmapsto
+                            & \cdots
+                            \\
+                            v_0
+                            & \longmapsto
+                            & \texttt{Right}\ v_1
+                            & \longmapsto
+                            & \texttt{Right}\ v_{\text{exit}}
+                            & \longmapsto
+                            & \texttt{Left}\ \text{no}
+                            & \longmapsto
+                            & \texttt{Left}\ \text{no}
+                            & \longmapsto
+                            & \cdots
+                            \\
+                            w_0
+                            & \longmapsto
+                            & \texttt{Right}\ w_1
+                            & \longmapsto
+                            & \texttt{Right}\ w_2
+                            & \longmapsto
+                            & \texttt{Right}\ w_3
+                            & \longmapsto
+                            & \texttt{Right}\ w_4
+                            & \longmapsto
+                            & \cdots
+                          \end{array}
+                        
+              $$
+            </span>
+          </p>
+          <p>
+            What is the corresponding function $f := \texttt{corec}\ \alpha : V \to \mathrm{co}\mathbb{N}$? For a chain $\cdots \xmapsto{\alpha} x_2 \xmapsto{\alpha} x_1 \xmapsto{\alpha} v_{\text{exit}} \xmapsto{\alpha} \text{no}$, we have
+            <span class="block-equation">
+              $$\begin{align*}
+                 \begin{array}{lcccr}
+                   \alpha\ v_{\text{exit}}
+                   = \text{no}
+                   &\implies
+                   & \mathrm{pred}\ (f\ v_{\text{exit}})
+                   = \text{no}
+                   &\implies
+                   & f\ v_{\text{exit}}
+                   = 0
+                 \\
+                   \alpha\ x_1
+                   = v_{\text{exit}}
+                   &\implies
+                   & \mathrm{pred}\ (f\ x_1)
+                   = f\ v_{\text{exit}}
+                   = 0
+                   & \implies
+                   & f\ x_1
+                   = 1
+                 \\
+                   \alpha\ x_2
+                   = x_1
+                   & \implies
+                   & \mathrm{pred}\ (f\ x_2)
+                   = f\ x_1
+                   = 1
+                   & \implies
+                   & f\ x_2
+                   = 2
+                 \end{array}
+              \end{align*}$$
+            </span>
+            which suggests that $f\ x_i = i$ measures the number of steps $\alpha$ takes to find the exit from the vertex $x_i$. For an endless chain $y_0 \xmapsto{\alpha} y_1 \xmapsto{\alpha} \cdots$ which never finds the exit, we must have
+            <span class="block-equation">
+              $$\begin{align*}
+                f\ y_0
+                \xmapsto{\mathrm{pred}} f\ y_1\ \textcolor{gray}{(\neq \text{no})}
+                \xmapsto{\mathrm{pred}} f\ y_2\ \textcolor{gray}{(\neq \text{no})}
+                \xmapsto{\mathrm{pred}} f\ y_2\ \textcolor{gray}{(\neq \text{no})}
+                \xmapsto{\mathrm{pred}} \cdots
+              \end{align*}$$
+            </span>
+            This implies that $f\ y_0 = f\ y_1 = \cdots = \infty$, also correctly measuring the number of steps which $\alpha$ takes to find the exit.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Let $A \xrightarrow{\alpha} \{\text{no}\} + A$ be a coalgebra, and consider the map $\texttt{corec}\ \alpha : A \to \mathrm{co}\mathbb{N}$. Convince yourself that $\texttt{corec}\ \alpha\ a$ is the index in the sequence $a \xmapsto{\alpha} \cdots$ at which $\alpha$ "fails", returning $\text{no}$ rather than an element of $A$.
+            </p>
+          </div>
+        </section>
+        <section id="Terminal-Coalgebras-and-Coinductive-Types:-Further-Examples">
+          <h2>
+            Terminal Coalgebras and Coinductive Types: Further Examples
+          </h2>
+          <p>
+            
           </p>
         </section>
         <section id="See-also">
@@ -900,7 +1120,7 @@
             <ul class="see-also">
               <li>
                 <a href="">
-                  FIXME: Fill out the list of links! Go dig up all of the results you've catalogued.
+                  TODO: Fill out the list of links! Go dig up all of the results you've catalogued.
                 </a>
               </li>
             </ul>

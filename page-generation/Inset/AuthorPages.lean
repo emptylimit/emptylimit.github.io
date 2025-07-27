@@ -132,6 +132,7 @@ namespace «authoring defs»
     ,   ("↔", "\\leftrightarrow")
     ,   ("≤", "\\leq")
     ,   ("↦", "\\mapsto")
+    ,   ("≠", "\\neq")
     ,   ("↣", "\\rightarrowtail")
     ,   ("∼", "\\sim")
     ,   ("≃", "\\simeq")

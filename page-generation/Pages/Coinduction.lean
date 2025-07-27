@@ -15,6 +15,7 @@ private def hrefs.initialAlgebraUniversalProperty := "https://q.uiver.app/#q=WzA
 private def hrefs.subobjectOfNat := "https://q.uiver.app/#q=WzAsNCxbMCwwLCIxICsgQSJdLFsyLDAsIkEiXSxbMiwyLCJcXG1hdGhiYntOfSJdLFswLDIsIjEgKyBcXG1hdGhiYntOfSJdLFswLDEsIlxcYWxwaGEiXSxbMSwyLCJcXGlvdGEiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFswLDMsIjFfMSArIFxcaW90YSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzMsMiwiKDAsIFxcdGV4dHR0e1N1Y2N9KSIsMl1d"
 private def hrefs.coalgebraMorphism := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJiIl0sWzIsMiwiVFxcIGIiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFxiZXRhIiwyXSxbMSwzLCJUXFwgZiJdXQ=="
 private def hrefs.terminalCoalgebraUniversalProperty := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJqIl0sWzIsMiwiVFxcIGoiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFx0ZXh0e2Rlc30iLDJdLFsxLDMsIlRcXCBmIl1d"
+private def hrefs.conatCorecursion := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzIsMCwiXFx7XFx0ZXh0e25vfVxcfSArIEEiXSxbMCwyLCJcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFsyLDIsIlxce1xcdGV4dHtub31cXH0gKyBcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFswLDEsIlxcYWxwaGEiXSxbMCwyLCJmIiwyXSxbMiwzLCJcXG1hdGhybXtwcmVkfSIsMl0sWzEsMywiMV97XFx7XFx0ZXh0e25vfVxcfX0gKyBmIl1d"
 -- NOTE: `$$ ⋯ $$` contents
 
 
@@ -563,19 +564,207 @@ namespace Coinduction
                     ]
                 }
             , .body
-                [ .ps "FIXME: The rest of the owl! Simple corecursion! Show how the conatural numbers measure non-terminating evolutions (i.e. \"colists\", without saying that word)!"
+                [ .ps "We saw previously that the recursion principle for the natural numbers was encoded by the fact that $1 + ℕ |→{(0, |tt{Succ})} ℕ$ is an initial algebra for $X ↦ 1 + X$. Duality allows us to define a <strong>corecursion principle</strong> for the conatural numbers, useful for constructing maps into $|coℕ$."
                 ]
+            , .block
+                { kind := .other "Corecursion principle for $|coℕ$"
+                , body :=
+                    [ .ps "Let $A$ be a set. To define a function $f : A → |coℕ$, it suffices to define a map $α : A → |No + A$. The defined map $f$ is the unique function $A → |coℕ$ such that"
+                    , .cda
+                        { href := hrefs.conatCorecursion, height := some 302 }
+                    , .p
+                        [ .s "i.e."
+                        , .al
+                            [ "|pred| (f| a)"
+                            , "&= |tt{case}| α| a| |tt{of}"
+                            , .alignBreak
+                            , "&|quad|quad |tt{Left}| |no"
+                            , "→ |tt{Left}| |no"
+                            , .alignBreak
+                            , "&|quad|quad |tt{Right}| b"
+                            , "→ |tt{Right}| (f| b)"
+                            ]
+                        , .s "for all $a ∈ A$. Importantly, the only way to have $|pred| (f| a) = |no$ is to have $α| a = |no$."
+                        ]
+                    , .p
+                        [ .s "When we wish to define a function into $|coℕ$ corecursively in this article, we will write $f := |tt{corec}| α$. A Haskell implementation of $|tt{corec}$ is"
+                        , .al
+                            [ "&|tt{corec} :: (A → |tt{Either}| |No| A) → A → |coℕ"
+                            , .alignBreak
+                            , "&|tt{corec}| α| a ="
+                            , .alignBreak
+                            , "&|quad|quad|tt{case}| α| a| |tt{of}"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad |tt{Left}| |no → 0"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad |tt{Right}| b → |tt{Right}| (|tt{Succ}| (f| b))"
+                            ]
+                        , .s "where, thanks to Haskell's laziness, one may use the type $|tt{data CoNat = Zero } |vert| |tt{ Succ| CoNat}$ in place of $|coℕ$ (albeit computation of the term $∞$ will never terminate)."
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exa
+                , title := "Defining $0 ∈ |coℕ$ corecursively"
+                , body :=
+                    [ .ps "The element $|tt{Zero} ∈ |coℕ$ is given by $|tt{Zero} := |tt{corec}| (λ| |tt{|textunderscore} → |no)| 0$. In the above diagram, we have taken $α : 1 → |No + 1$ by setting $α| 0 := |no$. We will henceforth write $0$ instead of $|tt{Zero}$."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Check that $0$ is the unique element of $|coℕ$ with $|pred| 0 = |no$."
+                    ]
+                }
+            , .block
+                { kind := .exa
+                , title := "Defining $∞ ∈ |coℕ$ corecursively"
+                , body :=
+                    [ .ps "The only other choice for a function $α : 1 → |No + 1$ is given by setting $α| 0 := 0$. The element $x := |corec| (λ| |tt{|textunderscore} → 0)| 0$ of $|coℕ$ is the unique element satisfying $|pred| x = x$, which is $x = ∞$."
+                    ]
+                }
+            , .body
+                [ .ps "We saw earlier that $|coℕ = ℕ + |{|infty|}$, and have been able to construct the elements $0, ∞ ∈ |coℕ$. We now show how to corecursively identify all the elements of $|coℕ$ which lie in $|coℕ$."
+                ]
+            , .block
+                { kind := .exr
+                , title := "Identifying $ℕ$ within $|coℕ$"
+                , body :=
+                    [ .ps "The constructors of $ℕ$ are a bijection $(0, |Succ) : 1 + ℕ ≃ ℕ$, whose inverse is the <em>predecessor</em> map $|pred : ℕ → |No + ℕ$ (with $|pred| 0 := |no$). Define $ι : ℕ → |coℕ$ by $ι := |corec| |pred$. Show that $ι$ is an injection, and it maps the elements of $ℕ$ to the corresponding elements of $|coℕ$ (i.e. $|pred| (ι| 0) = |no$, $|pred| (ι| 1) = 0$, $|pred| (ι| 2) = 1$, etc.)."
+                    ]
+                }
+            , .body
+                [ .p
+                    [ .s "To conclude this section, we return to our example on using coalgebras for $X ↦ |No + X$ to model memoryless maze-solving strategies. We saw that a strategy $α : V → |No + V$ generates a chain"
+                    , .al
+                        [ "V"
+                        , "|longrightarrow |{0|} + V"
+                        , "|longrightarrow |{0, 1|} + V"
+                        , "|longrightarrow |{0, 1, 2|} + V"
+                        , "|longrightarrow |{0, 1, 2, 3|} + V"
+                        , "|longrightarrow ⋯"
+                        ]
+                    , .s "and various starting vertices $u_0, v_0, w_0 ∈ V$ evolved through the chain, perhaps arriving at the exit vertex $v_{|text{exit}}$:"
+                    , .eqn
+                        " |begin{array}{ccccccccc}
+                            V
+                            & |longrightarrow
+                            & |{0|} + V
+                            & |longrightarrow
+                            & |{0, 1|} + V
+                            & |longrightarrow
+                            & |{0, 1, 2|} + V
+                            & |longrightarrow
+                            & |{0, 1, 2, 3|} + V
+                            & |longrightarrow
+                            & ⋯
+                            ||
+                            u_0 = v_{|text{exit}}
+                            & |longmapsto
+                            & |Left| |no
+                            & |longmapsto
+                            & |Left| |no
+                            & |longmapsto
+                            & |Left| |no
+                            & |longmapsto
+                            & |Left| |no
+                            & |longmapsto
+                            & ⋯
+                            ||
+                            v_0
+                            & |longmapsto
+                            & |Right| v_1
+                            & |longmapsto
+                            & |Right| v_{|text{exit}}
+                            & |longmapsto
+                            & |Left| |no
+                            & |longmapsto
+                            & |Left| |no
+                            & |longmapsto
+                            & ⋯
+                            ||
+                            w_0
+                            & |longmapsto
+                            & |Right| w_1
+                            & |longmapsto
+                            & |Right| w_2
+                            & |longmapsto
+                            & |Right| w_3
+                            & |longmapsto
+                            & |Right| w_4
+                            & |longmapsto
+                            & ⋯
+                          |end{array}
+                        "
+                    ]
+                , .p
+                    [ .s "What is the corresponding function $f := |corec| α : V → |coℕ$? For a chain $⋯ |xmapsto{α} x_2 |xmapsto{α} x_1 |xmapsto{α} v_{|text{exit}} |xmapsto{α} |no$, we have"
+                    , .al
+                        [ " |begin{array}{lcccr}"
+                        , "   α| v_{|text{exit}}"
+                        , "   = |no"
+                        , "   &|implies"
+                        , "   & |pred| (f| v_{|text{exit}})"
+                        , "   = |no"
+                        , "   &|implies"
+                        , "   & f| v_{|text{exit}}"
+                        , "   = 0"
+                        ,     .alignBreak
+                        , "   α| x_1"
+                        , "   = v_{|text{exit}}"
+                        , "   &|implies"
+                        , "   & |pred| (f| x_1)"
+                        , "   = f| v_{|text{exit}}"
+                        , "   = 0"
+                        , "   & |implies"
+                        , "   & f| x_1"
+                        , "   = 1"
+                        ,     .alignBreak
+                        , "   α| x_2"
+                        , "   = x_1"
+                        , "   & |implies"
+                        , "   & |pred| (f| x_2)"
+                        , "   = f| x_1"
+                        , "   = 1"
+                        , "   & |implies"
+                        , "   & f| x_2"
+                        , "   = 2"
+                        , " |end{array}"
+                        ]
+                    , .s "which suggests that $f| x_i = i$ measures the number of steps $α$ takes to find the exit from the vertex $x_i$. For an endless chain $y_0 |xmapsto{α} y_1 |xmapsto{α} ⋯$ which never finds the exit, we must have"
+                    , .al
+                        [ "f| y_0"
+                        , "|xmapsto{|pred} f| y_1| |textcolor{gray}{(≠ |no)}"
+                        , "|xmapsto{|pred} f| y_2| |textcolor{gray}{(≠ |no)}"
+                        , "|xmapsto{|pred} f| y_2| |textcolor{gray}{(≠ |no)}"
+                        , "|xmapsto{|pred} ⋯"
+                        ]
+                    , .s "This implies that $f| y_0 = f| y_1 = ⋯ = ∞$, also correctly measuring the number of steps which $α$ takes to find the exit."
+                    ]
+                ]
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Let $A |→{α} |No + A$ be a coalgebra, and consider the map $|corec| α : A → |coℕ$. Convince yourself that $|corec| α| a$ is the index in the sequence $a |xmapsto{α} ⋯$ at which $α$ \"fails\", returning $|no$ rather than an element of $A$."
+                    ]
+                }
             ]
-        -- FIXME: Section `"Terminal Coalgebras and Coinductive Types: Further Examples"`
-        -- FIXME: Section `"Terminal Coalgebras and Coinduction: The Results"`
-        -- FIXME: Section `"Terminal Coalgebras and Coinduction: Example Proofs"`
-        -- FIXME: Section `"Summary"`
+        , .mk
+            "Terminal Coalgebras and Coinductive Types: Further Examples"
+            [ .body
+                [ .ps ""
+                ]
+            -- TODO: Finish this section!
+            ]
+        -- TODO: Section `"Terminal Coalgebras and Coinduction: The Results"`
+        -- TODO: Section `"Terminal Coalgebras and Coinduction: Example Proofs"`
+        -- TODO: Section `"Summary"`
         ]
     , seeAlso :=
         { readNext :=
             none
         , links :=
-            [ .mk "" "FIXME: Fill out the list of links! Go dig up all of the results you've catalogued."
+            [ .mk "" "TODO: Fill out the list of links! Go dig up all of the results you've catalogued."
             ]
         }
     , preamble :=
@@ -588,6 +777,13 @@ namespace Coinduction
             ,   («authoring defs».esc "?", "\\{?\\}")
             ,   («authoring defs».esc "pred", "\\mathrm{pred}")
             ,   («authoring defs».esc "pop", "\\mathrm{pop}")
+            ,   («authoring defs».esc "pop", "\\mathrm{pop}")
+            ,   («authoring defs».esc "corec", "\\texttt{corec}")
+            ,   («authoring defs».esc "Succ", "\\texttt{Succ}")
+            ,   («authoring defs».esc "Left", "\\texttt{Left}")
+            ,   («authoring defs».esc "Right", "\\texttt{Right}")
+            ,   («authoring defs».esc "case", "\\texttt{case}")
+            ,   («authoring defs».esc "of", "\\texttt{of}")
             ]
         |>.qsort «authoring defs».compareTranslations
     }

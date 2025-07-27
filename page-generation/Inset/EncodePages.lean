@@ -378,7 +378,10 @@ def Page.unescape (page : Page) : Page :=
         | .block b =>
           .block
             { b
-            with  title := b.title.map («authoring defs».unescape · page.preamble)
+            with  kind  := match b.kind with
+                            | .other title => .other («authoring defs».unescape title page.preamble)
+                            | k => k
+                  title := b.title.map («authoring defs».unescape · page.preamble)
             ,     body  := b.body.map BodyElement.unescape
             }
   let Section.unescape (s : Section) : Section :=
