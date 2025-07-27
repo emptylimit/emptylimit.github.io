@@ -75,4 +75,17 @@ namespace Name
   /-- `avg-lebesgue-enjoyer` on GitHub -/
   def gabe : Name := .real "Gabriel" "Field"
 
+  /--
+    Authors of the nLab.
+
+    **Parameter: `(individuals : List Name)`**
+      A list of names, obtained by viewing the *history* of the relevant nLab page.
+  -/
+  def nLab (names : List Name) : Name :=
+    match names with
+    | [] =>
+      .pseudo "nLab authors"
+    | names =>
+      .pseudo <| "nLab authors (including " ++ Name.writeNames names ++ ")"
+
 end Name

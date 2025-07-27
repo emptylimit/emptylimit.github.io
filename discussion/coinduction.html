@@ -1,0 +1,959 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      Coinduction - Empty Limit
+    </title>
+    <link
+      rel="icon"
+      href="../asset/logo/logo-128-round.png"
+    >
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+    <link
+      rel="stylesheet"
+      href="../style.css"
+    >
+    <!--
+      NOTE: The following elements allow for `KaTeX` to be used on this webpage.
+      SOURCE: https://katex.org/docs/browser
+    -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+      integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
+      crossorigin="anonymous"
+    >
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"
+      integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+      integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
+      crossorigin="anonymous"
+    ></script>
+    <!--
+      NOTE: `../script/discussion.js` is included after `KaTeX` to make `KaTeX` available
+      in `../script/discussion.js`.
+    -->
+    <script
+      src="../script/discussion.js"
+    ></script>
+  </head>
+  <body>
+    <nav>
+      <a href="../index.html">
+        <div class="logo">
+          <img
+            src="../asset/logo/logo-270.png"
+            alt="Logo"
+          >
+        </div>
+      </a>
+      <div class="link-container">
+        <a
+          href="../glossary.html"
+          class="nav-link"
+        >
+          Glossary
+        </a>
+        <a
+          href="../about.html"
+          class="nav-link"
+        >
+          About
+        </a>
+      </div>
+    </nav>
+    <main class="family">
+      <div id="contents-bar">
+        <div id="contents-bar-outer-container">
+          <div id="contents-bar-inner-container">
+            <div class="bar-title">
+              <span>
+                Contents
+              </span>
+              <button id="contents-bar-hide">hide <span class=keyboard-shortcut-hint>(c)</span>
+
+              </button>
+            </div>
+            <div class="contents-bar-page-name">
+              Coinduction: <a href=#>(top)</a>
+            </div>
+            <ul>
+              <li>
+                <a href="#Introduction">
+                  Introduction
+                </a>
+              </li>
+              <li>
+                <a href="#Initial-Algebras-and-Inductive-Types:-The-Intuition-and-Construction">
+                  Initial Algebras and Inductive Types: The Intuition and Construction
+                </a>
+              </li>
+              <li>
+                <a href="#Initial-Algebras-and-Induction:-The-Results">
+                  Initial Algebras and Induction: The Results
+                </a>
+              </li>
+              <li>
+                <a href="#Terminal-Coalgebras-and-Coinductive-Types:-A-First-Example">
+                  Terminal Coalgebras and Coinductive Types: A First Example
+                </a>
+              </li>
+              <li>
+                <a href="#See-also">
+                  See also
+                </a>
+              </li>
+              <li>
+                <a href="#Bibliography">
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <article id="content">
+        <div>
+          <h1>
+            Coinduction
+          </h1>
+          <p>
+            <em>
+              Written by: Gabriel Field.
+            </em>
+          </p>
+        </div>
+        <section id="Introduction">
+          <h2>
+            Introduction
+          </h2>
+          <p>
+            We aim to give a <em>simple</em> introduction to coinductive types and how to prove equality statements on them. We assume the reader is familiar with inductive types<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-1>[1]</a></sup><span class=sidenote id=sidenote-1>
+            [1]
+            Also known as "algebraic data types" in some programming languages.</span></span>. This article is programming-language agnostic, but we will write code in a Haskell-ish way when code is required. This article will include many exercises and proofs. They are all within reach; try to do them without having them spoiling them first!
+          </p>
+          <p>
+            This article is designed to be read linearly. Later sections depend on prior ones in essential ways, so skipping ahead may leave the reader confused.
+          </p>
+          <p>
+            Throughout, $0$ denotes either the number $0$ or the empty set, and $1 := \{0\}$ denotes the singleton set. The operator $+$ is used for disjoint union of sets and for addition of numbers.
+          </p>
+        </section>
+        <section id="Initial-Algebras-and-Inductive-Types:-The-Intuition-and-Construction">
+          <h2>
+            Initial Algebras and Inductive Types: The Intuition and Construction
+          </h2>
+          <p>
+            Coinductive types are dual to inductive types, so we first present a categorical view on induction.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Algebra)
+            </h3>
+            <p>
+              Fix an endofunctor $T : \mathsf{C} \to \mathsf{C}$ on a category $\mathsf{C}$. An <strong>algebra</strong> for $T$ consists of:
+            </p>
+            <ul>
+              <li>
+                An object $a \in \mathsf{C}$;
+              </li>
+              <li>
+                An arrow $\alpha : T\ a \to a$ in $\mathsf{C}$.
+              </li>
+            </ul>
+            <p>
+              A <strong>morphism</strong> from an algebra $T\ a \xrightarrow{\alpha} a$ to another algebra $T\ b \xrightarrow{\beta} b$ is a map $f : a \to b$ in $\mathsf{C}$ such that
+            </p>
+            <div class="block-static-diagram-container">
+              <iframe
+                height="302"
+                class="quiver-embed block-static-diagram"
+                src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgYSJdLFsyLDAsImEiXSxbMiwyLCJiIl0sWzAsMiwiVFxcIGIiXSxbMCwxLCJcXGFscGhhIl0sWzEsMiwiZiJdLFswLDMsIlRcXCBmIiwyXSxbMywyLCJcXGJldGEiLDJdXQ==&embed"
+                data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgYSJdLFsyLDAsImEiXSxbMiwyLCJiIl0sWzAsMiwiVFxcIGIiXSxbMCwxLCJcXGFscGhhIl0sWzEsMiwiZiJdLFswLDMsIlRcXCBmIiwyXSxbMywyLCJcXGJldGEiLDJdXQ==&embed"
+              ></iframe>
+            </div>
+            <p>
+              commutes.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Algebras form a category)
+            </h3>
+            <p>
+              The algebras for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ form a category, equipped with identity arrows $1_{T\ a \xrightarrow{\alpha} a} := 1_a$ and with composition of morphisms given by composition in $\mathsf{C}$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proofs/algebras-form-a-category.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <p>
+            Consider an algebra $T\ A \xrightarrow{\alpha} A$ for an endofunctor $T : \mathbf{Set} \to \mathbf{Set}$. To a programmer, the set $A$ may be the type of some data of interest. The map $\alpha : T\ A \to A$ describes how to form data of that type, given other data from a transformed data type $T\ A$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example.
+            </h3>
+            <p>
+              Specialise $T : X \mapsto 1 + X$. An algebra $T\ A \xrightarrow{\alpha} A$ consists of two maps $1 \xrightarrow{x_0} A$ and $A \xrightarrow{u} A$; an element $x_0 \in A$ and a function $u$ to "update" an element of $A$ into another one. A famously chaotic example involves setting $A := [0, 1]$ and $u := x \mapsto 2x \bmod 1$. For various values of $x_0$, the sequences $x_{i + 1} := u (x_i)$ behave vastly differently.
+            </p>
+          </div>
+          <p>
+            The functional programmer may see this as a setting to describe recursive functions. The transformed type $T\ A$ describes the input to a recursive function &mdash; in the $T\ A = 1 + A$ case, it is either a "base case" $0 \in 1$ or a "recursive input" from $A$ &mdash; and the function $\alpha$ evaluates its input. The previous example illustrates this. However, one must take care to define recursive functions to ensure they always terminate.
+          </p>
+          <p>
+            A particularly "nice" type for recursion using $T$ would be one which is "completely defined using this kind of recursion" in the following sense. Consider forming a chain
+            <span class="block-equation">
+              $$\begin{align*}
+                &0
+                \xrightarrow{!} T\ 0
+                \xrightarrow{T\ !} T^2\ 0
+                \xrightarrow{T^2\ !} T^3\ 0
+                \xrightarrow{T^3\ !} \cdots
+              \end{align*}$$
+            </span>
+            where $! : 0 \to T\ 0$ is the unique map recognising that the empty set is a subset of $T\ 0$. One can think of this as "starting with nothing, and freely adding elements that $T$ requires". In our example, we have
+            <span class="block-equation">
+              $$\begin{align*}
+                &\varnothing
+                \subseteq 1 + \varnothing
+                \subseteq 1 + (1 + \varnothing)
+                \subseteq 1 + (1 + (1 + \varnothing))
+                \subseteq \cdots
+                 \\
+                \text{up to isomorphism:}\quad
+                &\varnothing
+                \subseteq \varnothing \cup \{0\}
+                \subseteq \varnothing \cup \{0\} \cup \{1\}
+                \subseteq \varnothing \cup \{0\} \cup \{1\} \cup \{2\}
+                \subseteq \cdots
+                 \\
+                \text{equivalently:}\quad
+                &\varnothing
+                \subseteq \{0\}
+                \subseteq \{0, 1\}
+                \subseteq \{0, 1, 2\}
+                \subseteq \cdots
+              \end{align*}$$
+            </span>
+            Taking the colimit of this diagram, which in our example corresponds to taking the union of these nested sets, we arrive at the desired type. In our example, we do indeed have a natural map $T\left( \mathrm{colim}_{i \in \omega} T^i 0 \right) \to \mathrm{colim}_{i \in \omega} T^i 0$ to make this into an algebra; it is the map $1 + \mathbb{N} \to \mathbb{N}$ given by $1 \to \mathbb{N}$ picking out the element $0$, and $\mathbb{N} \to \mathbb{N}$ taking the successor of a natural number. The functional programmer would recognise these as the two <em>constructors</em> for the inductive type $\mathbb{N}$, and immediately recall the following <strong>recursion principle</strong>:
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Recursion principle for $ℕ$.
+            </h3>
+            <p>
+              Fix a type $X$. To define a function $f : \mathbb{N} \to X$, one needs only define a value $x_0 \in X$ to represent $f\ 0$ and a function $u : X \to X$ to update a value $f\ n$ to the value of its successor $f\ (\texttt{Succ}\ n)$. The defined function then satisfies:
+            </p>
+            <ul>
+              <li>
+                $f\ 0 = x_0$;
+              </li>
+              <li>
+                $f\ (\texttt{Succ}\ n) = u\ (f\ n)$ for all $n \in \mathbb{N}$;
+              </li>
+            </ul>
+            <p>
+              and is the unique function with these properties.
+            </p>
+          </div>
+          <p>
+            The categorical framework is illuminating here. Foremost, the value $x_0 \in X$ and $u : X \to X$ together define an algebra $1 + X \xrightarrow{\alpha} X$ for $T$. Next, the requirements on $f$ say exactly that it is an algebra morphism; i.e. the diagram
+          </p>
+          <div class="block-static-diagram-container">
+            <iframe
+              height="302"
+              class="quiver-embed block-static-diagram"
+              src="https://q.uiver.app/#q=WzAsNCxbMCwwLCIxICsgXFxtYXRoYmJ7Tn0iXSxbMiwwLCJcXG1hdGhiYntOfSJdLFsyLDIsIlgiXSxbMCwyLCIxICsgWCJdLFswLDEsIigwLCBcXHRleHR0dHtTdWNjfSkiXSxbMSwyLCJmIl0sWzAsMywiMV8xICsgZiIsMl0sWzMsMiwiKHhfMCwgdSkiLDJdXQ==&embed"
+              data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCIxICsgXFxtYXRoYmJ7Tn0iXSxbMiwwLCJcXG1hdGhiYntOfSJdLFsyLDIsIlgiXSxbMCwyLCIxICsgWCJdLFswLDEsIigwLCBcXHRleHR0dHtTdWNjfSkiXSxbMSwyLCJmIl0sWzAsMywiMV8xICsgZiIsMl0sWzMsMiwiKHhfMCwgdSkiLDJdXQ==&embed"
+            ></iframe>
+          </div>
+          <p>
+            commutes. Taken together, the recursion principle is exactly the statement that $1 + \mathbb{N} \xrightarrow{(0, \texttt{Succ})} \mathbb{N}$ is an <strong>initial algebra</strong> for $T$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Initial algebra)
+            </h3>
+            <p>
+              An <strong>initial algebra</strong> for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ is an initial object in the category of algebras for $T$. Explicitly, it consists of an object $i \in \mathsf{C}$ and an arrow $T\ i \xrightarrow{\text{cons}} i$ in $\mathsf{C}$ with the following universal property: for any other object $a \in \mathsf{C}$ and map $T\ a \xrightarrow{\alpha} a$, there is a unique map $f : i \to a$ such that
+            </p>
+            <div class="block-static-diagram-container">
+              <iframe
+                height="302"
+                class="quiver-embed block-static-diagram"
+                src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgaSJdLFsyLDAsImkiXSxbMiwyLCJhIl0sWzAsMiwiVFxcIGEiXSxbMCwxLCJcXHRleHR7Y29uc30iXSxbMSwyLCJmIl0sWzAsMywiVFxcIGYiLDJdLFszLDIsIlxcYWxwaGEiLDJdXQ==&embed"
+                data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgaSJdLFsyLDAsImkiXSxbMiwyLCJhIl0sWzAsMiwiVFxcIGEiXSxbMCwxLCJcXHRleHR7Y29uc30iXSxbMSwyLCJmIl0sWzAsMywiVFxcIGYiLDJdLFszLDIsIlxcYWxwaGEiLDJdXQ==&embed"
+              ></iframe>
+            </div>
+            <p>
+              commutes.
+            </p>
+            <p>
+              In type theory and various programming languages, an initial algebra for a <a href=https://ncatlab.org/nlab/show/polynomial+functor>polynomial endofunctor</a> $T : \mathbf{Type} \to \mathbf{Type}$ is often called its associated <strong>inductive type</strong> or <strong>algebraic data type</strong>. The map $\text{cons} : T\ i \to i$ can be thought of as providing the <strong>constructors</strong> for this type.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Initial algebras)
+            </h3>
+            <p>
+              Play the same game as for our $T := X \mapsto 1 + X$ example to identify the initial algebras of the following endofunctors $T : \mathbf{Set} \to \mathbf{Set}$. Here, $A$ is a fixed set.
+            </p>
+            <ul>
+              <li>
+                $T := X \mapsto A$ (i.e. a constant functor);
+              </li>
+              <li>
+                $T := X \mapsto 1 + A \times X$;
+              </li>
+              <li>
+                $T := X \mapsto 1 + A \times X^2$;
+              </li>
+              <li>
+                $T := X \mapsto X$.
+              </li>
+            </ul>
+            <p>
+              Check that your answers agree with the inductive type you would be forming in your functional programming language of choice<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-2>[2]</a></sup><span class=sidenote id=sidenote-2>
+              [2]
+              Haskell's laziness is problematic here. Ignore the non-terminating terms you could form using Haskell's laziness, and consider only the terms whose computation will terminate.</span></span>.
+            </p>
+            <p>
+              What does the use of the variable $X$ in the output of $T$ represent for the associated initial algebra?
+            </p>
+          </div>
+          <p>
+            To the functional programmer, the universal property of an initial algebra may be thought of as its recursion principle.
+          </p>
+        </section>
+        <section id="Initial-Algebras-and-Induction:-The-Results">
+          <h2>
+            Initial Algebras and Induction: The Results
+          </h2>
+          <p>
+            As the programmer would hope, initial algebras are uniquely determined.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Remark. (Initial algebras are uniquely determined)
+            </h3>
+            <p>
+              Up to isomorphism of algebras, each endofunctor $T : \mathsf{C} \to \mathsf{C}$ has at most one initial algebra. That is, any two initial algebras $T\ i \xrightarrow{ι} i$ and $T\ i' \xrightarrow{ι'} i'$ share a unique isomorphism $f : i \simeq j$ for which $f \circ ι = ι' \circ T\ f$.
+            </p>
+            <p>
+              The proof is trivial: initial objects in any category are uniquely determined.
+            </p>
+          </div>
+          <p>
+            The constructors $(0, \texttt{Succ}) : 1 + \mathbb{N} \to \mathbb{N}$ are a bijection. This is not a coincidence:
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Constructors are isomorphisms)
+            </h3>
+            <p>
+              Let $T\ i \xrightarrow{\text{cons}} i$ be the initial algebra for an endofunctor $T : \mathsf{C} \to \mathsf{C}$. Then, $\text{cons} : T i \simeq i$ is an isomorphism in $\mathsf{C}$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/constructors-are-isomorphisms.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <div class="block-section-element">
+            <h3>
+              Example.
+            </h3>
+            <p>
+              The constructors $(0, \texttt{Succ}) : 1 + \mathbb{N} \simeq \mathbb{N}$ express that <em>every</em> natural number is either zero or the successor of another natural number.
+            </p>
+          </div>
+          <p>
+            The natural numbers $\mathbb{N}$ famously come with an <em>induction principle</em>: to establish that a subset $A \subseteq \mathbb{N}$ is in fact all of $\mathbb{N}$, one proves that $0 \in A$ and $A$ is closed under $\text{Succ}$. In our framework, this is to say that the constructors $(0, \text{Succ})$ form an algebra on $A$. Taking an even more categorical focus, it is to say that we have an algebra structure $1 + A \xrightarrow{\alpha} A$ which is a sub-object of $\mathbb{N}$ (in the category of algebras); i.e. we have an injection $ι : A \to \mathbb{N}$ such that
+          </p>
+          <div class="block-static-diagram-container">
+            <iframe
+              height="302"
+              class="quiver-embed block-static-diagram"
+              src="https://q.uiver.app/#q=WzAsNCxbMCwwLCIxICsgQSJdLFsyLDAsIkEiXSxbMiwyLCJcXG1hdGhiYntOfSJdLFswLDIsIjEgKyBcXG1hdGhiYntOfSJdLFswLDEsIlxcYWxwaGEiXSxbMSwyLCJcXGlvdGEiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFswLDMsIjFfMSArIFxcaW90YSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzMsMiwiKDAsIFxcdGV4dHR0e1N1Y2N9KSIsMl1d&embed"
+              data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCIxICsgQSJdLFsyLDAsIkEiXSxbMiwyLCJcXG1hdGhiYntOfSJdLFswLDIsIjEgKyBcXG1hdGhiYntOfSJdLFswLDEsIlxcYWxwaGEiXSxbMSwyLCJcXGlvdGEiLDAseyJzdHlsZSI6eyJ0YWlsIjp7Im5hbWUiOiJob29rIiwic2lkZSI6InRvcCJ9fX1dLFswLDMsIjFfMSArIFxcaW90YSIsMix7InN0eWxlIjp7InRhaWwiOnsibmFtZSI6Imhvb2siLCJzaWRlIjoidG9wIn19fV0sWzMsMiwiKDAsIFxcdGV4dHR0e1N1Y2N9KSIsMl1d&embed"
+            ></iframe>
+          </div>
+          <p>
+            commutes. In this language, the induction principle states that <em>$\mathbb{N}$ has no proper subalgebras</em>. This generalises:
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Initial objects have no proper subobjects)
+            </h3>
+            <p>
+              Let $i$ be the initial object in a category $\mathsf{C}$, and let $ι : a \rightarrowtail i$ be a monomorphism into $i$. Then, $ι$ is an isomorphism in $\mathsf{C}$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/initial-objects-have-no-proper-subobjects.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <div class="block-section-element">
+            <h3>
+              Example.
+            </h3>
+            <p>
+              Take $\mathsf{C}$ in the previous lemma to be the category of algebras for upcoming choices of endofunctors $T : \mathbf{Set} \to \mathbf{Set}$. The initial object $i$ in the previous lemma will then be the associated initial algebra for $T$.
+            </p>
+            <ul>
+              <li>
+                For $T : X \mapsto 1 + X$, the lemma recovers the induction principle of $\mathbb{N}$ described before. Identifying a subset $X \subseteq \mathbb{N}$ with its predicate $P : \mathbb{N} \to \texttt{Bool}$ (which assigns $\texttt{true}$ to the elements of $X$ and $\texttt{false}$ to everything in $\mathbb{N} \setminus X$), we get the more familiar induction rule: to prove $∀ n \in \mathbb{N},\, P\ n$, we need only prove $P\ 0$ and $∀ n \in \mathbb{N},\, P\ n \implies P\ (\texttt{Succ}\ n)$.
+              </li>
+              <li>
+                For $T : X \mapsto 1 + A \times X$ (with $A$ a fixed set), the lemma recovers the induction principle of its initial algebra $\texttt{List}\ A$. Translating from subsets  of $\texttt{List}\ A$ to characteristic predicates $P : \mathbb{N} \to \texttt{Bool}$, we have the familiar structural induction rule: to prove $∀ \mathrm{xs} \in \texttt{List}\ A,\, P\ \mathrm{xs}$, we need only prove $P\ []$ and $∀ \mathrm{xs} \in \texttt{List}\ A, ∀ a \in {A},\, P\ \mathrm{xs} \implies P\ (a :: \mathrm{xs})$.
+              </li>
+            </ul>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Play the same game to determine the induction rules for the initial algebras of the following endofunctors $T : \mathbf{Set} \to \mathbf{Set}$. Here, $A$ is a fixed set.
+            </p>
+            <ul>
+              <li>
+                $T : X \mapsto 1 + A \times X^2$;
+              </li>
+              <li>
+                $T : X \mapsto A$;
+              </li>
+              <li>
+                $T : X \mapsto X$.
+              </li>
+            </ul>
+            <p>
+              Check that the first two agree with the relevant structural induction schemas, and explain why the third is useless.
+            </p>
+          </div>
+          <p>
+            The previous lemma has another use case which will seem trivial now, but will be a key example when we move to explain coinduction. It can be used to prove that two maps out from an initial algebra are equal, even if the target is not equipped with an algebra structure.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Simple inductive rule for proving that maps out of initial algebras are equal)
+            </h3>
+            <p>
+              Let $T\ i \xrightarrow{\texttt{cons}} i$ be the initial algebra for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ and let $f, g : i \to a$ be parallel arrows out of $i$. Suppose that the equaliser $ι : e \rightarrowtail i$ of $f$ and $g$ exists in $\mathsf{C}$. Suppose that $f \circ \texttt{cons} \circ T\ ι = g \circ \texttt{cons} \circ T\ ι$. Then, $f = g$.
+            </p>
+            <p>
+              Note that $a$ is not required to have an algebra structure $T\ a \to a$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/simple-inductive-rule-for-initial-algebras.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Let $T : X \mapsto 1 + X$ be the endofunctor $\mathbf{Set} \to \mathbf{Set}$ with initial algebra $\mathbb{N}$, and let $f, g : \mathbb{N} \to A$ be two parallel functions out of $\mathbb{N}$. Identify the requirements for proving that $f \circ \texttt{cons} \circ T\ ι = g \texttt{cons} \circ T\ ι$ in the previous lemma, and explain why this lemma is not of interest for initial algebras.
+            </p>
+            <p>
+              The dual result, which we will comment on in a coming section, <em>is</em> interesting.
+            </p>
+          </div>
+          <p>
+            We stress that induction is not the <em>only</em> way to prove results about initial algebras.
+          </p>
+          <p>
+            In the previous section, we gave a construction of inductive types which worked for every stated exercise. Unfortunately, this construction does not always work. Under the following circumstances, it does:
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Theorem. (Adámek's fixed point theorem)
+            </h3>
+            <p>
+              Let $T : \mathsf{C} \to \mathsf{C}$ be an endofunctor. Suppose that $\mathsf{C}$ contains an initial object $0$ and the colimit of the sequence
+              <span class="block-equation">
+                $$\begin{align*}
+                  0
+                  \xrightarrow{!} T\ 0
+                  \xrightarrow{T !} T^2\ 0
+                  \xrightarrow{T^2 !} T^3\ 0
+                  \xrightarrow{T^3 !} \cdots
+                \end{align*}$$
+              </span>
+              and suppose furthermore that $T$ preserves this colimit. Then, the composite isomorphism $T(\mathrm{colim}_{i \in \omega} T^i 0) \simeq \mathrm{colim}_{i \in \omega} T^{i + 1} 0 \simeq \mathrm{colim}_{i \in \omega} T^i 0$ gives $\mathrm{colim}_{i \in \omega} T^i 0$ an algebra structure for $T$. Furthermore, $T(\mathrm{colim}_{i \in \omega} T^i 0) \simeq \mathrm{colim}_{i \in \omega} T^i 0$ is an initial algebra.
+            </p>
+            <p>
+              The statement of this result was adapted from <a href=https://ncatlab.org/nlab/show/Ad%C3%A1mek%27s+fixed+point+theorem>this nLab article</a>.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/adamek-fixed-point-theorem.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <p>
+            One can think of this result as constructing the initial algebra by looking at how the various recursively constructed $T^i 0$ "sit inside" one another, and "closing the gaps $T^i 0 \to T^{i + 1} 0$ at infinity"<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-3>[3]</a></sup><span class=sidenote id=sidenote-3>
+            [3]
+            The same idea appears in the proof of Theorem 5.6.12 in <em>Category Theory in Context</em>.</span></span>. The assumption that $T$ preserves the constructed colimit can be thought of as a "finiteness" condition on $T$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Let $n$ be a (finite) natural number. Verify that the assumptions of the previous theorem are satisfied for $T : X \mapsto 1 + X^n$, and thereby construct the set of $n$-ary trees.
+            </p>
+            <p>
+              Now take $n := \aleph_0 \simeq \mathbb{N}$ to be infinite. Show that the construction in the previous theorem does not yield an initial algebra for $T : X \mapsto 1 + X^n$. (It may help to open a functional programming language and construct various terms of the type $\texttt{data}\ \texttt{Thing} = \texttt{Empty} \mathbin{\vert} \texttt{Sequence}\ (\texttt{Nat} \to \texttt{Thing})$.)
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              We have not concerned ourselves with <em>terminal</em> algebras for an endofunctor $T : \mathsf{C} \to \mathsf{C}$. Take any endofunctor $T$ on $\mathsf{C} := \mathbf{Set}$ and construct its terminal algebra. Why is it uninteresting? How can you generalise to an arbitrary category $\mathsf{C}$?
+            </p>
+          </div>
+        </section>
+        <section id="Terminal-Coalgebras-and-Coinductive-Types:-A-First-Example">
+          <h2>
+            Terminal Coalgebras and Coinductive Types: A First Example
+          </h2>
+          <p>
+            As with any abstract nonsense, our discussion thus far can be dualised, yielding coalgebras, corecursion and coinduction. In this section, we will construct the <em>conatural numbers</em>, dual to the natural numbers.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Coalgebra)
+            </h3>
+            <p>
+              Fix an endofunctor $T : \mathsf{C} \to \mathsf{C}$. A <strong>coalgebra</strong> for $T$ is an algebra in $\mathsf{C}^{\mathrm{op}}$ for $T : \mathsf{C}^{\mathrm{op}} \to \mathsf{C}^{\mathrm{op}}$. Explicitly, it consists of:
+            </p>
+            <ul>
+              <li>
+                An object $a \in \mathsf{C}$;
+              </li>
+              <li>
+                An arrow $\alpha : a \to T\ a$ in $\mathsf{C}$.
+              </li>
+            </ul>
+            <p>
+              A <strong>morphism</strong> from a coalgebra $a \xrightarrow{\alpha} T\ a$ to another coalgebra $b \xrightarrow{\beta} T\ b$ is a map $f : a \to b$ in $\mathsf{C}$ such that
+            </p>
+            <div class="block-static-diagram-container">
+              <iframe
+                height="302"
+                class="quiver-embed block-static-diagram"
+                src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJiIl0sWzIsMiwiVFxcIGIiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFxiZXRhIiwyXSxbMSwzLCJUXFwgZiJdXQ==&embed"
+                data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJiIl0sWzIsMiwiVFxcIGIiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFxiZXRhIiwyXSxbMSwzLCJUXFwgZiJdXQ==&embed"
+              ></iframe>
+            </div>
+            <p>
+              commutes. Equivalently, it is a morphism from the algebra $T\ b \xrightarrow{\beta} b$ in $\mathsf{C}^{\mathrm{op}}$ to the algebra $T\ a \xrightarrow{\alpha} a$ in $\mathsf{C}^{\mathrm{op}}$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Coalgebras form a category)
+            </h3>
+            <p>
+              Dualise the relevant lemma to show that coalgebras form a category. What are the identity morphisms and composites?
+            </p>
+          </div>
+          <p>
+            An algebra $A \xrightarrow{\alpha} T\ A$ for an endofunctor $T : \mathbf{Set} \to \mathbf{Set}$ can be thought of programmatically as follows. The set $A$ represents a data type of interest, and $T\ A$ represents a different type of "observations" that could be made about $A$. The map $\alpha : A \to T\ A$ specifies a way of observing $A$ in $T\ A$. By continually applying $\alpha$ to the occurances of $A$ which appear in $T\ A$, one could form a chain of observations
+            <span class="block-equation">
+              $$\begin{align*}
+                A
+                \xrightarrow{\alpha} T\ A
+                \xrightarrow{T\ \alpha} T^2\ A
+                \xrightarrow{T^2\ \alpha} T^3\ A
+                \xrightarrow{T^3\ \alpha} \cdots
+              \end{align*}$$
+            </span>
+            which could be interpreted as describing the "evolution" of a starting element of $A$ over time.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example.
+            </h3>
+            <p>
+              Specialise to $T : X \mapsto \{\text{no}\} + X$ (here $\text{no}$ is a special symbol, whose name will be useful later). Let $V$ be the vertex set of a maze, equipped with a special vertex $v_{\text{exit}}$ marking the exit of the maze. We can model a simple strategy for solving the maze as follows. Construct a function $\alpha : V \to T\ V$ by setting $\alpha\ v_{\text{exit}} := \text{no}$, and letting $\alpha\ v$ be any element of $V$ with an edge connecting $v$ to $\alpha\ v$, for $v ≠ v_{\text{exit}}$. A strategy of this kind has no memory. From a starting vertex $v_{0} \in V$, the trace
+              <span class="block-equation">
+                $$\begin{align*}
+                  v_{0}
+                  \in V
+                  \xrightarrow{\alpha} \{\text{no}\} + V
+                  \xrightarrow{T\ \alpha} \{\text{no}\} + (\{\text{no}\} + V)
+                  \xrightarrow{T^2\ \alpha} \{\text{no}\} + (\{\text{no}\} + (\{\text{no}\} + V))
+                  \xrightarrow{T^3\ \alpha} \cdots
+                \end{align*}$$
+              </span>
+              illustrates how this strategy evolves over time. If $\alpha$ finds $v_{\text{end}}$ from $v_{\text{start}}$ in exactly two moves, we would have
+              <span class="block-equation">
+                $$\begin{align*}
+                  v_{0}
+                  \mapsto \texttt{Right}\ v_1
+                  \mapsto \texttt{Right}\ (\texttt{Right}\ v_{\text{end}})
+                  \mapsto \texttt{Left}\ \text{no}
+                  \mapsto \texttt{Right}\ (\texttt{Left}\ \text{no})
+                  \mapsto \texttt{Right}\ (\texttt{Right}\ (\texttt{Left}\ \text{no}))
+                  \mapsto \cdots
+                \end{align*}$$
+              </span>
+              We can re-cast this as follows. The sequence $V \to \{\text{no}\} + V \to \cdots$ of sets is isomorphic to a sequence
+              <span class="block-equation">
+                $$\begin{align*}
+                  V
+                  \to \{0\} + V
+                  \to \{0, 1\} + V
+                  \to \{0, 1, 2\} + V
+                  \to \{0, 1, 2, 3\} + V
+                  \to \cdots
+                \end{align*}$$
+              </span>
+              The first arrow sends $v \in V$ to $\texttt{Left}\ 0$ if $v = v_{\text{end}}$, or to $\texttt{Right}\ (\alpha\ v)$ otherwise. The second arrow maps $\texttt{Left}\ 0$ to $\texttt{Left}\ 0$, it maps $\texttt{Right}\ v_{\text{end}}$ to $\texttt{Left}\ 1$, and it maps $\texttt{Right}\ v$ to $\texttt{Right}\ (\alpha\ v)$ for $v ≠ v_{\text{end}}$. The third arrow operates similarly, sending $\texttt{Left}\ i$ to $\texttt{Left}\ i$, sending $\texttt{Right}\ v_{\text{end}}$ to $\texttt{Left}\ 2$, and sending $\texttt{Right}\ v$ to $\texttt{Right}\ (\alpha\ v)$ for $v ≠ v_{\text{end}}$; etc. In this light, the evolution of our starting vertex $v_0$ would be
+              <span class="block-equation">
+                $$\begin{align*}
+                  v_0
+                  \mapsto \texttt{Right}\ v_1
+                  \mapsto \texttt{Right}\ v_{\text{end}}
+                  \mapsto \texttt{Left}\ 2
+                  \mapsto \texttt{Left}\ 2
+                  \mapsto \texttt{Left}\ 2
+                  \mapsto \cdots
+                \end{align*}$$
+              </span>
+              The "settled down" part of the sequence $\texttt{Left}\ 2 \mapsto \cdots$ identifies that $\alpha$ found the exit at index $2$ in the sequence. If $\alpha$ never finds the exit (i.e. if the strategy gets caught in a cycle of the maze), we instead see a trace
+              <span class="block-equation">
+                $$\begin{align*}
+                  v_0
+                  \mapsto \texttt{Right}\ v_1
+                  \mapsto \texttt{Right}\ v_2
+                  \mapsto \texttt{Right}\ v_3
+                  \mapsto \texttt{Right}\ v_4
+                  \mapsto \cdots
+                \end{align*}$$
+              </span>
+              There is no "settled down" or "terminated" part of this sequence.
+            </p>
+          </div>
+          <p>
+            Let's turn our attention to terminal coalgebras.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Terminal coalgebra)
+            </h3>
+            <p>
+              A <strong>terminal coalgebra</strong> for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ is a terminal object in the category of coalgebras for $T$. Explicitly, it consists of an object $j \in \mathsf{C}$ and an arrow $j \xrightarrow{\texttt{des}} T\ j$ with the following universal property: for any other object $a \in \mathsf{C}$ and map $a \xrightarrow{\alpha} T\ a$, there is a unique map $f : a \to j$ such that
+            </p>
+            <div class="block-static-diagram-container">
+              <iframe
+                height="302"
+                class="quiver-embed block-static-diagram"
+                src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJqIl0sWzIsMiwiVFxcIGoiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFx0ZXh0e2Rlc30iLDJdLFsxLDMsIlRcXCBmIl1d&embed"
+                data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJqIl0sWzIsMiwiVFxcIGoiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFx0ZXh0e2Rlc30iLDJdLFsxLDMsIlRcXCBmIl1d&embed"
+              ></iframe>
+            </div>
+          </div>
+          <p>
+            We saw that the initial algebra for $T : X \mapsto 1 + X$ is the natural numbers with their constructors $1 + \mathbb{N} \xrightarrow{(0, \texttt{Succ})} \mathbb{N}$. This algebra measures the depth of recursive computations of algebras $1 + A \to A$, and is "freely generated by recursion". One could guess that the dual <em>terminal coalgebra</em> for $T$ would measure the length of a continual evolution along a coalgebra $A \to \{\text{no}\} + A$. In fact, the dual construction to Adámek's fixed point theorem works for this terminal coalgebra.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example. (Constructing the conatural numbers)
+            </h3>
+            <p>
+              Dual to the natural numbers, the terminal coalgebra for $T : X \mapsto \{\text{no}\} + X$ is known as the set of <strong>conatural numbers</strong>. Let $?$ be a symbol not appearing in $\mathbb{N}$. The conatural numbers can be constructed as the limit of the sequence
+              <span class="block-equation">$$
+                   \begin{array}{lllllllllll}
+                                &
+                                &\cdots
+                                & \xrightarrow{T^3\ !}
+                                & T^3\ \{?\}
+                                & \xrightarrow{T^2\ !}
+                                & T^2\ \{?\}
+                                & \xrightarrow{T\ !}
+                                & T\ \{?\}
+                                & \xrightarrow{!}
+                                & \{?\}
+                                \\
+                                =
+                                &
+                                &\cdots
+                                & \longrightarrow
+                                & \{\text{no}\} + (\{\text{no}\} + (\{\text{no}\} + \{?\}))
+                                & \longrightarrow
+                                & \{\text{no}\} + (\{\text{no}\} + \{?\})
+                                & \longrightarrow
+                                & \{\text{no}\} + \{?\}
+                                & \longrightarrow
+                                & \{?\}
+                                \\
+                                \simeq
+                                &
+                                &\cdots
+                                & \longrightarrow
+                                & \{2\} + (\{1\} + (\{0\} + \{?\}))
+                                & \longrightarrow
+                                & \{1\} + (\{0\} + \{?\})
+                                & \longrightarrow
+                                & \{0\} + \{?\}
+                                & \longrightarrow
+                                & \{?\}
+                                \\
+                                \simeq
+                                &
+                                &\cdots
+                                & \longrightarrow
+                                & \{2, 1, 0\} + \{?\}
+                                & \longrightarrow
+                                & \{1, 0\} + \{?\}
+                                & \longrightarrow
+                                & \{0\} + \{?\}
+                                & \longrightarrow
+                                & \{?\}
+                              \end{array}
+                            
+                $$
+              </span>In the bottom sequence, the final arrow is the unique map $\{0\} + \{?\} \to \{?\}$, which sends $\texttt{Left}\ 0 \mapsto {?}$ and $\texttt{Right}\ ? \mapsto {?}$. The second-last arrow is the map which sends $\texttt{Left}\ 1 \mapsto \texttt{Left}\ 0$ and maps the other two values to $\texttt{Right}\ ?$. The third-last arrow maps $\texttt{Left}\ 2 \mapsto \texttt{Left}\ 1$, maps $\texttt{Left}\ 1 \mapsto \texttt{Left}\ 0$, and maps the other two values to $\texttt{Right}\ ?$.
+            </p>
+            <p>
+              The limit of the bottom sequence is the set
+              <span class="block-equation">$$
+                   \lim_{i \in \omega^{\mathrm{op}}} T^i \{?\}
+                              \simeq \left\{
+                                \left(
+                                \dots,
+                                x_2,
+                                x_1,
+                                x_0
+                                \right)
+                                \;\middle\vert\;
+                                \text{each } x_i \in \{i - 1, \dots, 0\} + \{?\}
+                                \text{ and each } x_{i + 1} \mapsto x_i \text{ in the sequence}
+                              \right\}
+                            
+                $$
+              </span>and the limit cone consists of the projection maps onto each $x_i \in \{i - 1, \dots, 0\} + \{?\}$. For example, the limit contains the following elements:
+              <span class="block-equation">
+                $$\begin{align*}
+                  (\dots, 3, 2, 1, 0, ?)
+                  && (\dots, 2, 1, 0, ?, ?)
+                  && (\dots, 1, 0, ?, ?, ?)
+                  && (\dots, 0, ?, ?, ?, ?)
+                \end{align*}$$
+              </span>
+              We can think of these elements as starting on the right with a "play token" $`?\text{'}$, and moving left. Whenever we have a $`?\text{'}$ token, we can choose to swap it out for a $0$ (and thereafter begin counting up), or to retain the $`?\text{'}$ token. There is also a special element
+              <span class="block-equation">
+                $$\begin{align*}
+                  (\dots, ?, ?, ?, ?, ?)
+                \end{align*}$$
+              </span>
+              given by always choosing to retain the token. This suggests a bijection
+              <span class="block-equation">
+                $$\begin{align*}
+                  (\dots, 3, 2, 1, 0, ?) &\leftrightarrow 0 ,
+                  & (\dots, 2, 1, 0, ?, ?) &\leftrightarrow 1,
+                  & (\dots, 1, 0, ?, ?, ?) &\leftrightarrow 2,
+                  & \cdots & ,
+                  & (\dots, ?, ?, ?, ?, ?) &\leftrightarrow \infty
+                \end{align*}$$
+              </span>
+              which assigns to an element of the limit to the index, counted from the right, of its last $`?\text{'}$ token. This bijection identifies the limit
+              <span class="block-equation">
+                $$\begin{align*}
+                  \lim_{i \in \omega^{\mathrm{op}}} T^i \{?\}
+                  \simeq \mathrm{co}\mathbb{N}
+                  := \mathbb{N} + \{\infty\}
+                \end{align*}$$
+              </span>
+              with the set of <em>conatural numbers</em>.
+            </p>
+            <p>
+              The dual to Adámek's fixed point theorem asserts that this construction forms the terminal coalgebra of $T$ so long as $T$ preserves this limit. Indeed, the function
+              <span class="block-equation">
+                $$\begin{align*}
+                  \mathrm{pred}
+                  : \mathrm{co}\mathbb{N}
+                  &\longrightarrow
+                  \{\text{no}\} + \mathrm{co}\mathbb{N}
+                   \\
+                  0
+                  &\longmapsto
+                  \text{no}
+                   \\
+                  n + 1
+                  &\longmapsto
+                  n
+                   \\
+                  \infty
+                  &\longmapsto
+                  \infty
+                \end{align*}$$
+              </span>
+              which maps a conatural number to its predecessor is an isomorphism. Some careful checking, left as an exercise to the reader, that this map commutes with the relevant limit cones indeed verifies that $T$ preserves the limit. Therefore $\mathrm{co}\mathbb{N} \xrightarrow{\mathrm{pred}} \{\text{no}\} + \mathrm{co}\mathbb{N}$ is the coalgebra of $T : X \mapsto \{\text{no}\} + X$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Verify that $\mathrm{pred}$ commutes with the relevant limit cones, so that $T : X \mapsto \{\text{no}\} + X$ preserves the limit $\lim_{i \in \omega^{\mathrm{op}}} T^i \{?\}$ constructed above. Alternatively, verify directly that $\mathrm{co}\mathbb{N} \xrightarrow{\mathrm{pred}} \{\text{no}\} + \mathrm{co}\mathbb{N}$ satisfies the universal property of the terminal coalgebra.
+            </p>
+          </div>
+          <p>
+            FIXME: The rest of the owl! Simple corecursion!
+          </p>
+        </section>
+        <section id="See-also">
+          <h2>
+            See also
+          </h2>
+          <p>
+            <h3 class="see-also">
+              See also:
+            </h3>
+            <ul class="see-also">
+              <li>
+                <a href="">
+                  FIXME: Fill out the list of links! Go dig up all of the results you've catalogued.
+                </a>
+              </li>
+            </ul>
+          </p>
+        </section>
+        <section id="Bibliography">
+          <h2>
+            Bibliography
+          </h2>
+          <p>
+            <ol class="bibliography">
+              <li>
+                nLab authors (including Max S. New, and Urs Schreiber).<em> Adámek's fixed point theorem.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/Ad%C3%A1mek%27s+fixed+point+theorem>https://ncatlab.org/nlab/show/Ad%C3%A1mek%27s+fixed+point+theorem</a>.
+              </li>
+              <li>
+                nLab authors (including Urs Schreiber, Bruno Gavranović, Fabian, varkor, Todd Trimble, Toby Bartels, David Corfield, and Mike Schulman).<em> terminal coalgebra for an endofunctor.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/terminal+coalgebra+for+an+endofunctor>https://ncatlab.org/nlab/show/terminal+coalgebra+for+an+endofunctor</a>.
+              </li>
+              <li>
+                nLab authors (including Urs Schreiber, Toby Bartels, and David Corfield).<em> coinduction.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/corecursion>https://ncatlab.org/nlab/show/corecursion</a>.
+              </li>
+              <li>
+                nLab authors (including Urs Schreiber, Victor Sannier, Stephan Alexander Spahn, David Corfield, Toby Bartels, and Zoran Škoda).<em> bisimulation.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/bisimulation>https://ncatlab.org/nlab/show/bisimulation</a>.
+              </li>
+              <li>
+                nLab authors (including Victor Sannier, dusko, Todd Trimble, Tim Porter, Andrew Stacey, David Roberts, Urs Schreiber, Zoran Škoda, Toby Bartels, and David Corfield).<em> coinduction.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/coinduction>https://ncatlab.org/nlab/show/coinduction</a>.
+              </li>
+              <li>
+                nLab authors (including p, David Corfield, anqurvanillapy, Dexter Chua, Colin Zwanziger, Tim Porter, Toby Bartels, dsk, Mike Shulman, Todd Trimble, and Urs Schreiber).<em> inductive type.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/inductive+type>https://ncatlab.org/nlab/show/inductive+type</a>.
+              </li>
+            </ol>
+          </p>
+        </section>
+      </article>
+      <div id="sidenotes-bar">
+        <div class="bar-title">
+          <span>
+            Sidenotes
+          </span>
+          <button id="sidenotes-bar-hide">hide <span class=keyboard-shortcut-hint>(s)</span>
+
+          </button>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <a href="../index.html">
+        <div class="logo">
+          <img
+            src="../asset/logo/logo-270.png"
+            alt="Logo"
+          >
+        </div>
+      </a>
+    </footer>
+  </body>
+</html>

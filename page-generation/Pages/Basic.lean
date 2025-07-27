@@ -13,6 +13,7 @@ import Pages.Categories
 import Pages.GeneralisedElements
 -- import Pages.Limits
 -- import Pages.Products
+import Pages.Coinduction
 
 /- IMPORTS: Proof-family pages -/
 
@@ -38,6 +39,7 @@ def pagesToRender : List (Page × System.FilePath) :=
   , .mk GeneralisedElements.it "discussion/generalised-elements.html"
   -- , .mk Limits.it "discussion/limits.html"
   -- , .mk Products.it "discussion/product.html"
+  , .mk Coinduction.it "discussion/coinduction.html"
     -- Proof-family
   , .mk FullyFaithfulFunctorsReflectIsomorphisms.it "proof/fully-faithful-functors-reflect-isomorphisms.html"
   , .mk FunctorsPreserveCommutativeDiagrams.it "proof/functors-preserve-commutative-diagrams.html"

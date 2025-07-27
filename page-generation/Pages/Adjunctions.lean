@@ -112,7 +112,7 @@ namespace Adjunctions
                   { href := "../proof/right-adjoints-preserve-limits.html" : OutLink }
               }
           ]
-      ]
+        ]
     , seeAlso :=
         { readNext :=
             some ("./multivariate-adjunctions.html", "Multivariate Adjunctions")

@@ -6,6 +6,14 @@
     - [ ] Add relevant proofs for the elements in the glossary
 
 # Missing functionality:
+  - [ ] `inset` should really ensure that the translations dictionary is sorted in a prefix-respecting order.
+    - [ ] Write a substring searching algorithm to construct the poset described below
+      - [ ] We want to do many substring tests on many pairs of patterns and texts, so it'll be beneficial to use one of the pre-processing algorithms
+            with great benefits for preprocessed text. Suffix array? KMP? Maybe because everything's likely so short, it just doesn't matter and the
+            naive algo will be the fastest.
+    - [ ] Obliterate `Inset.AuthorPages`'s `compareTranslationKeys`, and replace it with a sorting algorithm that does a DFS through the list of
+          keys of the translation dictionary (regarded as a poset with `x <= y` iff `x` is a substring of `y` or `y` starts with the
+          `escapeSequence` but `x` doesn't).
   - [ ] `inset` should manage a known list of URLs in some namespace.
     - [ ] Looking up an Empty Limit URL should be something like `URL.Glossary.yonedaLemma`.
     - [ ] Looking up an external URL (should happen less often) should be something like `URL.Out.wikipedia`.

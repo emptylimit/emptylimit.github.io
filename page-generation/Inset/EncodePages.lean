@@ -342,10 +342,10 @@ structure Page : Type where
 def Page.unescape (page : Page) : Page :=
   let TextElement.unescape (te : TextElement) : TextElement :=
         match te with
-        | .s s            => .s («authoring defs».unescape s)
-        | .a href content => .a href («authoring defs».unescape content)
-        | .al al          => .al (al.map «authoring defs».unescape)
-        | .eqn e          => .eqn («authoring defs».unescape e)
+        | .s s            => .s («authoring defs».unescape s page.preamble)
+        | .a href content => .a href («authoring defs».unescape content page.preamble)
+        | .al al          => .al (al.map («authoring defs».unescape · page.preamble))
+        | .eqn e          => .eqn («authoring defs».unescape e page.preamble)
   let Sidenote.unescape (sn : Sidenote) : Sidenote :=
         sn.map TextElement.unescape
   let TextContent.unescape (tc : TextContent) : TextContent :=
@@ -378,12 +378,12 @@ def Page.unescape (page : Page) : Page :=
         | .block b =>
           .block
             { b
-            with  title := b.title.map «authoring defs».unescape
+            with  title := b.title.map («authoring defs».unescape · page.preamble)
             ,     body  := b.body.map BodyElement.unescape
             }
   let Section.unescape (s : Section) : Section :=
         { s with
-          title := «authoring defs».unescape s.title
+          title := «authoring defs».unescape s.title page.preamble
           list := s.elements.map Element.unescape
         }
   { page with sections := page.sections.map Section.unescape }
