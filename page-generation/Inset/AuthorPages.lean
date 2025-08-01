@@ -138,6 +138,7 @@ namespace «authoring defs»
     ,   ("≃", "\\simeq")
     ,   ("⊆", "\\subseteq")
     ,   ("→", "\\to")
+    ,   ("↠", "\\twoheadrightarrow")
         -- Stand-ins
     ,   ("⋯", "\\cdots")
         -- Symbols

@@ -112,6 +112,11 @@
                 </a>
               </li>
               <li>
+                <a href="#Terminal-Coalgebras-and-Coinduction:-The-Results">
+                  Terminal Coalgebras and Coinduction: The Results
+                </a>
+              </li>
+              <li>
                 <a href="#See-also">
                   See also
                 </a>
@@ -411,7 +416,7 @@
             </p>
           </div>
           <p>
-            The natural numbers $\mathbb{N}$ famously come with an <em>induction principle</em>: to establish that a subset $A \subseteq \mathbb{N}$ is in fact all of $\mathbb{N}$, one proves that $0 \in A$ and $A$ is closed under $\text{Succ}$. In our framework, this is to say that the constructors $(0, \text{Succ})$ form an algebra on $A$. Taking an even more categorical focus, it is to say that we have an algebra structure $1 + A \xrightarrow{\alpha} A$ which is a sub-object of $\mathbb{N}$ (in the category of algebras); i.e. we have an injection $ι : A \to \mathbb{N}$ such that
+            The natural numbers $\mathbb{N}$ famously come with an <em>induction principle</em>: to establish that a subset $A \subseteq \mathbb{N}$ is in fact all of $\mathbb{N}$, one proves that $0 \in A$ and $A$ is closed under $\text{Succ}$. In our framework, this is to say that the constructors $(0, \text{Succ})$ form an algebra on $A$. Taking a more categorical focus, it is to say that we have an algebra structure $1 + A \xrightarrow{\alpha} A$ which is a sub-object of $\mathbb{N}$ (in the category of algebras); i.e. we have an injection $ι : A \hookrightarrow \mathbb{N}$ such that
           </p>
           <div class="block-static-diagram-container">
             <iframe
@@ -496,7 +501,7 @@
               Lemma. (Simple inductive rule for proving that maps out of initial algebras are equal)
             </h3>
             <p>
-              Let $T\ i \xrightarrow{\texttt{cons}} i$ be the initial algebra for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ and let $f, g : i \to a$ be parallel arrows out of $i$. Suppose that the equaliser $ι : e \rightarrowtail i$ of $f$ and $g$ exists in $\mathsf{C}$. Suppose that $f \circ \texttt{cons} \circ T\ ι = g \circ \texttt{cons} \circ T\ ι$. Then, $f = g$.
+              Let $T\ i \xrightarrow{\texttt{cons}} i$ be the initial algebra for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ and let $f, g : i \to a$ be parallel arrows out of $i$. Suppose that the equaliser $ι : e \rightarrowtail i$ of $f$ and $g$ exists in $\mathsf{C}$. Then, if $f \circ \texttt{cons} \circ T\ ι = g \circ \texttt{cons} \circ T\ ι$, we must have $f = g$.
             </p>
             <p>
               Note that $a$ is not required to have an algebra structure $T\ a \to a$.
@@ -525,7 +530,7 @@
               Exercise.
             </h3>
             <p>
-              Let $T : X \mapsto 1 + X$ be the endofunctor $\mathbf{Set} \to \mathbf{Set}$ with initial algebra $\mathbb{N}$, and let $f, g : \mathbb{N} \to A$ be two parallel functions out of $\mathbb{N}$. Identify the requirements for proving that $f \circ \texttt{cons} \circ T\ ι = g \texttt{cons} \circ T\ ι$ in the previous lemma, and explain why this lemma is not of interest for initial algebras.
+              Let $T : X \mapsto 1 + X$ be the endofunctor $\mathbf{Set} \to \mathbf{Set}$ with initial algebra $\mathbb{N}$, and let $f, g : \mathbb{N} \to A$ be two parallel functions out of $\mathbb{N}$. Identify the requirements for proving that $f \circ \texttt{cons} \circ T\ ι = g \circ \texttt{cons} \circ T\ ι$ in the previous lemma, and explain why this lemma is not of interest for initial algebras.
             </p>
             <p>
               The dual result, which we will comment on in a coming section, <em>is</em> interesting.
@@ -909,7 +914,7 @@
               ></iframe>
             </div>
             <p>
-              i.e.
+              commutes; i.e.
               <span class="block-equation">
                 $$\begin{align*}
                   \mathrm{pred}\ (f\ a)
@@ -1097,7 +1102,7 @@
               Exercise.
             </h3>
             <p>
-              Let $A \xrightarrow{\alpha} \{\text{no}\} + A$ be a coalgebra, and consider the map $\texttt{corec}\ \alpha : A \to \mathrm{co}\mathbb{N}$. Convince yourself that $\texttt{corec}\ \alpha\ a$ is the index in the sequence $a \xmapsto{\alpha} \cdots$ at which $\alpha$ "fails", returning $\text{no}$ rather than an element of $A$.
+              Let $A \xrightarrow{\alpha} \{\text{no}\} + A$ be a coalgebra, and consider the map $\texttt{corec}\ \alpha : A \to \mathrm{co}\mathbb{N}$. Convince yourself that for all $a \in A$, the value $\texttt{corec}\ \alpha\ a$ is the index in the sequence $a \xmapsto{\alpha} \cdots$ at which $\alpha$ "fails", returning $\text{no}$ rather than an element of $A$.
             </p>
           </div>
         </section>
@@ -1106,7 +1111,554 @@
             Terminal Coalgebras and Coinductive Types: Further Examples
           </h2>
           <p>
-            
+            The natural numbers measure the lengths of (finite) lists, where $1 + A \times \texttt{List}\ A \xrightarrow{([],\, (:))} \texttt{List}\ A$ is the initial algebra for $X \mapsto 1 + A \times X$ (for a fixed set $A$). In fact, $\mathbb{N} \simeq \texttt{List}\ 1$. We now generalise this, defining <strong>colists</strong> and investigating their relationship with the conatural numbers.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Colists)
+            </h3>
+            <p>
+              Fix a set $A$. The terminal coalgebra $\texttt{coList}\ A \xrightarrow{\mathrm{pop}} \{\text{no}\} + A \times (\texttt{coList}\ A)$ for $X \mapsto 1 + A \times X$ consists of the set $\texttt{coList}\ A$ of <strong>colists over $A$</strong>, together with the <strong>destructor</strong> $\mathrm{pop}$.
+            </p>
+            <p>
+              We can construct $\texttt{coList}\ A$ analogously to how we constructed $\mathrm{co}\mathbb{N}$. Tracing through the details, we find that<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-4>[4]</a></sup><span class=sidenote id=sidenote-4>
+              [4]
+              We could have used round parentheses rather than square brackets here, but I've chosen to stick closer the Haskell list notation.</span></span>
+              <span class="block-equation">
+                $$\begin{align*}
+                   \texttt{coList}\ A
+                   := \left\{
+                     [], [a_0], [a_0, a_1], \dots
+                     \;\middle\vert\;
+                     a_0, a_1, \dots \in A
+                   \right\}
+                   \cup \left\{
+                     [a_0, a_1, \dots]
+                     \;\middle\vert\;
+                     a_0, a_1, \dots \in A
+                   \right\}
+                \end{align*}$$
+              </span>
+              Thus, the set of colists over $A$ consists not only of the finite-length lists, but also the infinite <strong>streams</strong> $[a_0, a_1, \dots]$ over $A$.
+            </p>
+            <p>
+              The destructor $\mathrm{pop}$ acts by removing an element from the head of a colist, if possible. Explicitly,
+              <span class="block-equation">
+                $$\begin{align*}
+                  & \mathrm{pop}\ []
+                  := \text{no}
+                   \\
+                  & \mathrm{pop}\ [a_0]
+                  := (a_0, [])
+                   \\
+                  & \mathrm{pop}\ [a_0, a_1]
+                  := (a_0, [a_1])
+                   \\
+                  & \mathrm{pop}\ [a_0, a_1, a_2]
+                  := (a_0, [a_1, a_2])
+                   \\
+                  & \cdots
+                   \\
+                  & \mathrm{pop}\ [a_0, a_1, a_2, \dots]
+                  := (a_0, [a_1, a_2, a_3, \dots])
+                \end{align*}$$
+              </span>
+              which has an evident Haskell implementation.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Constructing $\texttt{coList}\ A$.
+            </h3>
+            <p>
+              We can play a similar game to construct $\texttt{coList}\ A$ as to our construction of $\mathrm{co}\mathbb{N}$. Elements of the limit of the sequence
+              <span class="block-equation">
+                $$\begin{align*}
+                  \{?\}
+                  \longleftarrow \{\text{no}\} + A \times \{?\}
+                  \longleftarrow \{\text{no}\} + A \times (\{\text{no}\} + A \times \{?\})
+                  \longleftarrow \{\text{no}\} + A \times (\{\text{no}\} + A \times (\{\text{no}\} + A \times \{?\}))
+                  \longleftarrow \cdots
+                \end{align*}$$
+              </span>
+              can be thought of as sequences constructed as follows. The first element of the sequence is an initial "play token" $`?\text{'} \in \{?\}$. To get the next element of the sequence, spend the token and replace it with an element of $\{\text{no}\} + A \times \{?\}$; that is, yield either the value $\text{no}$, or a pair of an element $(a_0, {?}) \in A \times \{?\}$. If you no longer have a $`?\text{'}$ token (because you got the element $\text{no}$), then you have completed your sequence. If you still have a $`?\text{'}$ token (because you got a pair $(a_0, {?})$), then record the pair $a_0$ in your sequence, and play again. Here are some example elements of the limit constructed in this way (with $A := \left\{ \text{\textcolor{red}{red}}, \text{\textcolor{blue}{blue}} \right\}$):
+              <span class="block-equation">
+                $$\begin{align*}
+                   &\left(
+                     {?},
+                     \text{no}
+                   \right)
+                   \\
+                   &\left(
+                     {?},
+                     (\text{\textcolor{blue}{blue}}, {?}), 
+                     \text{no}
+                   \right)
+                   \\
+                   &\left(
+                     {?},
+                     (\text{\textcolor{red}{red}}, {?}), 
+                     (\text{\textcolor{blue}{blue}}, {?}), 
+                     \text{no}
+                   \right)
+                   \\
+                   &\left(
+                     {?},
+                     (\text{\textcolor{red}{red}}, {?}), 
+                     (\text{\textcolor{blue}{blue}}, {?}), 
+                     (\text{\textcolor{red}{red}}, {?}), 
+                     (\text{\textcolor{blue}{blue}}, {?}), 
+                     \dots
+                   \right)
+                \end{align*}$$
+              </span>
+              Hiding the $`?\text{'}$ tokens and the $\text{no}$'s, and swapping to square brackets, we get exactly the elements of $\texttt{coList}\ \left\{ \text{\textcolor{red}{red}}, \text{\textcolor{blue}{blue}} \right\}$ as described before:
+              <span class="block-equation">
+                $$\begin{align*}
+                  & []
+                   \\
+                  & [ \text{\textcolor{blue}{blue}} ]
+                   \\
+                  & [ \text{\textcolor{red}{red}}, \text{\textcolor{blue}{blue}} ]
+                   \\
+                  & [ \text{\textcolor{red}{red}}, \text{\textcolor{blue}{blue}}, \text{\textcolor{red}{red}}, \text{\textcolor{blue}{blue}}, \dots ]
+                \end{align*}$$
+              </span>
+              
+            </p>
+            <p>
+              To summarise, an element of $\texttt{coList}\ A$ is a "continually evolving trace". One starts with a $`?\text{'}$ token and spends it to get an "observed value" in $\{\text{no}\} + A \times \{?\}$; any observed $?$ token must then be spent again, potentially ad infinitum, generating a sequence of observations. This interpretation generalises to construct elements of many terminal coalgebras.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              The set $\texttt{BinTree}$ of binary trees (with nodes storing no meaningful data) is the initial algebra of $T : \mathbf{Set} \to \mathbf{Set}$ given by $T : X \mapsto \{\text{no}\} + X^2$. Use the previous construction to describe the set $\texttt{coBinTree}$ of "co-binary trees". What does the destructor $\texttt{coBinTree} \to \{\text{no}\} + \texttt{coBinTree}^2$ do?
+            </p>
+            <p>
+              If you're curious, do the same exercise with $T : X \mapsto \{\text{no}\} + A \times X^2$, for a fixed set $A$.
+            </p>
+          </div>
+          <p>
+            As a terminal coalgebra, $\texttt{coList}\ A$ also has a corecursion principle.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Corecursion principle for $\texttt{coList}$.
+            </h3>
+            <p>
+              Fix sets $A$ and $X$. To define a function $X \to \texttt{coList}\ A$, it suffices to define a map $\alpha : X \to \{\text{no}\} + A \times X$. The defined map $\texttt{corec}\ \alpha$ the unique function $X \to \texttt{coList}\ A$ such that
+            </p>
+            <div class="block-static-diagram-container">
+              <iframe
+                height="302"
+                class="quiver-embed block-static-diagram"
+                src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzIsMCwiXFx7XFx0ZXh0e25vfVxcfSArIEEgXFx0aW1lcyBYIl0sWzAsMiwiXFx0ZXh0dHR7Y29MaXN0fVxcIEEiXSxbMiwyLCJcXHtcXHRleHR7bm99XFx9ICsgQSBcXHRpbWVzIChcXHRleHR0dHtjb0xpc3R9XFwgQSkiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiXFx0ZXh0dHR7Y29yZWN9XFwgXFxhbHBoYSIsMl0sWzIsMywiXFxtYXRocm17cG9wfSIsMl0sWzEsMywiMV97XFx7XFx0ZXh0e25vfVxcfX0gKyAxX0EgXFx0aW1lcyAoXFx0ZXh0dHR7Y29yZWN9XFwgXFxhbHBoYSkiXV0=&embed"
+                data-src="https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzIsMCwiXFx7XFx0ZXh0e25vfVxcfSArIEEgXFx0aW1lcyBYIl0sWzAsMiwiXFx0ZXh0dHR7Y29MaXN0fVxcIEEiXSxbMiwyLCJcXHtcXHRleHR7bm99XFx9ICsgQSBcXHRpbWVzIChcXHRleHR0dHtjb0xpc3R9XFwgQSkiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiXFx0ZXh0dHR7Y29yZWN9XFwgXFxhbHBoYSIsMl0sWzIsMywiXFxtYXRocm17cG9wfSIsMl0sWzEsMywiMV97XFx7XFx0ZXh0e25vfVxcfX0gKyAxX0EgXFx0aW1lcyAoXFx0ZXh0dHR7Y29yZWN9XFwgXFxhbHBoYSkiXV0=&embed"
+              ></iframe>
+            </div>
+            <p>
+              commutes; i.e.
+              <span class="block-equation">
+                $$\begin{align*}
+                  & \mathrm{pop}\ (f\ x)
+                  = \texttt{case}\ \alpha\ x\ \texttt{of}
+                   \\
+                  &\quad\quad\quad\quad\quad\quad
+                   \texttt{Left}\ \text{no} \to \texttt{Left}\ \text{no}
+                   \\
+                  &\quad\quad\quad\quad\quad\quad
+                   \texttt{Right}\ (a, x') \to \texttt{Right}\ (a, f\ x')
+                \end{align*}$$
+              </span>
+              for all $x \in X$.
+            </p>
+            <p>
+              The functions defined by this universal property assemble into a higher-order function $\texttt{corec} : (X \to \{\text{no}\} + A \times X) \to X \to \texttt{coList}\ A$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Example. (Corecursive definitions of certain colists)
+            </h3>
+            <p>
+              The empty colist $[] \in \texttt{coList}\ A$ is the unique colist with $\mathrm{pop}\ [] = \text{no}$. It can be defined by $[] := \texttt{corec}\ (\lambda\ \texttt{\textunderscore} \to \text{no})\ 0$; the lambda function has type $1 \to \{\text{no}\} + A \times 1$.
+            </p>
+            <p>
+              The only other choices of functions of type $1 \to \{\text{no}\} + A \times 1$ are the $\alpha_a := \lambda\ \texttt{\textunderscore} \to (a, 0)$, for each $a \in A$. The colists $\texttt{repeat}\ a := \texttt{corec}\ \alpha_a\ 0$ satisfy $\mathrm{pop}\ (\texttt{repeat}\ a) = (a, \texttt{repeat}\ a)$, which indicates that $\texttt{repeat}\ a = [a, a, \dots]$.
+            </p>
+            <p>
+              The list constructors $1 + A \times (\texttt{List}\ A) \xrightarrow{(0, \texttt{Succ})} \texttt{List}\ A$ are an isomorphism, with inverse $\mathrm{pop} : \texttt{List}\ A \to \{\text{no}\} + A \times (\texttt{List}\ A)$ giving a coalgebra. This defines a function $ι := \texttt{corec}\ \mathrm{pop} : \texttt{List}\ A \to \texttt{coList}\ A$ which recognises each list as a colist.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Check that $ι$ defined in the previous example is an injection $\texttt{List}\ A \hookrightarrow \texttt{coList}\ A$.
+            </p>
+          </div>
+          <p>
+            There are a number of familiar functions involving colists and conatural numbers which we can define corecursively. We will show how to reason about these corecursive definitions in the next section.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example.
+            </h3>
+            <ul>
+              <li>
+                The function $\texttt{length} : \texttt{coList}\ A \to \mathrm{co}\mathbb{N}$ is defined using corecursion into $\mathrm{co}\mathbb{N}$ by
+                <span class="block-equation">
+                  $$\begin{align*}
+                    &\texttt{length}
+                     := \texttt{corec}\ (\lambda\ \mathrm{xs} \to
+                     \\
+                    &\quad\quad\quad\quad\quad\quad
+                       \texttt{case}\ \mathrm{pop}\ \mathrm{xs}\ \texttt{of}\
+                     \\
+                    &\quad\quad\quad\quad\quad\quad\quad\quad
+                         \texttt{Left}\ \text{no} \to \texttt{Left}\ \text{no}
+                     \\
+                    &\quad\quad\quad\quad\quad\quad\quad\quad
+                         \texttt{Right}\ (x, \mathrm{ys}) \to \texttt{Right}\ \mathrm{ys}
+                     )
+                  \end{align*}$$
+                </span>
+                
+              </li>
+              <li>
+                The function $\texttt{map} : (A \to B) \to \texttt{coList}\ A \to \texttt{coList}\ B$ is defined using corecursion into $\texttt{coList}\ B$ by
+                <span class="block-equation">
+                  $$\begin{align*}
+                    &\texttt{map}\ f
+                     := \texttt{corec}\ (\lambda\ \mathrm{as} \to
+                     \\
+                    &\quad\quad\quad\quad\quad\quad
+                       \texttt{case}\ \mathrm{pop}\ \mathrm{as}\ \texttt{of}\
+                     \\
+                    &\quad\quad\quad\quad\quad\quad\quad\quad
+                         \texttt{Left}\ \text{no} \to \texttt{Left}\ \text{no}
+                     \\
+                    &\quad\quad\quad\quad\quad\quad\quad\quad
+                         \texttt{Right}\ (a, \mathrm{as}') \to \texttt{Right}\ (f\ a, \mathrm{as}')
+                     )
+                  \end{align*}$$
+                </span>
+                
+              </li>
+              <li>
+                The function $\texttt{zip} : \texttt{coList}\ A \to \texttt{coList}\ B \to \texttt{coList}\ (A \times B)$ can be defined by instead defining the curried function $\texttt{zip}' : (\texttt{coList}\ A) \times (\texttt{coList}\ B) \to \texttt{coList}\ (A \times B)$ as follows:
+                <span class="block-equation">
+                  $$\begin{align*}
+                    &\texttt{zip}'
+                     := \texttt{corec}\ (\lambda\ (\mathrm{as}, \mathrm{bs}) \to
+                     \\
+                    &\quad\quad\quad\quad\quad\quad
+                       \texttt{case}\ \mathrm{pop}\ \mathrm{as}, \mathrm{pop}\ \mathrm{bs}\ \texttt{of}
+                     \\
+                    &\quad\quad\quad\quad\quad\quad\quad\quad
+                         \texttt{Right}\ (a, \mathrm{as}'),\ \texttt{Right}\ (b, \mathrm{bs}') \to
+                           ((a, b), (\mathrm{as}', \mathrm{bs}'))
+                     \\
+                    &\quad\quad\quad\quad\quad\quad\quad\quad
+                         \texttt{\textunderscore}, \texttt{\textunderscore} \to \texttt{Left}\ \text{no}
+                    )
+                  \end{align*}$$
+                </span>
+                
+              </li>
+            </ul>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Convince yourself that each of the definitions given above agrees with the computation that would be performed in Haskell (i.e. check that the definitions are sensible). For example, you could check that $\texttt{length}\ [3, 3, \dots] = \infty$, and check that $\texttt{zip}\ [1, 2, 3]\ [9, 10, 11, \dots] = [(1, 9), (2, 10), (3, 11)]$ (though please do be more thorough than this).
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Using corecursion, define an isomorphism $i : \mathrm{co}\mathbb{N} \simeq \texttt{coList}\ 1$, and define its inverse function $i^{-1} : \texttt{coList}\ 1 \simeq \mathrm{co}\mathbb{N}$. Using the universal property of terminal coalgebras, verify that $i^{-1} \circ i = \mathrm{id}$ and $i \circ i^{-1} = \mathrm{id}$.
+            </p>
+          </div>
+          <p>
+            An interesting terminal coalgebra with no interesting analogous initial algebra is the set of <strong>streams</strong>.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition.
+            </h3>
+            <p>
+              Fix a set $A$. The terminal coalgebra $\texttt{Stream}\ A \xrightarrow{\mathrm{pop}} A \times (\texttt{Stream}\ A)$ for $X \mapsto A \times X$ consists of the set $\texttt{Stream}\ A$ of <strong>streams over $A$</strong>, together with the <strong>destructor</strong> $\mathrm{pop}$.
+            </p>
+            <p>
+              The streams are precisely the colists of infinite length. That is,
+              <span class="block-equation">
+                $$\begin{align*}
+                   \texttt{Stream}\ A
+                   = \left\{
+                     [a_0, a_1, \dots]
+                     \;\middle\vert\;
+                     a_0, a_1, \dots \in A
+                   \right\}
+                \end{align*}$$
+              </span>
+              
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Using corecursion, define a function $\texttt{Stream}\ A \to \texttt{coList}\ A$ which regards a stream as a colist of infinite length. Check that this function is an injection.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              What is the initial algebra for $X \mapsto A \times X$?
+            </p>
+          </div>
+          <p>
+            Whilst an element of $\texttt{Stream}\ A$ may be encoded by a mathematical function $\mathbb{N} \to A$, this is not a useful computational interpretation of this type. Rather, one should think of streams as "observed behaviours evolving over time"; only finitely much of the whole stream can ever be known at once.
+          </p>
+        </section>
+        <section id="Terminal-Coalgebras-and-Coinduction:-The-Results">
+          <h2>
+            Terminal Coalgebras and Coinduction: The Results
+          </h2>
+          <p>
+            The results we have developed for initial algebras dualise. Here are a few such results.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Remark. (Terminal coalgebras are uniquely determined)
+            </h3>
+            <p>
+              Up to isomorphism of coalgebras, each endofunctor has at most one terminal coalgebra.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Destructors are isomorphisms)
+            </h3>
+            <p>
+              Let $j \xrightarrow{\texttt{des}} T\ j$ be the terminal coalgebra for an endofunctor $T : \mathsf{C} \to \mathsf{C}$. Then, $\texttt{des} : j \simeq T\ j$ is an isomorphism in $\mathsf{C}$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/constructors-are-isomorphisms.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <div class="block-section-element">
+            <h3>
+              Theorem. (Adámek's fixed point theorem, dual)
+            </h3>
+            <p>
+              Let $T : \mathsf{C} \to \mathsf{C}$ be an endofunctor. Suppose that $\mathsf{C}$ contains a terminal object $1$ and the limit of the sequence
+              <span class="block-equation">
+                $$\begin{align*}
+                  1
+                  \xleftarrow{!} T\ 1
+                  \xleftarrow{T !} T^2\ 1
+                  \xleftarrow{T^2 !} T^3\ 1
+                  \xleftarrow{T^3 !} \cdots
+                \end{align*}$$
+              </span>
+              and suppose furthermore that $T$ preserves this limit. Then, the composite isomorphism $\lim_{i \in \omega^{\mathrm{op}}} T^i 1 \simeq \lim_{i \in \omega^{\mathrm{op}}} T^{i + 1} 1 \simeq T(\lim_{i \in \omega^{\mathrm{op}}} T^i 1)$ gives $\lim_{i \in \omega^{\mathrm{op}}} T^i 1$ a coalgebra structure for $T$. Furthermore, $\lim_{i \in \omega^{\mathrm{op}}} T^i 1 \simeq T(\lim_{i \in \omega^{\mathrm{op}}} T^i 1)$ is a terminal coalgebra.
+            </p>
+            <p>
+              The statement of this result was adapted from <a href=https://ncatlab.org/nlab/show/Ad%C3%A1mek%27s+fixed+point+theorem>this nLab article</a>.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/adamek-fixed-point-theorem.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <div class="block-section-element">
+            <h3>
+              Remark. (Initial algebras map into terminal coalgebras)
+            </h3>
+            <p>
+              Let $T : \mathsf{C} \to \mathsf{C}$ be an endofunctor with initial algebra $T\ i \xrightarrow{\texttt{cons}} i$ and terminal coalgebra $j \xrightarrow{\texttt{des}} T\ j$. Because $\texttt{cons}$ is an isomorphism, we have a coalgebra $i \xrightarrow{\texttt{cons}^{-1}} T\ i$. The universal property of the terminal coalgebra (i.e. corecursion) asserts the existence of a unique map $u := \texttt{corec}\ \texttt{cons}^{-1}$ such that $\texttt{des} \circ u = T\ u \circ \texttt{cons}^{-1}$. Equivalently, $T\ u = \texttt{des} \circ u \circ \texttt{cons}$. This map has thus far shown us how to include $\mathbb{N} ↪ \mathrm{co}\mathbb{N}$ and $\texttt{List}\ A ↪ \texttt{coList}\ A$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Terminal objects have no proper quotient objects)
+            </h3>
+            <p>
+              Let $j$ be the terminal object in a category $\mathsf{C}$, and let $\pi : j \twoheadrightarrow a$ be an epimorphism out of $j$. Then, $\pi$ is an isomorphism in $\mathsf{C}$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/initial-objects-have-no-proper-subobjects.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <p>
+            The (dual of the) latter lemma, when specialised to initial algebras, described the corresponding structural induction schemas for inductive types. The specialisation to coinductive types should therefore be called <strong>coinduction</strong>. We will do a full specialisation to $\mathsf{C} := \mathbf{Set}$ soon, but first we will explore a simple (and useful!) special case.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Simple coinductive rule for proving that maps into terminal coalgebras are equal)
+            </h3>
+            <p>
+              Let $j \xrightarrow{\texttt{des}} T\ j$ be the terminal coalgebra for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ and let $f, g : a \to j$ be parallel arrows into $j$. Suppose that the coequaliser $\pi : j \twoheadrightarrow e$ of $f$ and $g$ exists in $\mathsf{C}$. Then, if $T\ \pi \circ \texttt{des} \circ f = T\ \pi \circ \texttt{des} \circ g$, we must have $f = g$.
+            </p>
+            <div class="block-static-diagram-container">
+              <iframe
+                height="302"
+                class="quiver-embed block-static-diagram"
+                src="https://q.uiver.app/#q=WzAsNSxbMCwxLCJqIl0sWzAsMCwiYSJdLFswLDIsImUiXSxbMiwyLCJUXFwgZSJdLFsyLDEsIlRcXCBqIl0sWzEsMCwiZiIsMix7Im9mZnNldCI6MX1dLFsxLDAsImciLDAseyJvZmZzZXQiOi0xfV0sWzAsMiwiXFxwaSIsMix7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFswLDQsIlxcbWF0aHJte2Rlc30iXSxbNCwzLCJUXFwgXFxwaSJdLFsyLDMsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==&embed"
+                data-src="https://q.uiver.app/#q=WzAsNSxbMCwxLCJqIl0sWzAsMCwiYSJdLFswLDIsImUiXSxbMiwyLCJUXFwgZSJdLFsyLDEsIlRcXCBqIl0sWzEsMCwiZiIsMix7Im9mZnNldCI6MX1dLFsxLDAsImciLDAseyJvZmZzZXQiOi0xfV0sWzAsMiwiXFxwaSIsMix7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFswLDQsIlxcbWF0aHJte2Rlc30iXSxbNCwzLCJUXFwgXFxwaSJdLFsyLDMsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==&embed"
+              ></iframe>
+            </div>
+            <p>
+              Note that $a$ is not required to have a coalgebra structure $a \to T\ a$. Note also that this lemma works in an arbitrary category $\mathsf{C}$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/simple-inductive-rule-for-initial-algebras.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <div class="block-section-element">
+            <h3>
+              Example. (Simple coinductive rule for $\mathrm{co}\mathbb{N}$)
+            </h3>
+            <p>
+              Let $f, g : A \to \mathrm{co}\mathbb{N}$, and denote the coequaliser of $f$ and $g$ by $[-] : \mathrm{co}\mathbb{N} \twoheadrightarrow (\mathrm{co}\mathbb{N} / f = g)$. The assumption $T [-] \circ \texttt{des} \circ f = T [-] \circ \texttt{des} \circ g$ in the previous lemma can be unpacked as follows:
+            </p>
+            <ul>
+              <li>
+                Equivalently, show that for any $x \in \mathrm{co}\mathbb{N}$, we have $((1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ f) (x) = ((1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ g) (x)$.
+              </li>
+              <li>
+                Equivalently, show that for any $x \in \mathrm{co}\mathbb{N}$, both of the following hold: $\mathrm{pred}\ (f\ x) = \text{no}$ iff $\mathrm{pred}\ (g\ x) = \text{no}$; if instead $\mathrm{pred}\ (f\ x) =: y \neq \text{no}$ and $\mathrm{pred}\ (g\ x) =: z \neq \text{no}$, then $[y] = [z]$.
+              </li>
+              <li>
+                Equivalently, show that for any $x \in \mathrm{co}\mathbb{N}$, both of the following hold: $\mathrm{pred}\ (f\ x) = \text{no}$ iff $\mathrm{pred}\ (g\ x) = \text{no}$; if instead $\mathrm{pred}\ (f\ x) =: y \neq \text{no}$ and $\mathrm{pred}\ (g\ x) =: z \neq \text{no}$, then $y$ is related to $z$ under the equivalence relation defining the quotient $(\mathrm{co}\mathbb{N} / f = g)$.
+              </li>
+            </ul>
+            <p>
+              The final part of the last bullet point above is interesting. The equivalence relation $\sim$ defining the quotient $(\mathrm{co}\mathbb{N} / f = g)$ is freely generated by the relationships $f\ a \sim g\ a$ for $a \in A$. Hence, showing that $y \sim z$ can effectively be done by working in a context where one <em>assumes</em> that $f\ a = g\ a$ for all $a \in A$ (thereby implicitly working in the quotient $(\mathrm{co}\mathbb{N} / f = g)$) and demonstrating that in this context, we must have $y = z$<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-5>[5]</a></sup><span class=sidenote id=sidenote-5>
+              [5]
+              This is not a very precise statement. The precise version is to genuinely work in the quotient; draw the commutative diagram displayed above to help you remember the details you're working with!</span></span>. In analogy to induction (where inputs to constructors come from an equaliser), one could call this a <strong>coinductive hypothesis</strong>.
+            </p>
+            <p>
+              We will give example applications of this proof method in an upcoming section on example coinductive proofs.
+            </p>
+          </div>
+          <p>
+            We now specialise the "terminal objects have no proper quotient objects" lemma to terminal coalgebras of endofunctors $\mathbf{Set} \to \mathbf{Set}$. Since quotients of sets are characterised by equivalence relations, the statement gives a rule for judging when an equivalence relation on a terminal coalgebra is the equality relation, and hence provides a way to prove that two elements of a terminal coalgebra are equal.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Lemma. (Coinduction in $\mathbf{Set}$)
+            </h3>
+            <p>
+              Let $J \xrightarrow{\texttt{des}} T\ J$ be the terminal coalgebra for an endofunctor $T : \mathbf{Set} \to \mathbf{Set}$. Let $\sim$ be an equivalence relation on $J$ and denote by $[-] : J \to J / {\sim}$ the projection onto its quotient. Suppose that for all $x, y \in J$ with $x \sim y$, we have $(T [-] \circ \texttt{des}) (x) = (T [-] \circ \texttt{des}) (y)$. Then, $\sim$ is the equality relation on $J$; i.e. for all $x, y \in J$, $x \sim y \implies x = y$.
+            </p>
+          </div>
+          <svg
+            class="outlink"
+            viewBox="0 0 102 22"
+          >
+            <a href="../proof/coinduction-in-set.html">
+              <path
+                class="outlink-arrow"
+                d="M 1 1 L 91 1 L 101 11 L 91 21 L 1 21 L 11 11 Z"
+              ></path>
+              <text
+                class="outlink-text"
+                x="51"
+                y="11"
+              >
+                see proof
+              </text>
+            </a>
+          </svg>
+          <div class="block-section-element">
+            <h3>
+              Example. (Bisimulation of streams)
+            </h3>
+            <p>
+              Fix a set $A$, and let $\sim$ be an equivalence relation on $\texttt{Stream}\ A$ satisfying the assumptions of the previous lemma (with $T : X \mapsto A \times X$). Fix arbitrary $\mathrm{as}, \mathrm{bs} \in \texttt{Stream}\ A$, and write $\mathrm{pop}\ \mathrm{as} = (a, \mathrm{as}')$ and $\mathrm{pop}\ \mathrm{bs} = (b, \mathrm{bs}')$. The assumption on $\sim$ is that if $\mathrm{as} \sim \mathrm{bs}$, then $(a, [\mathrm{as}']) = (b, [\mathrm{bs}'])$; i.e. $a = b$ and $\mathrm{as}' \sim \mathrm{bs}'$. Such a relation $\sim$ is called a <strong>bisimulation</strong> on $\texttt{Stream}\ A$, and the lemma guarantees that the only bisimulation is the equality relation. Thus, to prove that two streams are equal, it suffices to construct a bisimulation which identifies them.
+            </p>
+            <p>
+              Bisimulations identify streams exhibiting the "same behaviour" &mdash; two streams have the same behaviour just when their heads are the same and their tails have the same behaviour. The lemma can be read as the statement that <em>streams with the same behaviour are equal</em>.
+            </p>
+            <p>
+              We will give an example application of this proof method in an upcoming section on example coinductive proofs.
+            </p>
+          </div>
+          <p>
+            We stress that coinduction is not the only proof method for terminal coalgebras. In particular, non-equality predicates are difficult to prove in this way. Much like how many statements about natural numbers have direct, non-inductive proofs, some statements about conatural numbers also have direct, non-coinductive proofs.
           </p>
         </section>
         <section id="See-also">

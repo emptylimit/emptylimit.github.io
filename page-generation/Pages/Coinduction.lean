@@ -16,6 +16,8 @@ private def hrefs.subobjectOfNat := "https://q.uiver.app/#q=WzAsNCxbMCwwLCIxICsg
 private def hrefs.coalgebraMorphism := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJiIl0sWzIsMiwiVFxcIGIiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFxiZXRhIiwyXSxbMSwzLCJUXFwgZiJdXQ=="
 private def hrefs.terminalCoalgebraUniversalProperty := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJhIl0sWzIsMCwiVFxcIGEiXSxbMCwyLCJqIl0sWzIsMiwiVFxcIGoiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiZiIsMl0sWzIsMywiXFx0ZXh0e2Rlc30iLDJdLFsxLDMsIlRcXCBmIl1d"
 private def hrefs.conatCorecursion := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJBIl0sWzIsMCwiXFx7XFx0ZXh0e25vfVxcfSArIEEiXSxbMCwyLCJcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFsyLDIsIlxce1xcdGV4dHtub31cXH0gKyBcXG1hdGhybXtjb31cXG1hdGhiYntOfSJdLFswLDEsIlxcYWxwaGEiXSxbMCwyLCJmIiwyXSxbMiwzLCJcXG1hdGhybXtwcmVkfSIsMl0sWzEsMywiMV97XFx7XFx0ZXh0e25vfVxcfX0gKyBmIl1d"
+private def hrefs.colistCorecursion := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJYIl0sWzIsMCwiXFx7XFx0ZXh0e25vfVxcfSArIEEgXFx0aW1lcyBYIl0sWzAsMiwiXFx0ZXh0dHR7Y29MaXN0fVxcIEEiXSxbMiwyLCJcXHtcXHRleHR7bm99XFx9ICsgQSBcXHRpbWVzIChcXHRleHR0dHtjb0xpc3R9XFwgQSkiXSxbMCwxLCJcXGFscGhhIl0sWzAsMiwiXFx0ZXh0dHR7Y29yZWN9XFwgXFxhbHBoYSIsMl0sWzIsMywiXFxtYXRocm17cG9wfSIsMl0sWzEsMywiMV97XFx7XFx0ZXh0e25vfVxcfX0gKyAxX0EgXFx0aW1lcyAoXFx0ZXh0dHR7Y29yZWN9XFwgXFxhbHBoYSkiXV0="
+private def hrefs.simpleCoinduction := "https://q.uiver.app/#q=WzAsNSxbMCwxLCJqIl0sWzAsMCwiYSJdLFswLDIsImUiXSxbMiwyLCJUXFwgZSJdLFsyLDEsIlRcXCBqIl0sWzEsMCwiZiIsMix7Im9mZnNldCI6MX1dLFsxLDAsImciLDAseyJvZmZzZXQiOi0xfV0sWzAsMiwiXFxwaSIsMix7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFswLDQsIlxcbWF0aHJte2Rlc30iXSxbNCwzLCJUXFwgXFxwaSJdLFsyLDMsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ=="
 -- NOTE: `$$ ⋯ $$` contents
 
 
@@ -209,7 +211,7 @@ namespace Coinduction
                     ]
                 }
             , .body
-                [ .ps "The natural numbers $ℕ$ famously come with an <em>induction principle</em>: to establish that a subset $A ⊆ ℕ$ is in fact all of $ℕ$, one proves that $0 ∈ A$ and $A$ is closed under $|text{Succ}$. In our framework, this is to say that the constructors $(0, |text{Succ})$ form an algebra on $A$. Taking an even more categorical focus, it is to say that we have an algebra structure $1 + A |→{α} A$ which is a sub-object of $ℕ$ (in the category of algebras); i.e. we have an injection $ι : A → ℕ$ such that"
+                [ .ps "The natural numbers $ℕ$ famously come with an <em>induction principle</em>: to establish that a subset $A ⊆ ℕ$ is in fact all of $ℕ$, one proves that $0 ∈ A$ and $A$ is closed under $|text{Succ}$. In our framework, this is to say that the constructors $(0, |text{Succ})$ form an algebra on $A$. Taking a more categorical focus, it is to say that we have an algebra structure $1 + A |→{α} A$ which is a sub-object of $ℕ$ (in the category of algebras); i.e. we have an injection $ι : A |hookrightarrow ℕ$ such that"
                 , .cda
                     { href := hrefs.subobjectOfNat, height := some 302 }
                 , .ps "commutes. In this language, the induction principle states that <em>$ℕ$ has no proper subalgebras</em>. This generalises:"
@@ -256,14 +258,14 @@ namespace Coinduction
                 , outLink? :=
                     some { href := "../proof/simple-inductive-rule-for-initial-algebras.html" }
                 , body :=
-                    [ .ps "Let $T| i |→{|cons} i$ be the initial algebra for an endofunctor $T : |C → |C$ and let $f, g : i → a$ be parallel arrows out of $i$. Suppose that the equaliser $ι : e ↣ i$ of $f$ and $g$ exists in $|C$. Suppose that $f ∘ |cons ∘ T| ι = g ∘ |cons ∘ T| ι$. Then, $f = g$."
+                    [ .ps "Let $T| i |→{|cons} i$ be the initial algebra for an endofunctor $T : |C → |C$ and let $f, g : i → a$ be parallel arrows out of $i$. Suppose that the equaliser $ι : e ↣ i$ of $f$ and $g$ exists in $|C$. Then, if $f ∘ |cons ∘ T| ι = g ∘ |cons ∘ T| ι$, we must have $f = g$."
                     , .ps "Note that $a$ is not required to have an algebra structure $T| a → a$."
                     ]
                 }
             , .block
                 { kind := .exr
                 , body :=
-                    [ .ps "Let $T : X ↦ 1 + X$ be the endofunctor $|Set → |Set$ with initial algebra $ℕ$, and let $f, g : ℕ → A$ be two parallel functions out of $ℕ$. Identify the requirements for proving that $f ∘ |cons ∘ T| ι = g |cons ∘ T| ι$ in the previous lemma, and explain why this lemma is not of interest for initial algebras."
+                    [ .ps "Let $T : X ↦ 1 + X$ be the endofunctor $|Set → |Set$ with initial algebra $ℕ$, and let $f, g : ℕ → A$ be two parallel functions out of $ℕ$. Identify the requirements for proving that $f ∘ |cons ∘ T| ι = g ∘ |cons ∘ T| ι$ in the previous lemma, and explain why this lemma is not of interest for initial algebras."
                     , .ps "The dual result, which we will comment on in a coming section, <em>is</em> interesting."
                     ]
                 }
@@ -573,7 +575,7 @@ namespace Coinduction
                     , .cda
                         { href := hrefs.conatCorecursion, height := some 302 }
                     , .p
-                        [ .s "i.e."
+                        [ .s "commutes; i.e."
                         , .al
                             [ "|pred| (f| a)"
                             , "&= |tt{case}| α| a| |tt{of}"
@@ -745,19 +747,401 @@ namespace Coinduction
             , .block
                 { kind := .exr
                 , body :=
-                    [ .ps "Let $A |→{α} |No + A$ be a coalgebra, and consider the map $|corec| α : A → |coℕ$. Convince yourself that $|corec| α| a$ is the index in the sequence $a |xmapsto{α} ⋯$ at which $α$ \"fails\", returning $|no$ rather than an element of $A$."
+                    [ .ps "Let $A |→{α} |No + A$ be a coalgebra, and consider the map $|corec| α : A → |coℕ$. Convince yourself that for all $a ∈ A$, the value $|corec| α| a$ is the index in the sequence $a |xmapsto{α} ⋯$ at which $α$ \"fails\", returning $|no$ rather than an element of $A$."
                     ]
                 }
             ]
         , .mk
             "Terminal Coalgebras and Coinductive Types: Further Examples"
             [ .body
-                [ .ps ""
+                [ .ps "The natural numbers measure the lengths of (finite) lists, where $1 + A × |List| A |→{([],|, (:))} |List| A$ is the initial algebra for $X ↦ 1 + A × X$ (for a fixed set $A$). In fact, $ℕ ≃ |List| 1$. We now generalise this, defining <strong>colists</strong> and investigating their relationship with the conatural numbers."
                 ]
-            -- TODO: Finish this section!
+            , .block
+                { kind := .dfn
+                , title := "Colists"
+                , body :=
+                    [ .ps "Fix a set $A$. The terminal coalgebra $|coList| A |→{|pop} |No + A × (|coList| A)$ for $X ↦ 1 + A × X$ consists of the set $|coList| A$ of <strong>colists over $A$</strong>, together with the <strong>destructor</strong> $|pop$."
+                    , .p
+                        [ .s "We can construct $|coList| A$ analogously to how we constructed $|coℕ$. Tracing through the details, we find that"
+                        , .sn
+                            [ .s "We could have used round parentheses rather than square brackets here, but I've chosen to stick closer the Haskell list notation."
+                            ]
+                        , .al
+                            [ " |coList| A"
+                            , " := |left|{"
+                            , "   [], [a_0], [a_0, a_1], |dots"
+                            , "   |given"
+                            , "   a_0, a_1, |dots ∈ A"
+                            , " |right|}"
+                            , " ∪ |left|{"
+                            , "   [a_0, a_1, |dots]"
+                            , "   |given"
+                            , "   a_0, a_1, |dots ∈ A"
+                            , " |right|}"
+                            ]
+                        , .s "Thus, the set of colists over $A$ consists not only of the finite-length lists, but also the infinite <strong>streams</strong> $[a_0, a_1, |dots]$ over $A$."
+                        ]
+                    , .p
+                        [ .s "The destructor $|pop$ acts by removing an element from the head of a colist, if possible. Explicitly,"
+                        , .al
+                            [ "& |pop| []"
+                            , ":= |no"
+                            , .alignBreak
+                            , "& |pop| [a_0]"
+                            , ":= (a_0, [])"
+                            , .alignBreak
+                            , "& |pop| [a_0, a_1]"
+                            , ":= (a_0, [a_1])"
+                            , .alignBreak
+                            , "& |pop| [a_0, a_1, a_2]"
+                            , ":= (a_0, [a_1, a_2])"
+                            , .alignBreak
+                            , "& ⋯"
+                            , .alignBreak
+                            , "& |pop| [a_0, a_1, a_2, |dots]"
+                            , ":= (a_0, [a_1, a_2, a_3, |dots])"
+                            ]
+                        , .s "which has an evident Haskell implementation."
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .other "Constructing $|coList| A$"
+                , body :=
+                    [ .p
+                        [ .s "We can play a similar game to construct $|coList| A$ as to our construction of $|coℕ$. Elements of the limit of the sequence"
+                        , .al
+                            [ "|?"
+                            , "|longleftarrow |No + A × |?"
+                            , "|longleftarrow |No + A × (|No + A × |?)"
+                            , "|longleftarrow |No + A × (|No + A × (|No + A × |?))"
+                            , "|longleftarrow ⋯"
+                            ]
+                        , .s "can be thought of as sequences constructed as follows. The first element of the sequence is an initial \"play token\" $`?|text{'} ∈ |?$. To get the next element of the sequence, spend the token and replace it with an element of $|No + A × |?$; that is, yield either the value $|no$, or a pair of an element $(a_0, {?}) ∈ A × |?$. If you no longer have a $`?|text{'}$ token (because you got the element $|no$), then you have completed your sequence. If you still have a $`?|text{'}$ token (because you got a pair $(a_0, {?})$), then record the pair $a_0$ in your sequence, and play again. Here are some example elements of the limit constructed in this way (with $A := |left|{ |text{|textcolor{red}{red}}, |text{|textcolor{blue}{blue}} |right|}$):"
+                        , .al
+                            [ " &|left("
+                            , "   {?},"
+                            , "   |no"
+                            , " |right)"
+                            , .alignBreak
+                            , " &|left("
+                            , "   {?},"
+                            , "   (|text{|textcolor{blue}{blue}}, {?}), "
+                            , "   |no"
+                            , " |right)"
+                            , .alignBreak
+                            , " &|left("
+                            , "   {?},"
+                            , "   (|text{|textcolor{red}{red}}, {?}), "
+                            , "   (|text{|textcolor{blue}{blue}}, {?}), "
+                            , "   |no"
+                            , " |right)"
+                            , .alignBreak
+                            , " &|left("
+                            , "   {?},"
+                            , "   (|text{|textcolor{red}{red}}, {?}), "
+                            , "   (|text{|textcolor{blue}{blue}}, {?}), "
+                            , "   (|text{|textcolor{red}{red}}, {?}), "
+                            , "   (|text{|textcolor{blue}{blue}}, {?}), "
+                            , "   |dots"
+                            , " |right)"
+                            ]
+                        , .s "Hiding the $`?|text{'}$ tokens and the $|no$'s, and swapping to square brackets, we get exactly the elements of $|coList| |left|{ |text{|textcolor{red}{red}}, |text{|textcolor{blue}{blue}} |right|}$ as described before:"
+                        , .al
+                            [ "& []"
+                            , .alignBreak
+                            , "& [ |text{|textcolor{blue}{blue}} ]"
+                            , .alignBreak
+                            , "& [ |text{|textcolor{red}{red}}, |text{|textcolor{blue}{blue}} ]"
+                            , .alignBreak
+                            , "& [ |text{|textcolor{red}{red}}, |text{|textcolor{blue}{blue}}, |text{|textcolor{red}{red}}, |text{|textcolor{blue}{blue}}, |dots ]"
+                            ]
+                        ]
+                    , .ps "To summarise, an element of $|coList| A$ is a \"continually evolving trace\". One starts with a $`?|text{'}$ token and spends it to get an \"observed value\" in $|No + A × |?$; any observed $?$ token must then be spent again, potentially ad infinitum, generating a sequence of observations. This interpretation generalises to construct elements of many terminal coalgebras."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "The set $|tt{BinTree}$ of binary trees (with nodes storing no meaningful data) is the initial algebra of $T : |Set → |Set$ given by $T : X ↦ |No + X^2$. Use the previous construction to describe the set $|tt{coBinTree}$ of \"co-binary trees\". What does the destructor $|tt{coBinTree} → |No + |tt{coBinTree}^2$ do?"
+                    , .ps "If you're curious, do the same exercise with $T : X ↦ |No + A × X^2$, for a fixed set $A$."
+                    ]
+                }
+            , .body
+                [ .ps "As a terminal coalgebra, $|coList| A$ also has a corecursion principle."
+                ]
+            , .block
+                { kind := .other "Corecursion principle for $|coList$"
+                , body :=
+                    [ .ps "Fix sets $A$ and $X$. To define a function $X → |coList| A$, it suffices to define a map $α : X → |No + A × X$. The defined map $|corec| α$ the unique function $X → |coList| A$ such that"
+                    , .cda
+                        { href := hrefs.colistCorecursion, height := some 302 }
+                    , .p
+                        [ .s "commutes; i.e."
+                        , .al
+                            [ "& |pop| (f| x)"
+                            , "= |case| α| x| |of"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad|quad"
+                            , " |Left| |no → |Left| |no"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad|quad"
+                            , " |Right| (a, x') → |Right| (a, f| x')"
+                            ]
+                        , .s "for all $x ∈ X$."
+                        ]
+                    , .ps "The functions defined by this universal property assemble into a higher-order function $|corec : (X → |No + A × X) → X → |coList| A$."
+                    ]
+                }
+            , .block
+                { kind := .exa
+                , title := "Corecursive definitions of certain colists"
+                , body :=
+                    [ .ps "The empty colist $[] ∈ |coList| A$ is the unique colist with $|pop| [] = |no$. It can be defined by $[] := |corec| (λ| |tt{|textunderscore} → |no)| 0$; the lambda function has type $1 → |No + A × 1$."
+                    , .ps "The only other choices of functions of type $1 → |No + A × 1$ are the $α_a := λ| |tt{|textunderscore} → (a, 0)$, for each $a ∈ A$. The colists $|repeat| a := |corec| α_a| 0$ satisfy $|pop| (|repeat| a) = (a, |repeat| a)$, which indicates that $|repeat| a = [a, a, |dots]$."
+                    , .ps "The list constructors $1 + A × (|List| A) |→{(0, |Succ)} |List| A$ are an isomorphism, with inverse $|pop : |List| A → |No + A × (|List| A)$ giving a coalgebra. This defines a function $ι := |corec| |pop : |List| A → |coList| A$ which recognises each list as a colist."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Check that $ι$ defined in the previous example is an injection $|List| A |hookrightarrow |coList| A$."
+                    ]
+                }
+            , .body
+                [ .ps "There are a number of familiar functions involving colists and conatural numbers which we can define corecursively. We will show how to reason about these corecursive definitions in the next section."
+                ]
+            , .block
+                { kind := .exa
+                , body :=
+                    [ .ul
+                        [ [ .s "The function $|tt{length} : |coList| A → |coℕ$ is defined using corecursion into $|coℕ$ by"
+                          , .al
+                              [ "&|tt{length}"
+                              , " := |corec| (λ| |rm{xs} →"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad"
+                              , "   |case| |pop| |rm{xs}| |of|"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                              , "     |Left| |no → |Left| |no"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                              , "     |Right| (x, |rm{ys}) → |Right| |rm{ys}"
+                              , " )"
+                              ]
+                          ]
+                        , [ .s "The function $|tt{map} : (A → B) → |coList| A → |coList| B$ is defined using corecursion into $|coList| B$ by"
+                          , .al
+                              [ "&|tt{map}| f"
+                              , " := |corec| (λ| |rm{as} →"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad"
+                              , "   |case| |pop| |rm{as}| |of|"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                              , "     |Left| |no → |Left| |no"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                              , "     |Right| (a, |rm{as}') → |Right| (f| a, |rm{as}')"
+                              , " )"
+                              ]
+                          ]
+                        , [ .s "The function $|tt{zip} : |coList| A → |coList| B → |coList| (A × B)$ can be defined by instead defining the curried function $|tt{zip}' : (|coList| A) × (|coList| B) → |coList| (A × B)$ as follows:"
+                          , .al
+                              [ "&|tt{zip}'"
+                              , " := |corec| (λ| (|rm{as}, |rm{bs}) →"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad"
+                              , "   |case| |pop| |rm{as}, |pop| |rm{bs}| |of"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                              , "     |Right| (a, |rm{as}'),| |Right| (b, |rm{bs}') →"
+                              , "       ((a, b), (|rm{as}', |rm{bs}'))"
+                              , .alignBreak
+                              , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                              , "     |tt{|textunderscore}, |tt{|textunderscore} → |Left| |no"
+                              , ")"
+                              ]
+                          ]
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Convince yourself that each of the definitions given above agrees with the computation that would be performed in Haskell (i.e. check that the definitions are sensible). For example, you could check that $|tt{length}| [3, 3, |dots] = ∞$, and check that $|tt{zip}| [1, 2, 3]| [9, 10, 11, |dots] = [(1, 9), (2, 10), (3, 11)]$ (though please do be more thorough than this)."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Using corecursion, define an isomorphism $i : |coℕ ≃ |coList| 1$, and define its inverse function $i^{-1} : |coList| 1 ≃ |coℕ$. Using the universal property of terminal coalgebras, verify that $i^{-1} ∘ i = |rm{id}$ and $i ∘ i^{-1} = |rm{id}$."
+                    ]
+                }
+            , .body
+                [ .ps "An interesting terminal coalgebra with no interesting analogous initial algebra is the set of <strong>streams</strong>."
+                ]
+            , .block
+                { kind := .dfn
+                , body :=
+                    [ .ps "Fix a set $A$. The terminal coalgebra $|Stream| A |→{|pop} A × (|Stream| A)$ for $X ↦ A × X$ consists of the set $|Stream| A$ of <strong>streams over $A$</strong>, together with the <strong>destructor</strong> $|pop$."
+                    , .p
+                        [ .s "The streams are precisely the colists of infinite length. That is,"
+                        , .al
+                            [ " |Stream| A"
+                            , " = |left|{"
+                            , "   [a_0, a_1, |dots]"
+                            , "   |given"
+                            , "   a_0, a_1, |dots ∈ A"
+                            , " |right|}"
+                            ]
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Using corecursion, define a function $|Stream| A → |coList| A$ which regards a stream as a colist of infinite length. Check that this function is an injection."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "What is the initial algebra for $X ↦ A × X$?"
+                    ]
+                }
+            , .body
+                [ .ps "Whilst an element of $|Stream| A$ may be encoded by a mathematical function $ℕ → A$, this is not a useful computational interpretation of this type. Rather, one should think of streams as \"observed behaviours evolving over time\"; only finitely much of the whole stream can ever be known at once."
+                ]
             ]
-        -- TODO: Section `"Terminal Coalgebras and Coinduction: The Results"`
-        -- TODO: Section `"Terminal Coalgebras and Coinduction: Example Proofs"`
+        , .mk
+            "Terminal Coalgebras and Coinduction: The Results"
+            [ .body
+                [ .ps "The results we have developed for initial algebras dualise. Here are a few such results."
+                ]
+            , .block
+                { kind := .rmk
+                , title := "Terminal coalgebras are uniquely determined"
+                , body :=
+                    [ .ps "Up to isomorphism of coalgebras, each endofunctor has at most one terminal coalgebra."
+                    ]
+                }
+            , .block
+                { kind := .lem
+                , title := "Destructors are isomorphisms"
+                , outLink? :=
+                    some { href := "../proof/constructors-are-isomorphisms.html" }
+                , body :=
+                    [ .ps "Let $j |→{|des} T| j$ be the terminal coalgebra for an endofunctor $T : |C → |C$. Then, $|des : j ≃ T| j$ is an isomorphism in $|C$."
+                    ]
+                }
+            , .block
+                { kind := .thm
+                , title := "Adámek's fixed point theorem, dual"
+                , outLink? :=
+                    some { href := "../proof/adamek-fixed-point-theorem.html" }
+                , body :=
+                    [ .p
+                        [ .s "Let $T : |C → |C$ be an endofunctor. Suppose that $|C$ contains a terminal object $1$ and the limit of the sequence"
+                        , .al
+                            [ "1"
+                            , "|xleftarrow{!} T| 1"
+                            , "|xleftarrow{T !} T^2| 1"
+                            , "|xleftarrow{T^2 !} T^3| 1"
+                            , "|xleftarrow{T^3 !} ⋯"
+                            ]
+                        , .s "and suppose furthermore that $T$ preserves this limit. Then, the composite isomorphism $|lim_{i ∈ ω^{|op}} T^i 1 ≃ |lim_{i ∈ ω^{|op}} T^{i + 1} 1 ≃ T(|lim_{i ∈ ω^{|op}} T^i 1)$ gives $|lim_{i ∈ ω^{|op}} T^i 1$ a coalgebra structure for $T$. Furthermore, $|lim_{i ∈ ω^{|op}} T^i 1 ≃ T(|lim_{i ∈ ω^{|op}} T^i 1)$ is a terminal coalgebra."
+                        ]
+                    , .p
+                        [ .s "The statement of this result was adapted from "
+                        , .a "https://ncatlab.org/nlab/show/Ad%C3%A1mek%27s+fixed+point+theorem" "this nLab article"
+                        , .s "."
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .rmk
+                , title := "Initial algebras map into terminal coalgebras"
+                , body :=
+                    [ .ps "Let $T : |C → |C$ be an endofunctor with initial algebra $T| i |→{|cons} i$ and terminal coalgebra $j |→{|des} T| j$. Because $|cons$ is an isomorphism, we have a coalgebra $i |→{|cons^{-1}} T| i$. The universal property of the terminal coalgebra (i.e. corecursion) asserts the existence of a unique map $u := |corec| |cons^{-1}$ such that $|des ∘ u = T| u ∘ |cons^{-1}$. Equivalently, $T| u = |des ∘ u ∘ |cons$. This map has thus far shown us how to include $ℕ ↪ |coℕ$ and $|List| A ↪ |coList| A$."
+                    ]
+                }
+            , .block
+                { kind := .lem
+                , title := "Terminal objects have no proper quotient objects"
+                , outLink? :=
+                    some { href := "../proof/initial-objects-have-no-proper-subobjects.html" }
+                , body :=
+                    [ .ps "Let $j$ be the terminal object in a category $|C$, and let $π : j ↠ a$ be an epimorphism out of $j$. Then, $π$ is an isomorphism in $|C$."
+                    ]
+                }
+            , .body
+                [ .ps "The (dual of the) latter lemma, when specialised to initial algebras, described the corresponding structural induction schemas for inductive types. The specialisation to coinductive types should therefore be called <strong>coinduction</strong>. We will do a full specialisation to $|C := |Set$ soon, but first we will explore a simple (and useful!) special case."
+                ]
+            , .block
+                { kind := .lem
+                , title := "Simple coinductive rule for proving that maps into terminal coalgebras are equal"
+                , outLink? :=
+                    some { href := "../proof/simple-inductive-rule-for-initial-algebras.html" }
+                , body :=
+                    [ .ps "Let $j |→{|des} T| j$ be the terminal coalgebra for an endofunctor $T : |C → |C$ and let $f, g : a → j$ be parallel arrows into $j$. Suppose that the coequaliser $π : j ↠ e$ of $f$ and $g$ exists in $|C$. Then, if $T| π ∘ |des ∘ f = T| π ∘ |des ∘ g$, we must have $f = g$."
+                    , .cda
+                        { href := hrefs.simpleCoinduction, height := some 302 }
+                    , .ps "Note that $a$ is not required to have a coalgebra structure $a → T| a$. Note also that this lemma works in an arbitrary category $|C$."
+                    ]
+                }
+            , .block
+                { kind := .exa
+                , title := "Simple coinductive rule for $|coℕ$"
+                , body :=
+                    [ .ps "Let $f, g : A → |coℕ$, and denote the coequaliser of $f$ and $g$ by $[-] : |coℕ ↠ (|coℕ / f = g)$. The assumption $T [-] ∘ |des ∘ f = T [-] ∘ |des ∘ g$ in the previous lemma can be unpacked as follows:"
+                    , .ul
+                        [ [ .s "Equivalently, show that for any $x ∈ |coℕ$, we have $((1_{|No} + [-]) ∘ |pred ∘ f) (x) = ((1_{|No} + [-]) ∘ |pred ∘ g) (x)$."
+                          ]
+                        , [ .s "Equivalently, show that for any $x ∈ |coℕ$, both of the following hold: $|pred| (f| x) = |no$ iff $|pred| (g| x) = |no$; if instead $|pred| (f| x) =: y ≠ |no$ and $|pred| (g| x) =: z ≠ |no$, then $[y] = [z]$."
+                          ]
+                        , [ .s "Equivalently, show that for any $x ∈ |coℕ$, both of the following hold: $|pred| (f| x) = |no$ iff $|pred| (g| x) = |no$; if instead $|pred| (f| x) =: y ≠ |no$ and $|pred| (g| x) =: z ≠ |no$, then $y$ is related to $z$ under the equivalence relation defining the quotient $(|coℕ / f = g)$."
+                          ]
+                        ]
+                    , .p
+                        [ .s "The final part of the last bullet point above is interesting. The equivalence relation $|sim$ defining the quotient $(|coℕ / f = g)$ is freely generated by the relationships $f| a |sim g| a$ for $a ∈ A$. Hence, showing that $y |sim z$ can effectively be done by working in a context where one <em>assumes</em> that $f| a = g| a$ for all $a ∈ A$ (thereby implicitly working in the quotient $(|coℕ / f = g)$) and demonstrating that in this context, we must have $y = z$"
+                        , .sn [.s "This is not a very precise statement. The precise version is to genuinely work in the quotient; draw the commutative diagram displayed above to help you remember the details you're working with!"]
+                        , .s ". In analogy to induction (where inputs to constructors come from an equaliser), one could call this a <strong>coinductive hypothesis</strong>."
+                        ]
+                    , .ps "We will give example applications of this proof method in an upcoming section on example coinductive proofs."
+                    ]
+                }
+            , .body
+                [ .ps "We now specialise the \"terminal objects have no proper quotient objects\" lemma to terminal coalgebras of endofunctors $|Set → |Set$. Since quotients of sets are characterised by equivalence relations, the statement gives a rule for judging when an equivalence relation on a terminal coalgebra is the equality relation, and hence provides a way to prove that two elements of a terminal coalgebra are equal."
+                ]
+            , .block
+                { kind := .lem
+                , title := "Coinduction in $|Set$"
+                , outLink? :=
+                    some { href := "../proof/coinduction-in-set.html" }
+                , body :=
+                    [ .ps "Let $J |→{|des} T| J$ be the terminal coalgebra for an endofunctor $T : |Set → |Set$. Let $∼$ be an equivalence relation on $J$ and denote by $[-] : J → J / {∼}$ the projection onto its quotient. Suppose that for all $x, y ∈ J$ with $x ∼ y$, we have $(T [-] ∘ |des) (x) = (T [-] ∘ |des) (y)$. Then, $∼$ is the equality relation on $J$; i.e. for all $x, y ∈ J$, $x ∼ y ⟹ x = y$."
+                    ]
+                }
+            , .block
+                { kind := .exa
+                , title := "Bisimulation of streams"
+                , body :=
+                    [ .ps "Fix a set $A$, and let $∼$ be an equivalence relation on $|Stream| A$ satisfying the assumptions of the previous lemma (with $T : X ↦ A × X$). Fix arbitrary $|rm{as}, |rm{bs} ∈ |Stream| A$, and write $|pop| |rm{as} = (a, |rm{as}')$ and $|pop| |rm{bs} = (b, |rm{bs}')$. The assumption on $∼$ is that if $|rm{as} ∼ |rm{bs}$, then $(a, [|rm{as}']) = (b, [|rm{bs}'])$; i.e. $a = b$ and $|rm{as}' ∼ |rm{bs}'$. Such a relation $∼$ is called a <strong>bisimulation</strong> on $|Stream| A$, and the lemma guarantees that the only bisimulation is the equality relation. Thus, to prove that two streams are equal, it suffices to construct a bisimulation which identifies them."
+                    , .ps "Bisimulations identify streams exhibiting the \"same behaviour\" &mdash; two streams have the same behaviour just when their heads are the same and their tails have the same behaviour. The lemma can be read as the statement that <em>streams with the same behaviour are equal</em>."
+                    , .ps "We will give an example application of this proof method in an upcoming section on example coinductive proofs."
+                    ]
+                }
+            , .body
+                [ .ps "We stress that coinduction is not the only proof method for terminal coalgebras. In particular, non-equality predicates are difficult to prove in this way. Much like how many statements about natural numbers have direct, non-inductive proofs, some statements about conatural numbers also have direct, non-coinductive proofs."
+                ]
+            ]
+        -- TODO: Section `"Example Coinductive Proofs: Addition on CoNatural Numbers"`
+        -- TODO: Section `"Example Coinductive Proofs: Inequality of CoNatural Numbers"`
+        -- TODO: Section `"Example Coinductive Proofs: \"ZipList\" Applicative on CoLists."`
+        -- TODO: Section `"Terminal Coalgebras: Categories Other Than $|Set$"`
+        -- TODO: Section `"Corecursion is not Laziness"`
         -- TODO: Section `"Summary"`
         ]
     , seeAlso :=
@@ -784,6 +1168,10 @@ namespace Coinduction
             ,   («authoring defs».esc "Right", "\\texttt{Right}")
             ,   («authoring defs».esc "case", "\\texttt{case}")
             ,   («authoring defs».esc "of", "\\texttt{of}")
+            ,   («authoring defs».esc "List", "\\texttt{List}")
+            ,   («authoring defs».esc "coList", "\\texttt{coList}")
+            ,   («authoring defs».esc "repeat", "\\texttt{repeat}")
+            ,   («authoring defs».esc "Stream", "\\texttt{Stream}")
             ]
         |>.qsort «authoring defs».compareTranslations
     }
