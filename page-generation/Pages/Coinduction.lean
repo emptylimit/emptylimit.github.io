@@ -1137,7 +1137,32 @@ namespace Coinduction
                 [ .ps "We stress that coinduction is not the only proof method for terminal coalgebras. In particular, non-equality predicates are difficult to prove in this way. Much like how many statements about natural numbers have direct, non-inductive proofs, some statements about conatural numbers also have direct, non-coinductive proofs."
                 ]
             ]
-        -- TODO: Section `"Example Coinductive Proofs: Addition on CoNatural Numbers"`
+        , .mk
+            "Example Coinductive Proofs: Addition on CoNatural Numbers"
+            [ .body
+                [ .ps "In this section, we demonstrate some basic coinductive proofs on $|coℕ$, taking addition as an example function to reason about. Many of these proofs could instead be done by a case-split on whether the input is $∞$ or whether it lies in $ℕ$. This style of proof does not generalise to other terminal coalgebras, so we avoid it where necessary. However, it is useful to have one lemma done in this non-coinductive manner:"
+                ]
+            , .block
+                { kind := .lem
+                , body :=
+                    [ .ps "The only element $x ∈ |coℕ$ with $|pred| x = x$ is $x = ∞$."
+                    ]
+                }
+            , .body
+                [ .ps "<strong>Proof.</strong> Suppose (for contradiction) that $x ∈ ℕ$. Then, an inductive argument shows that $|pred| x$ is strictly smaller than $x$, so $|pred| x ≠ x$. $∎$"
+                ]
+            , .body
+                [.ps "To begin, we define addition on $|coℕ$ in analogy to addition on $ℕ$. Fix conatural numbers $x, y ∈ |coℕ$. If $x = 0$ then we should take $0 + y := y$. If instead $x ≠ 0$ has predecessor, then we should have $|pred| (x + y) = (|pred| x) + y$."
+                ]
+            , .block
+                { kind := .dfn
+                , title := "Addition on $|coℕ$"
+                , body :=
+                    [ .ps "Define a function $({-} + {-}) : |coℕ × |coℕ → |coℕ$ by"
+                    ]
+                }
+            -- TODO: Finish section `"Example Coinductive Proofs: Addition on CoNatural Numbers"`
+            ]
         -- TODO: Section `"Example Coinductive Proofs: Inequality of CoNatural Numbers"`
         -- TODO: Section `"Example Coinductive Proofs: \"ZipList\" Applicative on CoLists."`
         -- TODO: Section `"Terminal Coalgebras: Categories Other Than $|Set$"`

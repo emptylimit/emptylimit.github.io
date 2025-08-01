@@ -143,6 +143,7 @@ namespace «authoring defs»
     ,   ("⋯", "\\cdots")
         -- Symbols
     ,   ("∞", "\\infty")
+    ,   ("∎", "\\qed")
     ,   ("∅", "\\varnothing")
     ].qsort (fun (k₁, _) (k₂, _) => k₁.length ≥ k₂.length) -- Replace superstrings first
 
