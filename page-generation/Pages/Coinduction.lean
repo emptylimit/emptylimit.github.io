@@ -1663,6 +1663,8 @@ namespace Coinduction
             ]
         -- TODO: Section `"Further Results"`, including:
           -- Whenever $F : |C × |D → |D$ is a functor for which each $F (c, -) : |D → |D$ has an initial algebra, the mapping $c ↦ (|text{initial algebra for } F (c, -))$ defines the action on objects of a functor $|C → |D$.
+          -- An adjunction `F : C <--> D : U` for which endofunctors `S : C --> C` and `T : D --> D` satisfy `F ∘ S ≃ T ∘ F` and `U ∘ T ≃ S ∘ U` induces an adjunction `S-Alg <--> T-Alg` which, upon passage to the carrier objects, restricts to `F ⊣ U`.
+          -- (Corollary of the above) Suppose endofunctors `S : C --> C` and `T : D --> D` are related by an adjunction `F ⊣ U` as above. Let `S i --- cons --> i` be an initial `S`-algebra. Then, `T` has an initial algebra with carrier object `F i`. (Dually, a terminal `T`-coalgebra forgets to a terminal `S`-algebra.)
         -- TODO: Section `"Terminal Coalgebras: Categories Other Than $|Set$"`, including:
           -- Natural and conatural numbers in $|Top$
         -- TODO: Section `"Corecursion is not Laziness"`
