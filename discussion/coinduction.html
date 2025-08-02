@@ -117,6 +117,26 @@
                 </a>
               </li>
               <li>
+                <a href="#Example-Coinductive-Proofs:-Addition-on-Conatural-Numbers">
+                  Example Coinductive Proofs: Addition on Conatural Numbers
+                </a>
+              </li>
+              <li>
+                <a href="#Example-Coinductive-Proofs:-Inequality-of-Conatural-Numbers">
+                  Example Coinductive Proofs: Inequality of Conatural Numbers
+                </a>
+              </li>
+              <li>
+                <a href="#Example-Coinductive-Proofs:-Functions-on-Colists">
+                  Example Coinductive Proofs: Functions on Colists
+                </a>
+              </li>
+              <li>
+                <a href="#Example-Coinductive-Proofs:-ZipList-Applicative-on-Colists">
+                  Example Coinductive Proofs: "ZipList" Applicative on Colists
+                </a>
+              </li>
+              <li>
                 <a href="#See-also">
                   See also
                 </a>
@@ -464,10 +484,10 @@
             </p>
             <ul>
               <li>
-                For $T : X \mapsto 1 + X$, the lemma recovers the induction principle of $\mathbb{N}$ described before. Identifying a subset $X \subseteq \mathbb{N}$ with its predicate $P : \mathbb{N} \to \texttt{Bool}$ (which assigns $\texttt{true}$ to the elements of $X$ and $\texttt{false}$ to everything in $\mathbb{N} \setminus X$), we get the more familiar induction rule: to prove $∀ n \in \mathbb{N},\, P\ n$, we need only prove $P\ 0$ and $∀ n \in \mathbb{N},\, P\ n \implies P\ (\texttt{Succ}\ n)$.
+                For $T : X \mapsto 1 + X$, the lemma recovers the induction principle of $\mathbb{N}$ described before. Identifying a subset $X \subseteq \mathbb{N}$ with its predicate $P : \mathbb{N} \to \texttt{Bool}$ (which assigns $\texttt{true}$ to the elements of $X$ and $\texttt{false}$ to everything in $\mathbb{N} \setminus X$), we get the more familiar induction rule: to prove $\forall n \in \mathbb{N},\, P\ n$, we need only prove $P\ 0$ and $\forall n \in \mathbb{N},\, P\ n \implies P\ (\texttt{Succ}\ n)$.
               </li>
               <li>
-                For $T : X \mapsto 1 + A \times X$ (with $A$ a fixed set), the lemma recovers the induction principle of its initial algebra $\texttt{List}\ A$. Translating from subsets  of $\texttt{List}\ A$ to characteristic predicates $P : \mathbb{N} \to \texttt{Bool}$, we have the familiar structural induction rule: to prove $∀ \mathrm{xs} \in \texttt{List}\ A,\, P\ \mathrm{xs}$, we need only prove $P\ []$ and $∀ \mathrm{xs} \in \texttt{List}\ A, ∀ a \in {A},\, P\ \mathrm{xs} \implies P\ (a :: \mathrm{xs})$.
+                For $T : X \mapsto 1 + A \times X$ (with $A$ a fixed set), the lemma recovers the induction principle of its initial algebra $\texttt{List}\ A$. Translating from subsets  of $\texttt{List}\ A$ to characteristic predicates $P : \mathbb{N} \to \texttt{Bool}$, we have the familiar structural induction rule: to prove $\forall \mathrm{xs} \in \texttt{List}\ A,\, P\ \mathrm{xs}$, we need only prove $P\ []$ and $\forall \mathrm{xs} \in \texttt{List}\ A, \forall a \in {A},\, P\ \mathrm{xs} \implies P\ (a :: \mathrm{xs})$.
               </li>
             </ul>
           </div>
@@ -1661,6 +1681,622 @@
             We stress that coinduction is not the only proof method for terminal coalgebras. In particular, non-equality predicates are difficult to prove in this way. Much like how many statements about natural numbers have direct, non-inductive proofs, some statements about conatural numbers also have direct, non-coinductive proofs.
           </p>
         </section>
+        <section id="Example-Coinductive-Proofs:-Addition-on-Conatural-Numbers">
+          <h2>
+            Example Coinductive Proofs: Addition on Conatural Numbers
+          </h2>
+          <p>
+            In this section, we demonstrate some basic coinductive proofs on $\mathrm{co}\mathbb{N}$, taking addition as an example function to reason about. Many of these proofs could instead be done by a case-split on whether the input is $\infty$ or whether it lies in $\mathbb{N}$. This style of proof does not generalise to other terminal coalgebras, so we avoid it where necessary.
+          </p>
+          <p>
+            <strong>Proof.</strong> Suppose (for contradiction) that $x \in \mathbb{N}$. Then, an inductive argument shows that $\mathrm{pred}\ x$ is strictly smaller than $x$, so $\mathrm{pred}\ x \neq x$. $\square$
+          </p>
+          <p>
+            To begin, we define addition on $\mathrm{co}\mathbb{N}$ in analogy to addition on $\mathbb{N}$. Fix conatural numbers $x, y \in \mathrm{co}\mathbb{N}$. If $y = 0$ then we should ensure $x + 0 = x$. If instead $y \neq 0$ has a predecessor, then we should have $\mathrm{pred}\ (x + y) = x + (\mathrm{pred}\ y)$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Addition on $\mathrm{co}\mathbb{N}$)
+            </h3>
+            <p>
+              Define a function $({-} + {-}) : \mathrm{co}\mathbb{N} \times \mathrm{co}\mathbb{N} \to \mathrm{co}\mathbb{N}$ by
+              <span class="block-equation">
+                $$\begin{align*}
+                  ({-} + {-})
+                  &:= \texttt{corec}\ (\lambda\ (x, y) \to
+                   \\
+                  &\quad\quad
+                  \texttt{case}\ \mathrm{pred}\ y\ \texttt{of}
+                   \\
+                  &\quad\quad\quad\quad
+                  \texttt{Right}\ y' \to \texttt{Right}\ (x, y')
+                   \\
+                  &\quad\quad\quad\quad
+                  \texttt{Left}\ \text{no} \to
+                   \\
+                  &\quad\quad\quad\quad\quad\quad
+                  \texttt{case}\ \mathrm{pred}\ x\ \texttt{of}
+                   \\
+                  &\quad\quad\quad\quad\quad\quad\quad\quad
+                  \texttt{Right}\ x' \to \texttt{Right}\ (x', 0)
+                   \\
+                  &\quad\quad\quad\quad\quad\quad\quad\quad
+                  \texttt{Left}\ \text{no} \to \texttt{Left}\ \text{no}
+                  )
+                \end{align*}$$
+              </span>
+              
+            </p>
+          </div>
+          <p>
+            The following proofs investigate the behaviour of $x + y$ based on whether $y = 0$, $y$ is the successor of a natural number, or $y = \infty$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example. ($\forall x \in \mathrm{co}\mathbb{N}, x + 0 = x$)
+            </h3>
+            <p>
+              We use simple coinduction to prove this. Define functions $\mathrm{lhs}, \mathrm{rhs} : \mathrm{co}\mathbb{N} \to \mathrm{co}\mathbb{N}$ to be left-hand and right-hand sides of this equation; i.e. $\mathrm{lhs}\ x := x + 0$ and $\mathrm{rhs}\ x := x$. Let $[-] : \mathrm{co}\mathbb{N} \to (\mathrm{co}\mathbb{N} / \mathrm{lhs} = \mathrm{rhs})$ be the projection onto the quotient where outputs $\mathrm{lhs}\ x$ and $\mathrm{rhs}\ x$ are identified. The simple coinductive rule states that to argue $\mathrm{lhs} = \mathrm{rhs}$, it suffices to show that $(1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} = (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs}$.
+            </p>
+            <p>
+              Fix $x \in \mathrm{co}\mathbb{N}$. In the case where $\mathrm{pred}\ x = \text{no}$, we have by the definition of $+$ that
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ x
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (x + 0))
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ \text{no}
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ x)
+                   \\
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ x
+                  &= \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs} \right)\ x
+                \end{align*}$$
+              </span>
+              
+            </p>
+            <p>
+              If instead we are in the case where $\mathrm{pred}\ x = x' \neq \text{no}$, we refer to the definition of $+$ to verify that
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ x
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (x + 0))
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (x' + 0)
+                   \\
+                  &= [x' + 0]
+                   \\
+                  &= [\mathrm{lhs}\ x']
+                   \\
+                  &= [\mathrm{rhs}\ x']
+                   \\
+                  &= [x']
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ x'
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ x)
+                   \\
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ x
+                  &= \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs} \right)\ x
+                \end{align*}$$
+              </span>
+              The equality $[\mathrm{lhs}\ x'] = [\mathrm{rhs}\ x']$ holds because this equation is in the quotient of $\mathrm{co}\mathbb{N}$ where each $\mathrm{lhs}\ y$ is identified with $\mathrm{rhs}\ y$. This step is analogous to an inductive hypothesis.
+            </p>
+            <p>
+              Our two cases verify that $(1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} = (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs}$. The simple coinductive rule then asserts that $\mathrm{lhs} = \mathrm{rhs}$; i.e. $x + 0 = x$ for all $x \in \mathrm{co}\mathbb{N}$. $\square$
+            </p>
+            <p>
+              The main takeaway from this example is the proof structure:
+            </p>
+            <ul>
+              <li>
+                Define functions capturing the left-hand and right-hand sides of the equation;
+              </li>
+              <li>
+                Identify the goal the simple coinductive lemma provides;
+              </li>
+              <li>
+                Splitting into cases when necessary, verify that arbitrary inputs to each of the two functions yield the same outputs;
+              </li>
+              <li>
+                Conclude coinductively that the left-hand and right-hand sides of the equation are equal.
+              </li>
+            </ul>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise. ($\forall x, y \in \mathrm{co}\mathbb{N},\, x + (\texttt{Succ}\ y) = \texttt{Succ}\ (x + y)$)
+            </h3>
+            <p>
+              Use a similar style of proof to argue that $\forall x, y \in \mathrm{co}\mathbb{N},\, x + (\texttt{Succ}\ y) = \texttt{Succ}\ (x + y)$. Here, $\texttt{Succ}\ y$ is the unique conatural number such that $\mathrm{pred}\ (\texttt{Succ}\ y) = y \neq \text{no}$.
+            </p>
+            <p>
+              The previous example and this exercise together demonstrate that our definition of $+$ on $\mathrm{co}\mathbb{N}$ restricts to the usual definition of $+$ on $\mathbb{N}$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Example. ($\forall x \in \mathrm{co}\mathbb{N},\, x + \infty = \infty$)
+            </h3>
+            <p>
+              Let $\mathrm{lhs}, \mathrm{rhs} : \mathrm{co}\mathbb{N} \to \mathrm{co}\mathbb{N}$ be the left-hand and right-hand sides of this equation, and denote by $[-] : \mathrm{co}\mathbb{N} \to (\mathrm{co}\mathbb{N} / \mathrm{lhs} = \mathrm{rhs})$ the projection onto their quotient. In particular, $\mathrm{rhs} : x \mapsto \infty$ is a constant function. The simple coinductive rule provides us with the goal $(1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} = (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs}$, which we now verify.
+            </p>
+            <p>
+              Fix $x \in \mathrm{co}\mathbb{N}$. Then, appealing to the definition of $+$ and the fact that $\mathrm{pred}\ \infty = \infty \neq \text{no}$, we have
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ x
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (x + \infty))
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (x + \infty)
+                   \\
+                  &= [x + \infty]
+                   \\
+                  &= [\infty]
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ \infty
+                   \\
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ x
+                  &= \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs} \right)\ x
+                \end{align*}$$
+              </span>
+              This verifies the goal. Therefore, $\forall x \in \mathrm{co}\mathbb{N},\, x + \infty = \infty$. $\square$
+            </p>
+            <p>
+              The main takeaway of this example is that the functions capturing the left-hand and right-hand sides of the equation may seem a little stupid.
+            </p>
+          </div>
+          <p>
+            We now investigate the behaviour of $x + y$ based on the behaviour of $x$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example. ($\forall y \in \mathrm{co}\mathbb{N},\, 0 + y = y$)
+            </h3>
+            <p>
+              We don't immediately jump into coinduction yet. This is because we can dispense with a simple case first, avoiding an ugly case split in the middle of our coinductive proof. This simple case is when $\mathrm{pred}\ y = \text{no}$; i.e. $y = 0$. We have $0 + 0 = 0$ by a previous lemma, so we do not need to verify this as part of our coinduction. This leaves only one case to coinduct with: the case where $\mathrm{pred}\ y \neq \text{no}$.
+            </p>
+            <p>
+              We coinduct. Set $A := \left\{ y \in \mathrm{co}\mathbb{N} \;\middle\vert\; \mathrm{pred}\ y \neq \text{no} \right\}$. Define functions $\mathrm{lhs}, \mathrm{rhs} : A \to \mathrm{co}\mathbb{N}$ to be the left-hand and right-hand sides of the target equation, and let $[-] : \mathrm{co}\mathbb{N} \to (\mathrm{co}\mathbb{N} / \mathrm{lhs} = \mathrm{rhs})$ be the corresponding quotient map. Our goal is to verify $(1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} = (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs}$.
+            </p>
+            <p>
+              Fix $y \in A$. Put $y' := \mathrm{pred}\ y \in \mathrm{co}\mathbb{N}$. Then,
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ y
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (0 + y))
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (0 + y')
+                   \\
+                  &= [0 + y']
+                   \\
+                  &= [y']
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ y'
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ y)
+                   \\
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ y
+                  &= \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs} \right)\ y
+                \end{align*}$$
+              </span>
+              Here, the equality $[0 + y'] = [y']$ is justified depending on whether $\mathrm{pred}\ y' = \text{no}$. If $\mathrm{pred}\ y' \neq \text{no}$, then $y' \in A$ is a valid input to $\mathrm{lhs}$ and $\mathrm{rhs}$, so the equality is justified by the equality $[\mathrm{lhs}\ y'] = [\mathrm{rhs}\ y']$. If instead $\mathrm{pred}\ y' = \text{no}$, then the equality is justified by previous work: $[0 + y'] = [0 + 0] = [0] = [y']$.
+            </p>
+            <p>
+              By coinduction, we have $\mathrm{lhs} = \mathrm{rhs}$, and the result is proven. $\square$
+            </p>
+            <p>
+              The takeaway of this example is that simple cases can be dispensed with prior to coinduction, minimising case splits done in the more messy coinductive context.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Show that $\forall x, y \in \mathrm{co}\mathbb{N}, (\texttt{Succ}\ x) + y = \texttt{Succ}\ (x + y)$.
+            </p>
+            <p>
+              Show that $\forall y \in \mathrm{co}\mathbb{N}, \infty + y = \infty$.
+            </p>
+          </div>
+          <p>
+            We are prepared to show that $+$ is commutative and associative.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example. (Commutativity of $+$)
+            </h3>
+            <p>
+              We already have $x + 0 = x = 0 + x$ for all $x \in \mathrm{co}\mathbb{N}$, so we need only show that $x + y = y + x$ for $x, y \in \mathrm{co}\mathbb{N}$ with $\mathrm{pred}\ x \neq \text{no}$ and $\mathrm{pred}\ y \neq \text{no}$.
+            </p>
+            <p>
+              Set $A := \left\{ a \in \mathrm{co}\mathbb{N} \;\middle\vert\; \mathrm{pred}\ a \neq \text{no} \right\}$. Let $\mathrm{lhs}, \mathrm{rhs} : A^2 \to \mathrm{co}\mathbb{N}$ be the left-hand and right-hand sides of the commutativity equation, and denote by $[-] : \mathrm{co}\mathbb{N} \to (\mathrm{co}\mathbb{N} / \mathrm{lhs} = \mathrm{rhs})$ their quotient map. For arbitrary $x, y \in A$, with predecessors $x' := \mathrm{pred}\ x \neq \text{no}$ and $y' := \mathrm{pred}\ y \neq \text{no}$, we have
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ (x, y)
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (x + y))
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (x + y')
+                   \\
+                  &= [x + y']
+                   \\
+                  &= [y' + x]
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (y' + x)
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (\texttt{Succ}\ (y' + x)))
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (\texttt{Succ}\ y' + x))
+                   \\
+                  &= (1_{\{\text{no}\}} + [-])\ (\mathrm{pred}\ (y + x))
+                   \\
+                  \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{lhs} \right)\ (x, y)
+                  &= \left( (1_{\{\text{no}\}} + [-]) \circ \mathrm{pred} \circ \mathrm{rhs} \right)\ (x, y)
+                \end{align*}$$
+              </span>
+              in which $[x + y'] = [y' + x]$ should be justified carefully by the reader, and $\texttt{Succ}\ (y' + x) = \texttt{Succ}\ y' + x$ is due to an earlier exercise. By coinduction, $+$ is commutative. $\square$
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Associativity of $+$)
+            </h3>
+            <p>
+              Prove that $+$ is associative. Try to minimise the number of case-splits in your coinductive proof by front-loading any easy cases.
+            </p>
+          </div>
+        </section>
+        <section id="Example-Coinductive-Proofs:-Inequality-of-Conatural-Numbers">
+          <h2>
+            Example Coinductive Proofs: Inequality of Conatural Numbers
+          </h2>
+          <p>
+            A binary relation on a set $R$ is, from an inductive standpoint, easiest understood as a map $R \times R \to \texttt{Bool}$. From a coinductive standpoint, it is easiest regarded as a subset of $R \times R$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Inequality on $\mathrm{co}\mathbb{N}$)
+            </h3>
+            <p>
+              The inequality relation $({-} \leq {-})$ on $\mathrm{co}\mathbb{N}$ is the image of the functions $\mathrm{co}\mathbb{N} \times \mathrm{co}\mathbb{N} \to \mathrm{co}\mathbb{N} \times \mathrm{co}\mathbb{N}$ which maps $(x, \delta) \mapsto (x, x + \delta)$. That is, for conatural numbers $x, y$, we have $x \leq y$ iff $\exists \delta \in \mathrm{co}\mathbb{N}.\, y = x + \delta$.
+            </p>
+          </div>
+          <p>
+            As one would hope, this relation is a partial order.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Give proofs that $\leq$ is reflexive and transitive. Since the goals to be proven are not equality relationships, coinduction is not helpful here.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Antisymmetry of $\leq$)
+            </h3>
+            <p>
+              We wish to prove that for all $x, y \in \mathrm{co}\mathbb{N}$, if $x \leq y$ and $y \leq x$, then $x = y$. This goal is equality, so we can attempt a proof by coinduction.
+            </p>
+            <p>
+              Set $A := \left\{ (x, y) \in \mathrm{co}\mathbb{N}^2 \;\middle\vert\; x \leq y \text{ and } y \leq x \right\}$. Let $\mathrm{lhs}, \mathrm{rhs} : A \to \mathrm{co}\mathbb{N}$ be given by $\mathrm{lhs} : (x, y) \mapsto x$ and $\mathrm{rhs} : (x, y) \mapsto y$, and denote their quotient map by $[-] : \mathrm{co}\mathbb{N} \to (\mathrm{co}\mathbb{N} / \mathrm{lhs} = \mathrm{rhs})$. Complete a coinductive proof that $\mathrm{lhs} = \mathrm{rhs}$, and conclude that $\leq$ is antisymmetric.
+            </p>
+            <p>
+              The important takeaway here is that the domain of the maps $\mathrm{lhs}, \mathrm{rhs}$ may be a complicated set, to account for assumptions required by a result.
+            </p>
+          </div>
+          <p>
+            Because we have proven these properties without appealing to a case split on $\mathrm{co}\mathbb{N} = \mathbb{N} + \{\infty\}$, these proofs do not depend on any knowledge of addition on $\mathbb{N}$. If one can prove that $({-} + {-}) : \mathrm{co}\mathbb{N} \times \mathrm{co}\mathbb{N} \to \mathrm{co}\mathbb{N}$ restricts to a function $\mathbb{N} \times \mathbb{N} \to \mathbb{N}$, then all of the proofs provided in the previous sections yield the corresponding property on $\mathbb{N}$ for free.
+          </p>
+        </section>
+        <section id="Example-Coinductive-Proofs:-Functions-on-Colists">
+          <h2>
+            Example Coinductive Proofs: Functions on Colists
+          </h2>
+          <p>
+            In this section, we describe some functions on $\texttt{coList}$s and prove some of their properties.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Mapping over $\texttt{coList}$s)
+            </h3>
+            <p>
+              Fix sets $A$ and $B$. The function $\texttt{map} : (A \to B) \to \texttt{coList}\ A \to \texttt{coList}\ B$ is defined as follows:
+              <span class="block-equation">
+                $$\begin{align*}
+                  \texttt{map}\ f
+                  &:= \texttt{corec}\ (\lambda\ \mathrm{as} \to
+                   \\
+                  &\quad\quad\quad \texttt{case}\ \mathrm{pop}\ \mathrm{as}\ \texttt{of}
+                   \\
+                  &\quad\quad\quad\quad\quad
+                  \texttt{Left}\ \text{no} \to \texttt{Left}\ \text{no}
+                   \\
+                  &\quad\quad\quad\quad\quad
+                  \texttt{Right}\ (a, \mathrm{as}') \to \texttt{Right}\ (f\ a, \mathrm{as}')
+                  )
+                \end{align*}$$
+              </span>
+              
+            </p>
+            <p>
+              Here, $\texttt{corec} : (\texttt{coList}\ A \to \{\text{no}\} + B \times \texttt{coList}\ A) \to \texttt{coList}\ A \to \texttt{coList}\ B$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Fix $f : A \to B$, fix $a \in A$ and fix $\mathrm{as} \in \texttt{coList}\ A$. Prove that $\texttt{map}\ f\ [] = []$ and that $\texttt{map}\ f\ (a :: \mathrm{as}) = f a :: \texttt{map}\ f\ \mathrm{as}$.
+            </p>
+            <p>
+              Here, $[]$ is the unique colist with $\mathrm{pop}\ [] = \text{no}$, having type $\texttt{coList}\ A$ or $\texttt{coList}\ B$ as is necessary for typechecking. Similarly, the colist $(a :: \mathrm{as})$ is uniquely determined by $\mathrm{pop}\ (a :: \mathrm{as}) = (a, \mathrm{as})$.
+            </p>
+          </div>
+          <p>
+            As one would hope, $\texttt{map}$ gives a functor instance for $\texttt{coList}$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example. (First functor law: $\texttt{map}\ 1_A = 1_{\texttt{coList}\ A}$ for any set $A$)
+            </h3>
+            <p>
+              Let $\mathrm{lhs}, \mathrm{rhs} : \texttt{coList}\ A \to \texttt{coList}\ A$ be $\mathrm{lhs} := \texttt{map}\ 1_A$ and $\mathrm{rhs} := 1_{\texttt{coList}\ A}$. Denote their quotient map by $[-] : \texttt{coList}\ A \to (\texttt{coList}\ A / \mathrm{lhs} = \mathrm{rhs})$. The simple coinductive lemma asks us to verify the goal $(1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} = (1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{rhs}$.
+            </p>
+            <p>
+              Fix $\mathrm{as} \in \texttt{coList}\ A$. In the case where $\mathrm{pop}\ \mathrm{as} = \text{no}$, we have $\mathrm{pop}\ (\texttt{map}\ 1_A\ \mathrm{as}) = \text{no}$ and hence
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} \right)\ \mathrm{as}
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ (\mathrm{pop}\ (\texttt{map}\ 1_A\ \mathrm{as}))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ \text{no}
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ (\mathrm{pop}\ \mathrm{as})
+                   \\
+                  \left( (1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} \right)\ \mathrm{as}
+                  &= \left( (1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{rhs} \right)\ \mathrm{as}
+                \end{align*}$$
+              </span>
+              In the case where $\mathrm{pop}\ \mathrm{as} = (a, \mathrm{as}')$, we have $\mathrm{pop}\ (\texttt{map}\ 1_A\ \mathrm{as}) = (1_A\ a, \texttt{map}\ 1_A\ \mathrm{as}')$ and hence
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} \right)\ \mathrm{as}
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ (\mathrm{pop}\ (\texttt{map}\ 1_A\ \mathrm{as}))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ (1_A\ a, \texttt{map}\ 1_A\ \mathrm{as}')
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ (a, \texttt{map}\ 1_A\ \mathrm{as}')
+                   \\
+                  &= (a, [\texttt{map}\ 1_A\ \mathrm{as}'])
+                   \\
+                  &= (a, [1_{\texttt{coList}\ A}\ \mathrm{as}'])
+                   \\
+                  &= (a, [\mathrm{as}'])
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ (a, \mathrm{as}')
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_A \times [-])\ (\mathrm{pop}\ \mathrm{as})
+                   \\
+                  \left( (1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} \right)\ \mathrm{as}
+                  &= \left( (1_{\{\text{no}\}} + 1_A \times [-]) \circ \mathrm{pop} \circ \mathrm{rhs} \right)\ \mathrm{as}
+                \end{align*}$$
+              </span>
+              This completes the coinduction. $\square$
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Second functor law for $\texttt{coList}$)
+            </h3>
+            <p>
+              Prove that for any $A \xrightarrow{f} B \xrightarrow{g} C$ in $\mathbf{Set}$, we have $\texttt{map}\ (g \circ f) = \texttt{map}\ g \circ \texttt{map}\ f$.
+            </p>
+            <p>
+              This is an instance of a general phenomenon. Whenever $T : \mathsf{C} \times \mathsf{D} \to \mathsf{D}$ is a functor for which each $T (c, -) : \mathsf{D} \to \mathsf{D}$ has an initial algebra, the mapping $c \mapsto (\text{initial algebra for } T (c, -))$ defines the action on objects of a functor $\mathsf{C} \to \mathsf{D}$.
+            </p>
+          </div>
+          <p>
+            We can use conatural numbers to measure the lengths of colists. Whereas one defines $\texttt{length} : \texttt{List}\ A \to \mathbb{N}$ by recursion from $\texttt{List}\ A$, one defines $\texttt{length} : \texttt{coList}\ A \to \mathrm{co}\mathbb{N}$ by corecursion into $\mathrm{co}\mathbb{N}$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. (Lengths of $\texttt{coList}$s)
+            </h3>
+            <p>
+              Fix a set $A$. The function $\texttt{length} : \texttt{coList}\ A \to \mathrm{co}\mathbb{N}$ can be defined corecursively by
+              <span class="block-equation">
+                $$\begin{align*}
+                  \texttt{length}\
+                  &:= \texttt{corec}\ (\lambda\ \mathrm{as} \to
+                   \\
+                  &\quad\quad\quad
+                  \texttt{case}\ \mathrm{pop}\ \mathrm{as}\ \texttt{of}
+                   \\
+                  &\quad\quad\quad\quad\quad
+                  \texttt{Left}\ \text{no} \to \texttt{Left}\ \text{no}
+                   \\
+                  &\quad\quad\quad\quad\quad
+                  \texttt{Right}\ (a, \mathrm{as}') \to \texttt{Right}\ \mathrm{as}'
+                  )
+                \end{align*}$$
+              </span>
+              Here, $\texttt{corec} : (\texttt{coList}\ A \to \{\text{no}\} + \texttt{coList}\ A) \to \texttt{coList}\ A \to \mathrm{co}\mathbb{N}$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Convince yourself that this is a sensible definition for $\texttt{length}$. You may wish, for example, to show that this definition restricts to the usual length function $\texttt{List}\ A \to \mathbb{N}$, or to verify that $\texttt{length}\ (\texttt{repeat}\ a) = \infty$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Prove that for all $A \xrightarrow{f} B$ in $\mathbf{Set}$ and all $\mathrm{as} \in \texttt{coList}\ A$, we have $\texttt{length}\ (\texttt{map}\ f\ \mathrm{as}) = \texttt{length}\ \mathrm{as}$. Your proof should be by coinduction into $\mathrm{co}\mathbb{N}$.
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Show that $\texttt{length} : \texttt{coList}\ 1 \to \mathrm{co}\mathbb{N}$ is an isomorphism in $\mathbf{Set}$.
+            </p>
+            <p>
+              If you did not do so already, ensure that your proof uses only abstract nonsense; i.e. ensure your proof could be performed in any category with a terminal object. In particular, you may verify that $\texttt{coList}\ 1$ and $\mathrm{co}\mathbb{N}$ satisfy the same universal property; alternatively, you may construct a corecursive function $\texttt{length}^{-1} : \mathrm{co}\mathbb{N} \to \texttt{coList}\ 1$ and verify the isomorphism equations $\texttt{length} \circ \texttt{length}^{-1} = 1_{\mathrm{co}\mathbb{N}}$ and $\texttt{length}^{-1} \circ \texttt{length} = 1_{\texttt{coList}\ 1}$ by coinduction.
+            </p>
+          </div>
+          <p>
+            One can also define concatenation of colists.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Concatenating colists)
+            </h3>
+            <p>
+              Fix a set $A$. Define a (polymorphic) corecursive function $({-} \mathbin{++} {-}) : \texttt{coList}\ A \times \texttt{coList}\ A \to \texttt{coList}\ A$ which concatenates the second colist after the first colist. Ensure that for all $A \xrightarrow{f} B$ in $\mathbf{Set}$ and all $\mathrm{xs}, \mathrm{ys}, \mathrm{zs} \in \texttt{coList}\ A$, the following properties are satisfied:
+            </p>
+            <ul>
+              <li>
+                ${++}$ restricts to the usual concatenation function $\texttt{List}\ A \times \texttt{List}\ A \to \texttt{List}\ A$;
+              </li>
+              <li>
+                $(\mathrm{xs} \mathbin{++} \mathrm{ys}) \mathbin{++} \mathrm{zs} = \mathrm{xs} \mathbin{++} (\mathrm{ys} \mathbin{++} \mathrm{zs})$;
+              </li>
+              <li>
+                $\texttt{length}\ (\mathrm{xs} \mathbin{++} \mathrm{ys}) = \texttt{length}\ \mathrm{xs} + \texttt{length}\ \mathrm{ys}$;
+              </li>
+              <li>
+                $\texttt{map}\ f\ (\mathrm{xs} \mathbin{++} \mathrm{ys}) = \texttt{map}\ f\ \mathrm{xs} \mathbin{++} \texttt{map}\ f\ \mathrm{ys}$.
+              </li>
+            </ul>
+          </div>
+        </section>
+        <section id="Example-Coinductive-Proofs:-ZipList-Applicative-on-Colists">
+          <h2>
+            Example Coinductive Proofs: "ZipList" Applicative on Colists
+          </h2>
+          <p>
+            In Haskell, (lazy) lists carry two famous applicative structures. The usual applicative (which $\texttt{Prelude}$ defines for $\texttt{[]} :: {*} \to {*}$) essentially corresponds to list comprehension. The second applicative (applied to $\texttt{Control.Applicative}$'s $\texttt{ZipList} :: {*} \to {*}$) corresponds to zipping lists together. The first applicative keeps finite lists finite, and so can be defined on the inductive $\texttt{List}$s. The second applicative makes use of laziness in an essential way, since it puts $\texttt{pure} := \texttt{repeat}$; hence, it must be defined on $\texttt{coList}$s rather than mere $\texttt{List}$s.
+          </p>
+          <p>
+            In this section, we construct the $\texttt{ZipList}$ applicative (modelled on $\texttt{coList}$s), and prove that it is an $\texttt{Applicative}$ functor. Note that we have already provided $\texttt{map} : (A \to B) \to \texttt{coList}\ A \to \texttt{coList}\ B$ to give a $\texttt{Functor}$ on $\texttt{coList}$.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Definition. ($\texttt{ZipList}$ applicative)
+            </h3>
+            <p>
+              Fix sets $A$ and $B$. Define the polymorphic function $\texttt{pure} : A \to \texttt{coList}\ A$ by $\texttt{pure} := \texttt{repeat}$. Define the polymorphic function $({-} \mathbin{\texttt{<*>}} {-}) : \texttt{coList}\ (A \to B) \times \texttt{coList}\ A \to \texttt{coList}\ B$ corecursively by
+              <span class="block-equation">
+                $$\begin{align*}
+                  ({-} \mathbin{\texttt{<*>}} {-})
+                  &:= \texttt{corec}\ (\lambda\ (\mathrm{fs}, \mathrm{as}) \to
+                   \\
+                  &\quad\quad\quad \texttt{case}\ \mathrm{pop}\ \mathrm{fs},\ \mathrm{pop}\ \mathrm{as}\ \texttt{of}
+                   \\
+                  &\quad\quad\quad\quad\quad
+                  \texttt{Right}\ (f, \mathrm{fs}'),\ \texttt{Right}\ (a, \mathrm{as}') \to
+                  \texttt{Right}\ (f\ a, (\mathrm{fs}', \mathrm{as}'))
+                   \\
+                  &\quad\quad\quad\quad\quad
+                  \texttt{\text{\textunderscore}}, \texttt{\text{\textunderscore}} \to \texttt{Left}\ \text{no}
+                  )
+                \end{align*}$$
+              </span>
+              Here, $\texttt{corec} : \texttt{coList}\ (A \to B) \times \texttt{coList}\ A \to \{\text{no}\} + B \times (\texttt{coList}\ (A \to B) \times \texttt{coList}\ A)$. The universal property guarantees that:
+            </p>
+            <ul>
+              <li>
+                $[] \mathbin{\texttt{<*>}} \mathrm{as} = []$ for all $\mathrm{as} \in \texttt{coList}\ A$;
+              </li>
+              <li>
+                $\mathrm{fs} \mathbin{\texttt{<*>}} [] = []$ for all $\mathrm{fs} \in \texttt{coList}\ (A \to B)$;
+              </li>
+              <li>
+                $(f :: \mathrm{fs}) \mathbin{\texttt{<*>}} (a :: \mathrm{as}) = f\ a :: (\mathrm{fs} \mathbin{\texttt{<*>}} \mathrm{as})$ for all $f : A \to B$, $\mathrm{fs} \in \texttt{coList}\ (A \to B)$, $a \in A$, $\mathrm{as} \in \texttt{coList}\ A$.
+              </li>
+            </ul>
+          </div>
+          <p>
+            The following proof is a great example of coinduction, because it does not "feel inductive" in any way that might be misleading.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Example. (Second applicative law: for all sets $A, B$, all $f : A \to B$ and all $a \in A$, we have $\texttt{pure}\ f \mathbin{\texttt{<*>}} \texttt{pure}\ a = \texttt{pure}\ (f\ a)$)
+            </h3>
+            <p>
+              We prove this coinductively. Denote by $B^A$ the set of functions $A \to B$, and define functions $\mathrm{lhs}, \mathrm{rhs} : B^A \times A \to \texttt{coList}\ B$ to capture the left-hand and right-hand sides of the goal equation. Denote by $[-] : \texttt{coList}\ B \to (\texttt{coList}\ B / \mathrm{lhs} = \mathrm{rhs})$ their quotient map. The simple coinductive lemma asks us to verify the goal $(1_{\{\text{no}\}} + 1_B \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} = (1_{\{\text{no}\}} + 1_B \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs}$.
+            </p>
+            <p>
+              Fix $(f, a) \in B^A \times A$. Since $\texttt{repeat}\ x = x :: \texttt{repeat}\ x$ for all $x$, we have
+              <span class="block-equation">
+                $$\begin{align*}
+                  \left( (1_{\{\text{no}\}} + 1_B \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} \right)\ (f, a)
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ (\texttt{pure}\ f \mathbin{\texttt{<*>}} \texttt{pure}\ a))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ (\texttt{repeat}\ f \mathbin{\texttt{<*>}} \texttt{repeat}\ a))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ ((f :: \texttt{repeat}\ f) \mathbin{\texttt{<*>}} (a :: \texttt{repeat}\ a)))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ (f\ a :: (\texttt{repeat}\ f \mathbin{\texttt{<*>}} \texttt{repeat}\ a)))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (f\ a, \texttt{repeat}\ f \mathbin{\texttt{<*>}} \texttt{repeat}\ a)
+                   \\
+                  &= (f\ a, [\texttt{repeat}\ f \mathbin{\texttt{<*>}} \texttt{repeat}\ a])
+                   \\
+                  &= (f\ a, [\texttt{pure}\ f \mathbin{\texttt{<*>}} \texttt{pure}\ a])
+                   \\
+                  &= (f\ a, [\texttt{pure}\ (f\ a)])
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (f\ a, \texttt{pure}\ (f\ a))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ (f\ a :: \texttt{pure}\ (f\ a)))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ (f\ a :: \texttt{repeat}\ (f\ a)))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ (\texttt{repeat}\ (f\ a)))
+                   \\
+                  &= (1_{\{\text{no}\}} + 1_B \times [-])\ (\mathrm{pop}\ (\texttt{pure}\ (f\ a)))
+                   \\
+                  \left( (1_{\{\text{no}\}} + 1_B \times [-]) \circ \mathrm{pop} \circ \mathrm{lhs} \right)\ (f, a)
+                  &= \left( (1_{\{\text{no}\}} + 1_B \times [-]) \circ \mathrm{pop} \circ \mathrm{rhs} \right)\ (f, a)
+                \end{align*}$$
+              </span>
+              which completes the coinduction. $\square$
+            </p>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise.
+            </h3>
+            <p>
+              Verify that the remaining three applicative laws are satisfied:
+            </p>
+            <ul>
+              <li>
+                $\texttt{pure}\ 1_A \mathbin{\texttt{<*>}} \mathrm{as} = \mathrm{as}$ for all $\mathrm{as} \in \texttt{coList}\ A$;
+              </li>
+              <li>
+                $\mathrm{fs} \mathbin{\texttt{<*>}} \texttt{pure}\ a = \texttt{pure}\ (\lambda\ f \to f\ a) \mathbin{\texttt{<*>}} \mathrm{fs}$ for all $a \in A$;
+              </li>
+              <li>
+                $\texttt{pure}\ ({-} \circ {-}) \mathbin{\texttt{<*>}} \mathrm{gs} \mathbin{\texttt{<*>}} \mathrm{fs} \mathbin{\texttt{<*>}} \mathrm{as} = \mathrm{gs} \mathbin{\texttt{<*>}} (\mathrm{fs} \mathbin{\texttt{<*>}} \mathrm{as})$ for all $\mathrm{as} \in \texttt{coList}\ A$, all $\mathrm{fs} \in \texttt{coList}\ (A \to B)$ and all $\mathrm{gs} \in \texttt{coList}\ (B \to C)$.
+              </li>
+            </ul>
+            <p>
+              Here, $A, B, C$ are arbitrary sets. Note that $\mathbin{\texttt{<*>}}$ is left-associative: $\mathrm{xs} \mathbin{\texttt{<*>}} \mathrm{ys} \mathbin{\texttt{<*>}} \mathrm{zs} := (\mathrm{xs} \mathbin{\texttt{<*>}} \mathrm{ys}) \mathbin{\texttt{<*>}} \mathrm{zs}$.
+            </p>
+          </div>
+        </section>
         <section id="See-also">
           <h2>
             See also
@@ -1684,6 +2320,9 @@
           </h2>
           <p>
             <ol class="bibliography">
+              <li>
+                Wikibooks authors.<em> Haskell/Applicative functors.</em> Accessed August, 2025. URL: <a href=https://en.wikibooks.org/wiki/Haskell/Applicative_functors>https://en.wikibooks.org/wiki/Haskell/Applicative_functors</a>.
+              </li>
               <li>
                 nLab authors (including Max S. New, and Urs Schreiber).<em> Adámek's fixed point theorem.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/Ad%C3%A1mek%27s+fixed+point+theorem>https://ncatlab.org/nlab/show/Ad%C3%A1mek%27s+fixed+point+theorem</a>.
               </li>

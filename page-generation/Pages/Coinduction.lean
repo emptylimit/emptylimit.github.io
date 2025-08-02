@@ -37,6 +37,12 @@ namespace Coinduction
         , Bib.NLab.inductiveType
         , Bib.NLab.adamekFixedPointTheorem
         , Bib.NLab.terminalCoalgebra
+        , { accessDate  :=  some { year := 2025, month := some 8 }
+          , authors     :=  [ .pseudo "Wikibooks authors"
+                            ]
+          , title       :=  "Haskell/Applicative functors"
+          , url         :=  "https://en.wikibooks.org/wiki/Haskell/Applicative_functors"
+          }
         ]
     , sections :=
         [ .mk
@@ -1138,34 +1144,527 @@ namespace Coinduction
                 ]
             ]
         , .mk
-            "Example Coinductive Proofs: Addition on CoNatural Numbers"
+            "Example Coinductive Proofs: Addition on Conatural Numbers"
             [ .body
-                [ .ps "In this section, we demonstrate some basic coinductive proofs on $|coℕ$, taking addition as an example function to reason about. Many of these proofs could instead be done by a case-split on whether the input is $∞$ or whether it lies in $ℕ$. This style of proof does not generalise to other terminal coalgebras, so we avoid it where necessary. However, it is useful to have one lemma done in this non-coinductive manner:"
-                ]
-            , .block
-                { kind := .lem
-                , body :=
-                    [ .ps "The only element $x ∈ |coℕ$ with $|pred| x = x$ is $x = ∞$."
+                [ .p
+                    [ .s "In this section, we demonstrate some basic coinductive proofs on $|coℕ$, taking addition as an example function to reason about. Many of these proofs could instead be done by a case-split on whether the input is $∞$ or whether it lies in $ℕ$. This style of proof does not generalise to other terminal coalgebras, so we avoid it where necessary."
+                    -- , .s " However, it is useful to have one lemma done in this non-coinductive manner:"
                     ]
-                }
+                ]
+            -- , .block
+            --     { kind := .lem
+            --     , body :=
+            --         [ .ps "The only element $x ∈ |coℕ$ with $|pred| x = x$ is $x = ∞$."
+            --         ]
+            --     }
             , .body
                 [ .ps "<strong>Proof.</strong> Suppose (for contradiction) that $x ∈ ℕ$. Then, an inductive argument shows that $|pred| x$ is strictly smaller than $x$, so $|pred| x ≠ x$. $∎$"
                 ]
             , .body
-                [.ps "To begin, we define addition on $|coℕ$ in analogy to addition on $ℕ$. Fix conatural numbers $x, y ∈ |coℕ$. If $x = 0$ then we should take $0 + y := y$. If instead $x ≠ 0$ has predecessor, then we should have $|pred| (x + y) = (|pred| x) + y$."
+                [.ps "To begin, we define addition on $|coℕ$ in analogy to addition on $ℕ$. Fix conatural numbers $x, y ∈ |coℕ$. If $y = 0$ then we should ensure $x + 0 = x$. If instead $y ≠ 0$ has a predecessor, then we should have $|pred| (x + y) = x + (|pred| y)$."
                 ]
             , .block
                 { kind := .dfn
                 , title := "Addition on $|coℕ$"
                 , body :=
-                    [ .ps "Define a function $({-} + {-}) : |coℕ × |coℕ → |coℕ$ by"
+                    [ .p
+                        [ .s "Define a function $({-} + {-}) : |coℕ × |coℕ → |coℕ$ by"
+                        , .al
+                            [ "({-} + {-})"
+                            , "&:= |corec| (λ| (x, y) →"
+                            , .alignBreak
+                            , "&|quad|quad"
+                            , "|case| |pred| y| |of"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad"
+                            , "|Right| y' → |Right| (x, y')"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad"
+                            , "|Left| |no →"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad|quad"
+                            , "|case| |pred| x| |of"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                            , "|Right| x' → |Right| (x', 0)"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad|quad|quad|quad"
+                            , "|Left| |no → |Left| |no"
+                            , ")"
+                            ]
+                        ]
                     ]
                 }
-            -- TODO: Finish section `"Example Coinductive Proofs: Addition on CoNatural Numbers"`
+            , .body
+                [ .ps "The following proofs investigate the behaviour of $x + y$ based on whether $y = 0$, $y$ is the successor of a natural number, or $y = ∞$."
+                ]
+            , .block
+                { kind := .exa
+                , title := "$∀ x ∈ |coℕ, x + 0 = x$"
+                , body :=
+                    [ .ps "We use simple coinduction to prove this. Define functions $|lhs, |rhs : |coℕ → |coℕ$ to be left-hand and right-hand sides of this equation; i.e. $|lhs| x := x + 0$ and $|rhs| x := x$. Let $[-] : |coℕ → (|coℕ / |lhs = |rhs)$ be the projection onto the quotient where outputs $|lhs| x$ and $|rhs| x$ are identified. The simple coinductive rule states that to argue $|lhs = |rhs$, it suffices to show that $(1_{|No} + [-]) ∘ |pred ∘ |lhs = (1_{|No} + [-]) ∘ |pred ∘ |rhs$."
+                    , .p
+                        [ .s "Fix $x ∈ |coℕ$. In the case where $|pred| x = |no$, we have by the definition of $+$ that"
+                        , .al
+                            [ "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| x"
+                            , "&= (1_{|No} + [-])| (|pred| (x + 0))"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| |no"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (|pred| x)"
+                            , .alignBreak
+                            , "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| x"
+                            , "&= |left( (1_{|No} + [-]) ∘ |pred ∘ |rhs |right)| x"
+                            ]
+                        ]
+                    , .p
+                        [ .s "If instead we are in the case where $|pred| x = x' ≠ |no$, we refer to the definition of $+$ to verify that"
+                        , .al
+                            [ "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| x"
+                            , "&= (1_{|No} + [-])| (|pred| (x + 0))"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (x' + 0)"
+                            , .alignBreak
+                            , "&= [x' + 0]"
+                            , .alignBreak
+                            , "&= [|lhs| x']"
+                            , .alignBreak
+                            , "&= [|rhs| x']"
+                            , .alignBreak
+                            , "&= [x']"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| x'"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (|pred| x)"
+                            , .alignBreak
+                            , "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| x"
+                            , "&= |left( (1_{|No} + [-]) ∘ |pred ∘ |rhs |right)| x"
+                            ]
+                        , .s "The equality $[|lhs| x'] = [|rhs| x']$ holds because this equation is in the quotient of $|coℕ$ where each $|lhs| y$ is identified with $|rhs| y$. This step is analogous to an inductive hypothesis."
+                        ]
+                    , .ps "Our two cases verify that $(1_{|No} + [-]) ∘ |pred ∘ |lhs = (1_{|No} + [-]) ∘ |pred ∘ |rhs$. The simple coinductive rule then asserts that $|lhs = |rhs$; i.e. $x + 0 = x$ for all $x ∈ |coℕ$. $∎$"
+                    , .ps "The main takeaway from this example is the proof structure:"
+                    , .ul
+                        [ [.s "Define functions capturing the left-hand and right-hand sides of the equation;"]
+                        , [.s "Identify the goal the simple coinductive lemma provides;"]
+                        , [.s "Splitting into cases when necessary, verify that arbitrary inputs to each of the two functions yield the same outputs;"]
+                        , [.s "Conclude coinductively that the left-hand and right-hand sides of the equation are equal."]
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , title := "$∀ x, y ∈ |coℕ,|, x + (|Succ| y) = |Succ| (x + y)$"
+                , body :=
+                    [ .ps "Use a similar style of proof to argue that $∀ x, y ∈ |coℕ,|, x + (|Succ| y) = |Succ| (x + y)$. Here, $|Succ| y$ is the unique conatural number such that $|pred| (|Succ| y) = y ≠ |no$."
+                    , .ps "The previous example and this exercise together demonstrate that our definition of $+$ on $|coℕ$ restricts to the usual definition of $+$ on $ℕ$."
+                    ]
+                }
+            , .block
+                { kind := .exa
+                , title := "$∀ x ∈ |coℕ,|, x + ∞ = ∞$"
+                , body :=
+                    [ .ps "Let $|lhs, |rhs : |coℕ → |coℕ$ be the left-hand and right-hand sides of this equation, and denote by $[-] : |coℕ → (|coℕ / |lhs = |rhs)$ the projection onto their quotient. In particular, $|rhs : x ↦ ∞$ is a constant function. The simple coinductive rule provides us with the goal $(1_{|No} + [-]) ∘ |pred ∘ |lhs = (1_{|No} + [-]) ∘ |pred ∘ |rhs$, which we now verify."
+                    , .p
+                        [ .s "Fix $x ∈ |coℕ$. Then, appealing to the definition of $+$ and the fact that $|pred| ∞ = ∞ ≠ |no$, we have"
+                        , .al
+                            [ "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| x"
+                            , "&= (1_{|No} + [-])| (|pred| (x + ∞))"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (x + ∞)"
+                            , .alignBreak
+                            , "&= [x + ∞]"
+                            , .alignBreak
+                            , "&= [∞]"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| ∞"
+                            , .alignBreak
+                            , "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| x"
+                            , "&= |left( (1_{|No} + [-]) ∘ |pred ∘ |rhs |right)| x"
+                            ]
+                        , .s "This verifies the goal. Therefore, $∀ x ∈ |coℕ,|, x + ∞ = ∞$. $∎$"
+                        ]
+                    , .ps "The main takeaway of this example is that the functions capturing the left-hand and right-hand sides of the equation may seem a little stupid."
+                    ]
+                }
+            , .body
+                [ .ps "We now investigate the behaviour of $x + y$ based on the behaviour of $x$."
+                ]
+            , .block
+                { kind := .exa
+                , title := "$∀ y ∈ |coℕ,|, 0 + y = y$"
+                , body :=
+                    [ .ps "We don't immediately jump into coinduction yet. This is because we can dispense with a simple case first, avoiding an ugly case split in the middle of our coinductive proof. This simple case is when $|pred| y = |no$; i.e. $y = 0$. We have $0 + 0 = 0$ by a previous lemma, so we do not need to verify this as part of our coinduction. This leaves only one case to coinduct with: the case where $|pred| y ≠ |no$."
+                    , .ps "We coinduct. Set $A := |left|{ y ∈ |coℕ |given |pred| y ≠ |no |right|}$. Define functions $|lhs, |rhs : A → |coℕ$ to be the left-hand and right-hand sides of the target equation, and let $[-] : |coℕ → (|coℕ / |lhs = |rhs)$ be the corresponding quotient map. Our goal is to verify $(1_{|No} + [-]) ∘ |pred ∘ |lhs = (1_{|No} + [-]) ∘ |pred ∘ |rhs$."
+                    , .p
+                        [ .s "Fix $y ∈ A$. Put $y' := |pred| y ∈ |coℕ$. Then,"
+                        , .al
+                            [ "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| y"
+                            , "&= (1_{|No} + [-])| (|pred| (0 + y))"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (0 + y')"
+                            , .alignBreak
+                            , "&= [0 + y']"
+                            , .alignBreak
+                            , "&= [y']"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| y'"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (|pred| y)"
+                            , .alignBreak
+                            , "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| y"
+                            , "&= |left( (1_{|No} + [-]) ∘ |pred ∘ |rhs |right)| y"
+                            ]
+                        , .s "Here, the equality $[0 + y'] = [y']$ is justified depending on whether $|pred| y' = |no$. If $|pred| y' ≠ |no$, then $y' ∈ A$ is a valid input to $|lhs$ and $|rhs$, so the equality is justified by the equality $[|lhs| y'] = [|rhs| y']$. If instead $|pred| y' = |no$, then the equality is justified by previous work: $[0 + y'] = [0 + 0] = [0] = [y']$."
+                        ]
+                    , .ps "By coinduction, we have $|lhs = |rhs$, and the result is proven. $∎$"
+                    , .ps "The takeaway of this example is that simple cases can be dispensed with prior to coinduction, minimising case splits done in the more messy coinductive context."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Show that $∀ x, y ∈ |coℕ, (|Succ| x) + y = |Succ| (x + y)$."
+                    , .ps "Show that $∀ y ∈ |coℕ, ∞ + y = ∞$."
+                    ]
+                }
+            , .body
+                [ .ps "We are prepared to show that $+$ is commutative and associative."
+                ]
+            , .block
+                { kind := .exa
+                , title := "Commutativity of $+$"
+                , body :=
+                    [ .ps "We already have $x + 0 = x = 0 + x$ for all $x ∈ |coℕ$, so we need only show that $x + y = y + x$ for $x, y ∈ |coℕ$ with $|pred| x ≠ |no$ and $|pred| y ≠ |no$."
+                    , .p
+                        [ .s "Set $A := |left|{ a ∈ |coℕ |given |pred| a ≠ |no |right|}$. Let $|lhs, |rhs : A^2 → |coℕ$ be the left-hand and right-hand sides of the commutativity equation, and denote by $[-] : |coℕ → (|coℕ / |lhs = |rhs)$ their quotient map. For arbitrary $x, y ∈ A$, with predecessors $x' := |pred| x ≠ |no$ and $y' := |pred| y ≠ |no$, we have"
+                        , .al
+                            [ "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| (x, y)"
+                            , "&= (1_{|No} + [-])| (|pred| (x + y))"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (x + y')"
+                            , .alignBreak
+                            , "&= [x + y']"
+                            , .alignBreak
+                            , "&= [y' + x]"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (y' + x)"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (|pred| (|Succ| (y' + x)))"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (|pred| (|Succ| y' + x))"
+                            , .alignBreak
+                            , "&= (1_{|No} + [-])| (|pred| (y + x))"
+                            , .alignBreak
+                            , "|left( (1_{|No} + [-]) ∘ |pred ∘ |lhs |right)| (x, y)"
+                            , "&= |left( (1_{|No} + [-]) ∘ |pred ∘ |rhs |right)| (x, y)"
+                            ]
+                        , .s "in which $[x + y'] = [y' + x]$ should be justified carefully by the reader, and $|Succ| (y' + x) = |Succ| y' + x$ is due to an earlier exercise. By coinduction, $+$ is commutative. $∎$"
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , title := "Associativity of $+$"
+                , body :=
+                    [ .ps "Prove that $+$ is associative. Try to minimise the number of case-splits in your coinductive proof by front-loading any easy cases."
+                    ]
+                }
             ]
-        -- TODO: Section `"Example Coinductive Proofs: Inequality of CoNatural Numbers"`
-        -- TODO: Section `"Example Coinductive Proofs: \"ZipList\" Applicative on CoLists."`
-        -- TODO: Section `"Terminal Coalgebras: Categories Other Than $|Set$"`
+        , .mk
+            "Example Coinductive Proofs: Inequality of Conatural Numbers"
+            [ .body
+                [ .ps "A binary relation on a set $R$ is, from an inductive standpoint, easiest understood as a map $R × R → |tt{Bool}$. From a coinductive standpoint, it is easiest regarded as a subset of $R × R$."
+                ]
+            , .block
+                { kind := .dfn
+                , title := "Inequality on $|coℕ$"
+                , body :=
+                    [ .ps "The inequality relation $({-} ≤ {-})$ on $|coℕ$ is the image of the functions $|coℕ × |coℕ → |coℕ × |coℕ$ which maps $(x, δ) ↦ (x, x + δ)$. That is, for conatural numbers $x, y$, we have $x ≤ y$ iff $∃ δ ∈ |coℕ.|, y = x + δ$."
+                    ]
+                }
+            , .body
+                [ .ps "As one would hope, this relation is a partial order."
+                ]
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Give proofs that $≤$ is reflexive and transitive. Since the goals to be proven are not equality relationships, coinduction is not helpful here."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , title := "Antisymmetry of $≤$"
+                , body :=
+                    [ .ps "We wish to prove that for all $x, y ∈ |coℕ$, if $x ≤ y$ and $y ≤ x$, then $x = y$. This goal is equality, so we can attempt a proof by coinduction."
+                    , .ps "Set $A := |left|{ (x, y) ∈ |coℕ^2 |given x ≤ y |text{ and } y ≤ x |right|}$. Let $|lhs, |rhs : A → |coℕ$ be given by $|lhs : (x, y) ↦ x$ and $|rhs : (x, y) ↦ y$, and denote their quotient map by $[-] : |coℕ → (|coℕ / |lhs = |rhs)$. Complete a coinductive proof that $|lhs = |rhs$, and conclude that $≤$ is antisymmetric."
+                    , .ps "The important takeaway here is that the domain of the maps $|lhs, |rhs$ may be a complicated set, to account for assumptions required by a result."
+                    ]
+                }
+            , .body
+                [ .ps "Because we have proven these properties without appealing to a case split on $|coℕ = ℕ + |{∞|}$, these proofs do not depend on any knowledge of addition on $ℕ$. If one can prove that $({-} + {-}) : |coℕ × |coℕ → |coℕ$ restricts to a function $ℕ × ℕ → ℕ$, then all of the proofs provided in the previous sections yield the corresponding property on $ℕ$ for free."
+                ]
+            ]
+        , .mk
+            "Example Coinductive Proofs: Functions on Colists"
+            [ .body
+                [ .ps "In this section, we describe some functions on $|coList$s and prove some of their properties."
+                ]
+            , .block
+                { kind := .dfn
+                , title := "Mapping over $|coList$s"
+                , body :=
+                    [ .p
+                        [ .s "Fix sets $A$ and $B$. The function $|map : (A → B) → |coList| A → |coList| B$ is defined as follows:"
+                        , .al
+                            [ "|map| f"
+                            , "&:= |corec| (λ| |rm{as} →"
+                            , .alignBreak
+                            , "&|quad|quad|quad |case| |pop| |rm{as}| |of"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad"
+                            , "|Left| |no → |Left| |no"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad"
+                            , "|Right| (a, |rm{as}') → |Right| (f| a, |rm{as}')"
+                            , ")"
+                            ]
+                        ]
+                    , .ps "Here, $|corec : (|coList| A → |No + B × |coList| A) → |coList| A → |coList| B$."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Fix $f : A → B$, fix $a ∈ A$ and fix $|rm{as} ∈ |coList| A$. Prove that $|map| f| [] = []$ and that $|map| f| (a :: |rm{as}) = f a :: |map| f| |rm{as}$."
+                    , .ps "Here, $[]$ is the unique colist with $|pop| [] = |no$, having type $|coList| A$ or $|coList| B$ as is necessary for typechecking. Similarly, the colist $(a :: |rm{as})$ is uniquely determined by $|pop| (a :: |rm{as}) = (a, |rm{as})$."
+                    ]
+                }
+            , .body
+                [ .ps "As one would hope, $|map$ gives a functor instance for $|coList$."
+                ]
+            , .block
+                { kind := .exa
+                , title := "First functor law: $|map| 1_A = 1_{|coList| A}$ for any set $A$"
+                , body :=
+                    [ .ps "Let $|lhs, |rhs : |coList| A → |coList| A$ be $|lhs := |map| 1_A$ and $|rhs := 1_{|coList| A}$. Denote their quotient map by $[-] : |coList| A → (|coList| A / |lhs = |rhs)$. The simple coinductive lemma asks us to verify the goal $(1_{|No} + 1_A × [-]) ∘ |pop ∘ |lhs = (1_{|No} + 1_A × [-]) ∘ |pop ∘ |rhs$."
+                    , .p
+                        [ .s "Fix $|rm{as} ∈ |coList| A$. In the case where $|pop| |rm{as} = |no$, we have $|pop| (|map| 1_A| |rm{as}) = |no$ and hence"
+                        , .al
+                            [ "|left( (1_{|No} + 1_A × [-]) ∘ |pop ∘ |lhs |right)| |rm{as}"
+                            , "&= (1_{|No} + 1_A × [-])| (|pop| (|map| 1_A| |rm{as}))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_A × [-])| |no"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_A × [-])| (|pop| |rm{as})"
+                            , .alignBreak
+                            , "|left( (1_{|No} + 1_A × [-]) ∘ |pop ∘ |lhs |right)| |rm{as}"
+                            , "&= |left( (1_{|No} + 1_A × [-]) ∘ |pop ∘ |rhs |right)| |rm{as}"
+                            ]
+                        , .s "In the case where $|pop| |rm{as} = (a, |rm{as}')$, we have $|pop| (|map| 1_A| |rm{as}) = (1_A| a, |map| 1_A| |rm{as}')$ and hence"
+                        , .al
+                            [ "|left( (1_{|No} + 1_A × [-]) ∘ |pop ∘ |lhs |right)| |rm{as}"
+                            , "&= (1_{|No} + 1_A × [-])| (|pop| (|map| 1_A| |rm{as}))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_A × [-])| (1_A| a, |map| 1_A| |rm{as}')"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_A × [-])| (a, |map| 1_A| |rm{as}')"
+                            , .alignBreak
+                            , "&= (a, [|map| 1_A| |rm{as}'])"
+                            , .alignBreak
+                            , "&= (a, [1_{|coList| A}| |rm{as}'])"
+                            , .alignBreak
+                            , "&= (a, [|rm{as}'])"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_A × [-])| (a, |rm{as}')"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_A × [-])| (|pop| |rm{as})"
+                            , .alignBreak
+                            , "|left( (1_{|No} + 1_A × [-]) ∘ |pop ∘ |lhs |right)| |rm{as}"
+                            , "&= |left( (1_{|No} + 1_A × [-]) ∘ |pop ∘ |rhs |right)| |rm{as}"
+                            ]
+                        , .s "This completes the coinduction. $∎$"
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , title := "Second functor law for $|coList$"
+                , body :=
+                    [ .ps "Prove that for any $A |→{f} B |→{g} C$ in $|Set$, we have $|map| (g ∘ f) = |map| g ∘ |map| f$."
+                    , .ps "This is an instance of a general phenomenon. Whenever $T : |C × |D → |D$ is a functor for which each $T (c, -) : |D → |D$ has an initial algebra, the mapping $c ↦ (|text{initial algebra for } T (c, -))$ defines the action on objects of a functor $|C → |D$."
+                    ]
+                }
+            , .body
+                [ .ps "We can use conatural numbers to measure the lengths of colists. Whereas one defines $|length : |List| A → ℕ$ by recursion from $|List| A$, one defines $|length : |coList| A → |coℕ$ by corecursion into $|coℕ$."
+                ]
+            , .block
+                { kind := .dfn
+                , title := "Lengths of $|coList$s"
+                , body :=
+                    [ .p
+                        [ .s "Fix a set $A$. The function $|length : |coList| A → |coℕ$ can be defined corecursively by"
+                        , .al
+                            [ "|length|"
+                            , "&:= |corec| (λ| |rm{as} →"
+                            , .alignBreak
+                            , "&|quad|quad|quad"
+                            , "|case| |pop| |rm{as}| |of"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad"
+                            , "|Left| |no → |Left| |no"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad"
+                            , "|Right| (a, |rm{as}') → |Right| |rm{as}'"
+                            , ")"
+                            ]
+                        , .s "Here, $|corec : (|coList| A → |No + |coList| A) → |coList| A → |coℕ$."
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Convince yourself that this is a sensible definition for $|length$. You may wish, for example, to show that this definition restricts to the usual length function $|List| A → ℕ$, or to verify that $|length| (|repeat| a) = ∞$."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Prove that for all $A |→{f} B$ in $|Set$ and all $|rm{as} ∈ |coList| A$, we have $|length| (|map| f| |rm{as}) = |length| |rm{as}$. Your proof should be by coinduction into $|coℕ$."
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Show that $|length : |coList| 1 → |coℕ$ is an isomorphism in $|Set$."
+                    , .ps "If you did not do so already, ensure that your proof uses only abstract nonsense; i.e. ensure your proof could be performed in any category with a terminal object. In particular, you may verify that $|coList| 1$ and $|coℕ$ satisfy the same universal property; alternatively, you may construct a corecursive function $|length^{-1} : |coℕ → |coList| 1$ and verify the isomorphism equations $|length ∘ |length^{-1} = 1_{|coℕ}$ and $|length^{-1} ∘ |length = 1_{|coList| 1}$ by coinduction."
+                    ]
+                }
+            , .body
+                [ .ps "One can also define concatenation of colists."
+                ]
+            , .block
+                { kind := .exr
+                , title := "Concatenating colists"
+                , body :=
+                    [ .ps "Fix a set $A$. Define a (polymorphic) corecursive function $({-} |mathbin{++} {-}) : |coList| A × |coList| A → |coList| A$ which concatenates the second colist after the first colist. Ensure that for all $A |→{f} B$ in $|Set$ and all $|rm{xs}, |rm{ys}, |rm{zs} ∈ |coList| A$, the following properties are satisfied:"
+                    , .ul
+                        [ [ .s "${++}$ restricts to the usual concatenation function $|List| A × |List| A → |List| A$;"
+                          ]
+                        , [ .s "$(|rm{xs} |mathbin{++} |rm{ys}) |mathbin{++} |rm{zs} = |rm{xs} |mathbin{++} (|rm{ys} |mathbin{++} |rm{zs})$;"
+                          ]
+                        , [ .s "$|length| (|rm{xs} |mathbin{++} |rm{ys}) = |length| |rm{xs} + |length| |rm{ys}$;"
+                          ]
+                        , [ .s "$|map| f| (|rm{xs} |mathbin{++} |rm{ys}) = |map| f| |rm{xs} |mathbin{++} |map| f| |rm{ys}$."
+                          ]
+                        ]
+                    ]
+                }
+            ]
+        , .mk
+            "Example Coinductive Proofs: \"ZipList\" Applicative on Colists"
+            [ .body
+                [ .ps "In Haskell, (lazy) lists carry two famous applicative structures. The usual applicative (which $|tt{Prelude}$ defines for $|tt{[]} :: {*} → {*}$) essentially corresponds to list comprehension. The second applicative (applied to $|tt{Control.Applicative}$'s $|tt{ZipList} :: {*} → {*}$) corresponds to zipping lists together. The first applicative keeps finite lists finite, and so can be defined on the inductive $|List$s. The second applicative makes use of laziness in an essential way, since it puts $|pure := |repeat$; hence, it must be defined on $|coList$s rather than mere $|List$s."
+                , .ps "In this section, we construct the $|tt{ZipList}$ applicative (modelled on $|coList$s), and prove that it is an $|tt{Applicative}$ functor. Note that we have already provided $|map : (A → B) → |coList| A → |coList| B$ to give a $|tt{Functor}$ on $|coList$."
+                ]
+            , .block
+                { kind := .dfn
+                , title := "$|tt{ZipList}$ applicative"
+                , body :=
+                    [ .p
+                        [ .s "Fix sets $A$ and $B$. Define the polymorphic function $|pure : A → |coList| A$ by $|pure := |repeat$. Define the polymorphic function $({-} |<*> {-}) : |coList| (A → B) × |coList| A → |coList| B$ corecursively by"
+                        , .al
+                            [ "({-} |<*> {-})"
+                            , "&:= |corec| (λ| (|rm{fs}, |rm{as}) →"
+                            , .alignBreak
+                            , "&|quad|quad|quad |case| |pop| |rm{fs},| |pop| |rm{as}| |of"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad"
+                            , "|Right| (f, |rm{fs}'),| |Right| (a, |rm{as}') →"
+                            , "|Right| (f| a, (|rm{fs}', |rm{as}'))"
+                            , .alignBreak
+                            , "&|quad|quad|quad|quad|quad"
+                            , "|tt{|text{|textunderscore}}, |tt{|text{|textunderscore}} → |Left| |no"
+                            , ")"
+                            ]
+                        , .s "Here, $|corec : |coList| (A → B) × |coList| A → |No + B × (|coList| (A → B) × |coList| A)$. The universal property guarantees that:"
+                        ]
+                    , .ul
+                        [ [ .s "$[] |<*> |rm{as} = []$ for all $|rm{as} ∈ |coList| A$;"
+                          ]
+                        , [ .s "$|rm{fs} |<*> [] = []$ for all $|rm{fs} ∈ |coList| (A → B)$;"
+                          ]
+                        , [ .s "$(f :: |rm{fs}) |<*> (a :: |rm{as}) = f| a :: (|rm{fs} |<*> |rm{as})$ for all $f : A → B$, $|rm{fs} ∈ |coList| (A → B)$, $a ∈ A$, $|rm{as} ∈ |coList| A$."
+                          ]
+                        ]
+                    ]
+                }
+            , .body
+                [ .ps "The following proof is a great example of coinduction, because it does not \"feel inductive\" in any way that might be misleading."
+                ]
+            , .block
+                { kind := .exa
+                , title := "Second applicative law: for all sets $A, B$, all $f : A → B$ and all $a ∈ A$, we have $|pure| f |<*> |pure| a = |pure| (f| a)$"
+                , body :=
+                    [ .ps "We prove this coinductively. Denote by $B^A$ the set of functions $A → B$, and define functions $|lhs, |rhs : B^A × A → |coList| B$ to capture the left-hand and right-hand sides of the goal equation. Denote by $[-] : |coList| B → (|coList| B / |lhs = |rhs)$ their quotient map. The simple coinductive lemma asks us to verify the goal $(1_{|No} + 1_B × [-]) ∘ |pop ∘ |lhs = (1_{|No} + 1_B × [-]) ∘ |pop ∘ |lhs$."
+                    , .p
+                        [ .s "Fix $(f, a) ∈ B^A × A$. Since $|repeat| x = x :: |repeat| x$ for all $x$, we have"
+                        , .al
+                            [ "|left( (1_{|No} + 1_B × [-]) ∘ |pop ∘ |lhs |right)| (f, a)"
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| (|pure| f |<*> |pure| a))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| (|repeat| f |<*> |repeat| a))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| ((f :: |repeat| f) |<*> (a :: |repeat| a)))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| (f| a :: (|repeat| f |<*> |repeat| a)))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (f| a, |repeat| f |<*> |repeat| a)"
+                            , .alignBreak
+                            , "&= (f| a, [|repeat| f |<*> |repeat| a])"
+                            , .alignBreak
+                            , "&= (f| a, [|pure| f |<*> |pure| a])"
+                            , .alignBreak
+                            , "&= (f| a, [|pure| (f| a)])"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (f| a, |pure| (f| a))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| (f| a :: |pure| (f| a)))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| (f| a :: |repeat| (f| a)))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| (|repeat| (f| a)))"
+                            , .alignBreak
+                            , "&= (1_{|No} + 1_B × [-])| (|pop| (|pure| (f| a)))"
+                            , .alignBreak
+                            , "|left( (1_{|No} + 1_B × [-]) ∘ |pop ∘ |lhs |right)| (f, a)"
+                            , "&= |left( (1_{|No} + 1_B × [-]) ∘ |pop ∘ |rhs |right)| (f, a)"
+                            ]
+                        , .s "which completes the coinduction. $∎$"
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , body :=
+                    [ .ps "Verify that the remaining three applicative laws are satisfied:"
+                    , .ul
+                        [ [ .s "$|pure| 1_A |<*> |rm{as} = |rm{as}$ for all $|rm{as} ∈ |coList| A$;"
+                          ]
+                        , [ .s "$|rm{fs} |<*> |pure| a = |pure| (λ| f → f| a) |<*> |rm{fs}$ for all $a ∈ A$;"
+                          ]
+                        , [ .s "$|pure| ({-} ∘ {-}) |<*> |rm{gs} |<*> |rm{fs} |<*> |rm{as} = |rm{gs} |<*> (|rm{fs} |<*> |rm{as})$ for all $|rm{as} ∈ |coList| A$, all $|rm{fs} ∈ |coList| (A → B)$ and all $|rm{gs} ∈ |coList| (B → C)$."
+                          ]
+                        ]
+                    , .ps "Here, $A, B, C$ are arbitrary sets. Note that $|<*>$ is left-associative: $|rm{xs} |<*> |rm{ys} |<*> |rm{zs} := (|rm{xs} |<*> |rm{ys}) |<*> |rm{zs}$."
+                    ]
+                }
+            ]
+        -- TODO: Section `"Further Results"`, including:
+          -- Whenever $F : |C × |D → |D$ is a functor for which each $F (c, -) : |D → |D$ has an initial algebra, the mapping $c ↦ (|text{initial algebra for } F (c, -))$ defines the action on objects of a functor $|C → |D$.
+        -- TODO: Section `"Terminal Coalgebras: Categories Other Than $|Set$"`, including:
+          -- Natural and conatural numbers in $|Top$
         -- TODO: Section `"Corecursion is not Laziness"`
         -- TODO: Section `"Summary"`
         ]
@@ -1197,6 +1696,12 @@ namespace Coinduction
             ,   («authoring defs».esc "coList", "\\texttt{coList}")
             ,   («authoring defs».esc "repeat", "\\texttt{repeat}")
             ,   («authoring defs».esc "Stream", "\\texttt{Stream}")
+            ,   («authoring defs».esc "lhs", "\\mathrm{lhs}")
+            ,   («authoring defs».esc "rhs", "\\mathrm{rhs}")
+            ,   («authoring defs».esc "map", "\\texttt{map}")
+            ,   («authoring defs».esc "length", "\\texttt{length}")
+            ,   («authoring defs».esc "pure", "\\texttt{pure}")
+            ,   («authoring defs».esc "<*>", "\\mathbin{\\texttt{<*>}}")
             ]
         |>.qsort «authoring defs».compareTranslations
     }

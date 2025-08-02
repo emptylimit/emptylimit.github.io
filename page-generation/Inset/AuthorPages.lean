@@ -123,6 +123,9 @@ namespace «authoring defs»
     ,   ("ℝ", "\\mathbb{R}")
     ,   ("𝕊", "\\mathbb{S}")
     ,   ("ℤ", "\\mathbb{Z}")
+        -- Operators
+    ,   ("∀", "\\forall")
+    ,   ("∃", "\\exists")
         -- Relationships
     ,   ("⊣", "\\dashv")
     ,   ("≥", "\\geq")
@@ -143,7 +146,7 @@ namespace «authoring defs»
     ,   ("⋯", "\\cdots")
         -- Symbols
     ,   ("∞", "\\infty")
-    ,   ("∎", "\\qed")
+    ,   ("∎", "\\square")
     ,   ("∅", "\\varnothing")
     ].qsort (fun (k₁, _) (k₂, _) => k₁.length ≥ k₂.length) -- Replace superstrings first
 
