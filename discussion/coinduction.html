@@ -137,6 +137,16 @@
                 </a>
               </li>
               <li>
+                <a href="#Corecursion-is-Not-Laziness">
+                  Corecursion is Not Laziness
+                </a>
+              </li>
+              <li>
+                <a href="#Summary-and-Further-Exercises">
+                  Summary and Further Exercises
+                </a>
+              </li>
+              <li>
                 <a href="#See-also">
                   See also
                 </a>
@@ -174,7 +184,7 @@
             This article is designed to be read linearly. Later sections depend on prior ones in essential ways, so skipping ahead may leave the reader confused.
           </p>
           <p>
-            Throughout, $0$ denotes either the number $0$ or the empty set, and $1 := \{0\}$ denotes the singleton set. The operator $+$ is used for disjoint union of sets and for addition of numbers.
+            Throughout, $0$ denotes either the number $0$ or the empty set, and $1 := \{0\}$ denotes the singleton set. The operator $+$ is used for disjoint union of sets, for coproducts, and for addition of numbers.
           </p>
         </section>
         <section id="Initial-Algebras-and-Inductive-Types:-The-Intuition-and-Construction">
@@ -1673,9 +1683,6 @@
             <p>
               Bisimulations identify streams exhibiting the "same behaviour" &mdash; two streams have the same behaviour just when their heads are the same and their tails have the same behaviour. The lemma can be read as the statement that <em>streams with the same behaviour are equal</em>.
             </p>
-            <p>
-              We will give an example application of this proof method in an upcoming section on example coinductive proofs.
-            </p>
           </div>
           <p>
             We stress that coinduction is not the only proof method for terminal coalgebras. In particular, non-equality predicates are difficult to prove in this way. Much like how many statements about natural numbers have direct, non-inductive proofs, some statements about conatural numbers also have direct, non-coinductive proofs.
@@ -2095,9 +2102,6 @@
             <p>
               Prove that for any $A \xrightarrow{f} B \xrightarrow{g} C$ in $\mathbf{Set}$, we have $\texttt{map}\ (g \circ f) = \texttt{map}\ g \circ \texttt{map}\ f$.
             </p>
-            <p>
-              This is an instance of a general phenomenon. Whenever $T : \mathsf{C} \times \mathsf{D} \to \mathsf{D}$ is a functor for which each $T (c, -) : \mathsf{D} \to \mathsf{D}$ has an initial algebra, the mapping $c \mapsto (\text{initial algebra for } T (c, -))$ defines the action on objects of a functor $\mathsf{C} \to \mathsf{D}$.
-            </p>
           </div>
           <p>
             We can use conatural numbers to measure the lengths of colists. Whereas one defines $\texttt{length} : \texttt{List}\ A \to \mathbb{N}$ by recursion from $\texttt{List}\ A$, one defines $\texttt{length} : \texttt{coList}\ A \to \mathrm{co}\mathbb{N}$ by corecursion into $\mathrm{co}\mathbb{N}$.
@@ -2297,6 +2301,103 @@
             </p>
           </div>
         </section>
+        <section id="Corecursion-is-Not-Laziness">
+          <h2>
+            Corecursion is Not Laziness
+          </h2>
+          <p>
+            Because terminal coalgebras often involve infinite-size data structures, one could be misled into believing that corecursion is essentially the same as laziness in Haskell or similar languages. For example, the defining equation $\texttt{repeat}\ a := a :: \texttt{repeat}\ a$ makes essential use of laziness, and is a valid application of corecursion into $\texttt{coList}\ A$.
+          </p>
+          <p>
+            <strong>Corecursion is not laziness.</strong> Rather, it could be seen as a "productive" kind of laziness.
+          </p>
+          <p>
+            For example, consider the definition $x := x$. Haskell is totally fine with this definition of a list $x$, because of lazy evaluation. However, $x$ does not correspond to a $\texttt{coList}\ A$ &mdash; since its computation never terminates, it cannot correspond to a finite-length $\texttt{List}\ A$, and since evaluation of $x$ never shows any meaningful output, it cannot correspond to an infinite stream either. The issue here is that the definition $x := x$ is not "productive"; it never produces any meaningful data to be observed. Contrast this with $\texttt{repeat}\ a := a :: \texttt{repeat}\ a$; here, although the lazy computation never terminates, it always productively yields the next element of the colist in finite time.
+          </p>
+          <p>
+            Corecursion can be seen as a very picky kind of laziness. Only some lazy definitions are genuinely corecursive, making the promise to repeatedly generate observable data in finitely long time intervals (even if a full evaluation would never terminate). Suffice it to say, colists do not fully capture the scope of Haskell's list type.
+          </p>
+        </section>
+        <section id="Summary-and-Further-Exercises">
+          <h2>
+            Summary and Further Exercises
+          </h2>
+          <p>
+            In this article, we saw how intial algebras for endofunctors capture inductive types and give rise to their induction schemas, before dualising the category theory to provide a notion of coinduction for terminal coalgebras. We provided several example proofs by coinduction to help develop comfort and intuition for the process. Finally, as a word of caution, we mentioned that corecursion is not the same as lazy evaluation.
+          </p>
+          <p>
+            Here are some exercises to close this article.
+          </p>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Conatural numbers in $\mathbf{Top}$)
+            </h3>
+            <p>
+              Endow $\{\text{no}\}$ with its only topology, and consider the mapping $T : X \mapsto \{\text{no}\} + X$ as an endofunctor $\mathbf{Top} \to \mathbf{Top}$.
+            </p>
+            <ul>
+              <li>
+                Verify that Adámek's fixed point theorem applies to construct the initial algebra and terminal coalgebra for $T$.
+              </li>
+              <li>
+                Give the most succinct justification you can for why the initial algebra is, at the level of sets, the same as the initial algebra for the endofunctor $(X \mapsto \{\text{no}\} + X) : \mathbf{Set} \to \mathbf{Set}$. That is, why does constructing the initial algebra in $\mathbf{Top}$ and then forgetting the topological structure yield the same result as first forgetting all topology and then constructing the initial algebra?
+              </li>
+              <li>
+                Do the same for the terminal coalgebra.
+              </li>
+              <li>
+                Give bases for the topologies on the initial algebra and terminal coalgebra for $T$.
+              </li>
+              <li>
+                Assigning the name $\infty$ to the "extra" element of $\mathrm{co}\mathbb{N}$ suggests a convergent sequence $1, 2, 3, \dots \to \infty$. Verify that this sequence indeed converges to $\infty$.
+              </li>
+              <li>
+                Characterise the convergent sequences in the initial algebra for $T$, and characterise the convergent sequences in its terminal coalgebra.
+              </li>
+            </ul>
+          </div>
+          <div class="block-section-element">
+            <h3>
+              Exercise. (Real numbers)
+            </h3>
+            <p>
+              The content of this exercise is taken from <a href=https://doi.org/10.1016/S1571-0661%2805%2980272-5>this paper</a>, mentioned in the "References" section of <a href=https://ncatlab.org/nlab/show/coalgebra+of+the+real+interval>this nLab article</a>.
+            </p>
+            <p>
+              Let $\mathbf{Poset}$ be the category of posets and monotone functions. For $X, Y \in \mathbf{Poset}$, define a poset $X \cdot Y$ by equipping the underlying set $X \times Y$ with the <strong>lexicographic order</strong>: first compare elements in $X$, and break ties by comparing in $Y$. More precisely, $(x, y) \leq (x', y')$ iff $(x < x') \text{ or } (x = x' \text{ and } y \leq y')$<span class=sidenote-container><sup><a class=sidenote-anchor href=#sidenote-6>[6]</a></sup><span class=sidenote id=sidenote-6>
+              [6]
+              We've swapped the arguments to $\cdot$ as compared to <a href=https://doi.org/10.1016/S1571-0661%2805%2980272-5>the reference</a>.</span></span>. For $X \in \mathbf{Poset}$, endow the set $\texttt{Stream}\ X$ with the lexicographic order $[x_0, \ldots] \leq [y_0, \ldots]$ iff
+              <span class="block-equation">$$
+                   \left(
+                                (x_0 < y_0)
+                                \text{ or } (x_0 = y_0 \text{ and } x_1 < y_1)
+                                \text{ or } (x_0 = y_0 \text{ and } x_1 = y_1 \text{ and } x_2 < y_2)
+                                \text{ or } \cdots
+                              \right) \text{ or } \left(
+                                x_0 = y_0
+                                \text{ and } x_1 = y_1
+                                \text{ and } \cdots
+                              \right)
+                            
+                $$
+              </span>(which you may wish to pin down more precisely.)
+            </p>
+            <ul>
+              <li>
+                Fix $I \in \mathbf{Poset}$. Show that $X \mapsto I \cdot X$ gives the action on objects of a functor $I \cdot {-} : \mathbf{Poset} \to \mathbf{Poset}$.
+              </li>
+              <li>
+                Let $\omega = (0 < 1 < \cdots) \in \mathbf{Poset}$. Construct the terminal coalgebra for $\omega \cdot {-}$, and verify that its underlying set is $\texttt{Stream}\ \omega$.
+              </li>
+              <li>
+                Let $2 := (0 < 1) \in \mathbf{Poset}$. Find an order isomorphism $\texttt{Stream}\ \omega \simeq \texttt{Stream}\ 2$ (i.e. an isomorphism in $\mathbf{Poset}$).
+              </li>
+              <li>
+                By referring to <a href=https://doi.org/10.1016/S1571-0661%2805%2980272-5>this reference</a> or otherwise, find an order isomorphism $\texttt{Stream}\ 2 \simeq [0, 1) \subseteq \mathbb{R}$. Conclude that the half-open unit interval has a universal property given by being a terminal coalgebra for $\omega \cdot {-}$.
+              </li>
+            </ul>
+          </div>
+        </section>
         <section id="See-also">
           <h2>
             See also
@@ -2311,6 +2412,11 @@
                   TODO: Fill out the list of links! Go dig up all of the results you've catalogued.
                 </a>
               </li>
+              <li>
+                <a href="http://www.tac.mta.ca/tac/volumes/20/10/20-10.pdf">
+                  Algebraic Real Analysis (Referenced by https://ncatlab.org/nlab/show/coalgebra+of+the+real+interval)
+                </a>
+              </li>
             </ul>
           </p>
         </section>
@@ -2320,6 +2426,9 @@
           </h2>
           <p>
             <ol class="bibliography">
+              <li>
+                Duško Pavlović, and Vaughan R. Pratt.<em> On coalgebra of real numbers.</em> Accessed August, 2025. URL: <a href=https://doi.org/10.1016/S1571-0661%2805%2980272-5>https://doi.org/10.1016/S1571-0661%2805%2980272-5</a>.
+              </li>
               <li>
                 Wikibooks authors.<em> Haskell/Applicative functors.</em> Accessed August, 2025. URL: <a href=https://en.wikibooks.org/wiki/Haskell/Applicative_functors>https://en.wikibooks.org/wiki/Haskell/Applicative_functors</a>.
               </li>

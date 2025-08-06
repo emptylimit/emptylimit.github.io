@@ -78,6 +78,7 @@ namespace «authoring defs»
     ,   (esc "Graph", "\\mathbf{Graph}")
     ,   (esc "Group", "\\mathbf{Group}")
     ,   (esc "Monoid", "\\mathbf{Monoid}")
+    ,   (esc "Poset", "\\mathbf{Poset}")
     ,   (esc "Set", "\\mathbf{Set}")
     ,   (esc "SimpleGraph", "\\mathbf{SimpleGraph}")
     ,   (esc "Top", "\\mathbf{Top}")
@@ -143,7 +144,9 @@ namespace «authoring defs»
     ,   ("→", "\\to")
     ,   ("↠", "\\twoheadrightarrow")
         -- Stand-ins
+    ,   ("⬝", "\\cdot")
     ,   ("⋯", "\\cdots")
+    ,   ("…", "\\ldots")
         -- Symbols
     ,   ("∞", "\\infty")
     ,   ("∎", "\\square")

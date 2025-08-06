@@ -43,6 +43,13 @@ namespace Coinduction
           , title       :=  "Haskell/Applicative functors"
           , url         :=  "https://en.wikibooks.org/wiki/Haskell/Applicative_functors"
           }
+        , { accessDate  :=  { year := 2025, month := some 8 : Date }
+          , authors     :=  [ .real "Duško" "Pavlović"
+                            , .real "Vaughan R." "Pratt"
+                            ]
+          , title       :=  "On coalgebra of real numbers"
+          , url         :=  "https://doi.org/10.1016/S1571-0661%2805%2980272-5"
+          }
         ]
     , sections :=
         [ .mk
@@ -54,7 +61,7 @@ namespace Coinduction
                   , .s ". This article is programming-language agnostic, but we will write code in a Haskell-ish way when code is required. This article will include many exercises and proofs. They are all within reach; try to do them without having them spoiling them first!"
                   ]
                 , .ps "This article is designed to be read linearly. Later sections depend on prior ones in essential ways, so skipping ahead may leave the reader confused."
-                , .ps "Throughout, $0$ denotes either the number $0$ or the empty set, and $1 := |{0|}$ denotes the singleton set. The operator $+$ is used for disjoint union of sets and for addition of numbers."
+                , .ps "Throughout, $0$ denotes either the number $0$ or the empty set, and $1 := |{0|}$ denotes the singleton set. The operator $+$ is used for disjoint union of sets, for coproducts, and for addition of numbers."
                 ]
             ]
         , .mk
@@ -1136,7 +1143,6 @@ namespace Coinduction
                 , body :=
                     [ .ps "Fix a set $A$, and let $∼$ be an equivalence relation on $|Stream| A$ satisfying the assumptions of the previous lemma (with $T : X ↦ A × X$). Fix arbitrary $|rm{as}, |rm{bs} ∈ |Stream| A$, and write $|pop| |rm{as} = (a, |rm{as}')$ and $|pop| |rm{bs} = (b, |rm{bs}')$. The assumption on $∼$ is that if $|rm{as} ∼ |rm{bs}$, then $(a, [|rm{as}']) = (b, [|rm{bs}'])$; i.e. $a = b$ and $|rm{as}' ∼ |rm{bs}'$. Such a relation $∼$ is called a <strong>bisimulation</strong> on $|Stream| A$, and the lemma guarantees that the only bisimulation is the equality relation. Thus, to prove that two streams are equal, it suffices to construct a bisimulation which identifies them."
                     , .ps "Bisimulations identify streams exhibiting the \"same behaviour\" &mdash; two streams have the same behaviour just when their heads are the same and their tails have the same behaviour. The lemma can be read as the statement that <em>streams with the same behaviour are equal</em>."
-                    , .ps "We will give an example application of this proof method in an upcoming section on example coinductive proofs."
                     ]
                 }
             , .body
@@ -1492,7 +1498,8 @@ namespace Coinduction
                 , title := "Second functor law for $|coList$"
                 , body :=
                     [ .ps "Prove that for any $A |→{f} B |→{g} C$ in $|Set$, we have $|map| (g ∘ f) = |map| g ∘ |map| f$."
-                    , .ps "This is an instance of a general phenomenon. Whenever $T : |C × |D → |D$ is a functor for which each $T (c, -) : |D → |D$ has an initial algebra, the mapping $c ↦ (|text{initial algebra for } T (c, -))$ defines the action on objects of a functor $|C → |D$."
+                    -- TODO: If this vv is to be included, it needs proper justification somewhere in the article.
+                    -- , .ps "This is an instance of a general phenomenon. Whenever $T : |C × |D → |D$ is a functor for which each $T (c, -) : |D → |D$ has an initial algebra, the mapping $c ↦ (|text{initial algebra for } T (c, -))$ defines the action on objects of a functor $|C → |D$."
                     ]
                 }
             , .body
@@ -1661,20 +1668,97 @@ namespace Coinduction
                     ]
                 }
             ]
-        -- TODO: Section `"Further Results"`, including:
-          -- Whenever $F : |C × |D → |D$ is a functor for which each $F (c, -) : |D → |D$ has an initial algebra, the mapping $c ↦ (|text{initial algebra for } F (c, -))$ defines the action on objects of a functor $|C → |D$.
-          -- An adjunction `F : C <--> D : U` for which endofunctors `S : C --> C` and `T : D --> D` satisfy `F ∘ S ≃ T ∘ F` and `U ∘ T ≃ S ∘ U` induces an adjunction `S-Alg <--> T-Alg` which, upon passage to the carrier objects, restricts to `F ⊣ U`.
-          -- (Corollary of the above) Suppose endofunctors `S : C --> C` and `T : D --> D` are related by an adjunction `F ⊣ U` as above. Let `S i --- cons --> i` be an initial `S`-algebra. Then, `T` has an initial algebra with carrier object `F i`. (Dually, a terminal `T`-coalgebra forgets to a terminal `S`-algebra.)
-        -- TODO: Section `"Terminal Coalgebras: Categories Other Than $|Set$"`, including:
-          -- Natural and conatural numbers in $|Top$
-        -- TODO: Section `"Corecursion is not Laziness"`
-        -- TODO: Section `"Summary"`
+        , .mk
+            "Corecursion is Not Laziness"
+            [ .body
+                [ .ps "Because terminal coalgebras often involve infinite-size data structures, one could be misled into believing that corecursion is essentially the same as laziness in Haskell or similar languages. For example, the defining equation $|repeat| a := a :: |repeat| a$ makes essential use of laziness, and is a valid application of corecursion into $|coList| A$."
+                , .ps "<strong>Corecursion is not laziness.</strong> Rather, it could be seen as a \"productive\" kind of laziness."
+                , .ps "For example, consider the definition $x := x$. Haskell is totally fine with this definition of a list $x$, because of lazy evaluation. However, $x$ does not correspond to a $|coList| A$ &mdash; since its computation never terminates, it cannot correspond to a finite-length $|List| A$, and since evaluation of $x$ never shows any meaningful output, it cannot correspond to an infinite stream either. The issue here is that the definition $x := x$ is not \"productive\"; it never produces any meaningful data to be observed. Contrast this with $|repeat| a := a :: |repeat| a$; here, although the lazy computation never terminates, it always productively yields the next element of the colist in finite time."
+                , .ps "Corecursion can be seen as a very picky kind of laziness. Only some lazy definitions are genuinely corecursive, making the promise to repeatedly generate observable data in finitely long time intervals (even if a full evaluation would never terminate). Suffice it to say, colists do not fully capture the scope of Haskell's list type."
+                ]
+            ]
+        , .mk
+            "Summary and Further Exercises"
+            [ .body
+                [ .ps "In this article, we saw how intial algebras for endofunctors capture inductive types and give rise to their induction schemas, before dualising the category theory to provide a notion of coinduction for terminal coalgebras. We provided several example proofs by coinduction to help develop comfort and intuition for the process. Finally, as a word of caution, we mentioned that corecursion is not the same as lazy evaluation."
+                , .ps "Here are some exercises to close this article."
+                ]
+            , .block
+                { kind := .exr
+                , title := "Conatural numbers in $|Top$"
+                , body :=
+                    [ .ps "Endow $|No$ with its only topology, and consider the mapping $T : X ↦ |No + X$ as an endofunctor $|Top → |Top$."
+                    , .ul
+                        [ [ .s "Verify that Adámek's fixed point theorem applies to construct the initial algebra and terminal coalgebra for $T$."
+                          ]
+                        , [ .s "Give the most succinct justification you can for why the initial algebra is, at the level of sets, the same as the initial algebra for the endofunctor $(X ↦ |No + X) : |Set → |Set$. That is, why does constructing the initial algebra in $|Top$ and then forgetting the topological structure yield the same result as first forgetting all topology and then constructing the initial algebra?"
+                          ]
+                        , [ .s "Do the same for the terminal coalgebra."
+                          ]
+                        , [ .s "Give bases for the topologies on the initial algebra and terminal coalgebra for $T$."
+                          ]
+                        , [ .s "Assigning the name $∞$ to the \"extra\" element of $|coℕ$ suggests a convergent sequence $1, 2, 3, |dots → ∞$. Verify that this sequence indeed converges to $∞$."
+                          ]
+                        , [ .s "Characterise the convergent sequences in the initial algebra for $T$, and characterise the convergent sequences in its terminal coalgebra."
+                          ]
+                        ]
+                    ]
+                }
+            , .block
+                { kind := .exr
+                , title := "Real numbers"
+                , body :=
+                    [ .p
+                        [ .s "The content of this exercise is taken from "
+                        , .a "https://doi.org/10.1016/S1571-0661%2805%2980272-5" "this paper"
+                        , .s ", mentioned in the \"References\" section of "
+                        , .a "https://ncatlab.org/nlab/show/coalgebra+of+the+real+interval" "this nLab article"
+                        , .s "."
+                        ]
+                    , .p
+                        [ .s "Let $|Poset$ be the category of posets and monotone functions. For $X, Y ∈ |Poset$, define a poset $X ⬝ Y$ by equipping the underlying set $X × Y$ with the <strong>lexicographic order</strong>: first compare elements in $X$, and break ties by comparing in $Y$. More precisely, $(x, y) ≤ (x', y')$ iff $(x < x') |text{ or } (x = x' |text{ and } y ≤ y')$"
+                        , .sn
+                            [ .s "We've swapped the arguments to $⬝$ as compared to "
+                            , .a "https://doi.org/10.1016/S1571-0661%2805%2980272-5" "the reference"
+                            , .s "."
+                            ]
+                        , .s ". For $X ∈ |Poset$, endow the set $|Stream| X$ with the lexicographic order $[x_0, …] ≤ [y_0, …]$ iff"
+                        , .eqn
+                            " |left(
+                                (x_0 < y_0)
+                                |text{ or } (x_0 = y_0 |text{ and } x_1 < y_1)
+                                |text{ or } (x_0 = y_0 |text{ and } x_1 = y_1 |text{ and } x_2 < y_2)
+                                |text{ or } ⋯
+                              |right) |text{ or } |left(
+                                x_0 = y_0
+                                |text{ and } x_1 = y_1
+                                |text{ and } ⋯
+                              |right)
+                            "
+                        , .s "(which you may wish to pin down more precisely.)"
+                        ]
+                    , .ul
+                        [ [ .s "Fix $I ∈ |Poset$. Show that $X ↦ I ⬝ X$ gives the action on objects of a functor $I ⬝ {-} : |Poset → |Poset$."
+                          ]
+                        , [ .s "Let $ω = (0 < 1 < ⋯) ∈ |Poset$. Construct the terminal coalgebra for $ω ⬝ {-}$, and verify that its underlying set is $|Stream| ω$."
+                          ]
+                        , [ .s "Let $2 := (0 < 1) ∈ |Poset$. Find an order isomorphism $|Stream| ω ≃ |Stream| 2$ (i.e. an isomorphism in $|Poset$)."
+                          ]
+                        , [ .s "By referring to "
+                          , .a "https://doi.org/10.1016/S1571-0661%2805%2980272-5" "this reference"
+                          , .s " or otherwise, find an order isomorphism $|Stream| 2 ≃ [0, 1) ⊆ ℝ$. Conclude that the half-open unit interval has a universal property given by being a terminal coalgebra for $ω ⬝ {-}$."
+                          ]
+                        ]
+                    ]
+                }
+            ]
         ]
     , seeAlso :=
         { readNext :=
             none
         , links :=
             [ .mk "" "TODO: Fill out the list of links! Go dig up all of the results you've catalogued."
+            , .mk "http://www.tac.mta.ca/tac/volumes/20/10/20-10.pdf" "Algebraic Real Analysis (Referenced by https://ncatlab.org/nlab/show/coalgebra+of+the+real+interval)"
             ]
         }
     , preamble :=
