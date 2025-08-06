@@ -21,6 +21,10 @@
     - [ ] Adjust all the current URLs in `/page-generation/Pages/*.lean` to use the namespaced ones
   - [ ] `inset` should update `script/glossary.js`'s list of all pages.
     - This will be slightly easier once the `URL` namespace is set up.
+  - [ ] `inset` should automatically generate a list of all hyperlinks to referenced lemmas/etc (stuff with "outlink? \ne none"), and chuck it (nicely)
+        onto the end of the "See Also" section.
+      [ ] Sort the list. Remove duplicates.
+      [ ] Maybe `inset` should also do this automatically for any known `URL` which has been referenced in the article?
 
 # Known missing pages:
   - [ ] "discussion/functor.html" "Functor"
