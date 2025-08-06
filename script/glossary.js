@@ -66,6 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tags:   [ "adjunctions",
                   "adjoints", ],
       },
+      { title:  "Coinduction",
+        topic:  topicUniversalConstructions,
+        href:   "discussion/coinduction.html",
+        tags:   [ "coinduction" ], // "induction", "induct"
+      },
       // Proof-family
       { title:  "Right Adjoints Preserve Limits",
         topic:  topicUniversalConstructions,
