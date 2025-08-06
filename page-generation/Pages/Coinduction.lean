@@ -87,7 +87,7 @@ namespace Coinduction
                 { kind := .lem
                 , title := "Algebras form a category"
                 , outLink? :=
-                    some { href := "../proofs/algebras-form-a-category.html" }
+                    some { href := "../proof/algebras-form-a-category.html" }
                 , body :=
                     [ .ps "The algebras for an endofunctor $T : |C → |C$ form a category, equipped with identity arrows $1_{T| a |→{α} a} := 1_a$ and with composition of morphisms given by composition in $|C$."
                     ]
@@ -1758,7 +1758,7 @@ namespace Coinduction
             none
         , links :=
             [ .mk "http://www.tac.mta.ca/tac/volumes/20/10/20-10.pdf" "Algebraic Real Analysis (Referenced by https://ncatlab.org/nlab/show/coalgebra+of+the+real+interval)"
-            , .mk "../proofs/algebras-form-a-category.html" "Algebras form a category"
+            , .mk "../proof/algebras-form-a-category.html" "Algebras form a category"
             , .mk "../proof/constructors-are-isomorphisms.html" "Constructors are isomorphisms"
             , .mk "../proof/initial-objects-have-no-proper-subobjects.html" "Initial objects have no proper subobjects"
             , .mk "../proof/simple-inductive-rule-for-initial-algebras.html" "Simple inductive rule for initial algebras"

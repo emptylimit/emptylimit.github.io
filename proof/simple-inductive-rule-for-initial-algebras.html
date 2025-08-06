@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>
+      Simple Inductive Rule for Initial Algebras - Empty Limit
+    </title>
+    <link
+      rel="icon"
+      href="../asset/logo/logo-128-round.png"
+    >
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    >
+    <link
+      rel="stylesheet"
+      href="../style.css"
+    >
+    <!--
+      NOTE: The following elements allow for `KaTeX` to be used on this webpage.
+      SOURCE: https://katex.org/docs/browser
+    -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css"
+      integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP"
+      crossorigin="anonymous"
+    >
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js"
+      integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js"
+      integrity="sha384-hCXGrW6PitJEwbkoStFjeJxv+fSOOQKOPbJxSfM6G5sWZjAyWhXiTIIAmQqnlLlh"
+      crossorigin="anonymous"
+    ></script>
+    <!--
+      NOTE: `../script/discussion.js` is included after `KaTeX` to make `KaTeX` available
+      in `../script/discussion.js`.
+    -->
+    <script
+      src="../script/discussion.js"
+    ></script>
+  </head>
+  <body>
+    <nav>
+      <a href="../index.html">
+        <div class="logo">
+          <img
+            src="../asset/logo/logo-270.png"
+            alt="Logo"
+          >
+        </div>
+      </a>
+      <div class="link-container">
+        <a
+          href="../glossary.html"
+          class="nav-link"
+        >
+          Glossary
+        </a>
+        <a
+          href="../about.html"
+          class="nav-link"
+        >
+          About
+        </a>
+      </div>
+    </nav>
+    <main class="family">
+      <div id="contents-bar">
+        <div id="contents-bar-outer-container">
+          <div id="contents-bar-inner-container">
+            <div class="bar-title">
+              <span>
+                Contents
+              </span>
+              <button id="contents-bar-hide">hide <span class=keyboard-shortcut-hint>(c)</span>
+
+              </button>
+            </div>
+            <div class="contents-bar-page-name">
+              Simple Inductive Rule for Initial Algebras: <a href=#>(top)</a>
+            </div>
+            <ul>
+              <li>
+                <a href="#Theorem-statement">
+                  Theorem statement
+                </a>
+              </li>
+              <li>
+                <a href="#Proof">
+                  Proof
+                </a>
+              </li>
+              <li>
+                <a href="#Example-Uses">
+                  Example Uses
+                </a>
+              </li>
+              <li>
+                <a href="#See-also">
+                  See also
+                </a>
+              </li>
+              <li>
+                <a href="#Bibliography">
+                  Bibliography
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <article id="content">
+        <div>
+          <h1>
+            Simple Inductive Rule for Initial Algebras
+          </h1>
+          <p>
+            <em>
+              Written by: Gabriel Field.
+            </em>
+          </p>
+        </div>
+        <section id="Theorem-statement">
+          <h2>
+            Theorem statement
+          </h2>
+          <div class="block-section-element">
+            <h3>
+              Theorem. (Simple inductive rule for proving that maps out of initial algebras are equal)
+            </h3>
+            <p>
+              Let $T\ i \xrightarrow{\texttt{cons}} i$ be the initial algebra for an endofunctor $T : \mathsf{C} \to \mathsf{C}$ and let $f, g : i \to a$ be parallel arrows out of $i$. Suppose that the equaliser $ι : e \rightarrowtail i$ of $f$ and $g$ exists in $\mathsf{C}$. Then, if $f \circ \texttt{cons} \circ T\ ι = g \circ \texttt{cons} \circ T\ ι$, we must have $f = g$.
+            </p>
+            <p>
+              
+            </p>
+          </div>
+          <p>
+            The dual result is often more useful. Let $j \xrightarrow{\texttt{des}} T\ j$ be the terminal coalgebra for $T : \mathsf{C} \to \mathsf{C}$ and let $f, g : a \to j$ be parallel arrows into $j$. Suppose that the coequaliser $\pi : j \twoheadrightarrow e$ of $f$ and $g$ exists in $\mathsf{C}$. Then, if $T\ \pi \circ \texttt{des} \circ f = T\ \pi \circ \texttt{des} \circ g$, we must have $f = g$.
+          </p>
+          <div class="block-static-diagram-container">
+            <iframe
+              height="302"
+              class="quiver-embed block-static-diagram"
+              src="https://q.uiver.app/#q=WzAsNSxbMCwxLCJqIl0sWzAsMCwiYSJdLFswLDIsImUiXSxbMiwyLCJUXFwgZSJdLFsyLDEsIlRcXCBqIl0sWzEsMCwiZiIsMix7Im9mZnNldCI6MX1dLFsxLDAsImciLDAseyJvZmZzZXQiOi0xfV0sWzAsMiwiXFxwaSIsMix7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFswLDQsIlxcbWF0aHJte2Rlc30iXSxbNCwzLCJUXFwgXFxwaSJdLFsyLDMsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==&embed"
+              data-src="https://q.uiver.app/#q=WzAsNSxbMCwxLCJqIl0sWzAsMCwiYSJdLFswLDIsImUiXSxbMiwyLCJUXFwgZSJdLFsyLDEsIlRcXCBqIl0sWzEsMCwiZiIsMix7Im9mZnNldCI6MX1dLFsxLDAsImciLDAseyJvZmZzZXQiOi0xfV0sWzAsMiwiXFxwaSIsMix7InN0eWxlIjp7ImhlYWQiOnsibmFtZSI6ImVwaSJ9fX1dLFswLDQsIlxcbWF0aHJte2Rlc30iXSxbNCwzLCJUXFwgXFxwaSJdLFsyLDMsIiIsMix7InN0eWxlIjp7ImJvZHkiOnsibmFtZSI6ImRhc2hlZCJ9fX1dXQ==&embed"
+            ></iframe>
+          </div>
+        </section>
+        <section id="Proof">
+          <h2>
+            Proof
+          </h2>
+          <p>
+            FIXME: $\square$
+          </p>
+        </section>
+        <section id="Example-Uses">
+          <h2>
+            Example Uses
+          </h2>
+          <p>
+            Our <a href=../discussion/coinduction.html>article on coinduction</a> has many example applications of this rule. They include reasoning about addition on the conatural numbers, various properties of functions on colists, and a proof that the "ZipList" applicative satisfies the applicative laws.
+          </p>
+        </section>
+        <section id="See-also">
+          <h2>
+            See also
+          </h2>
+          <p>
+            <h3 class="see-also">
+              See also:
+            </h3>
+            <ul class="see-also">
+              <li>
+                <a href="../discussion/coinduction.html">
+                  Coinduction
+                </a>
+              </li>
+            </ul>
+          </p>
+        </section>
+        <section id="Bibliography">
+          <h2>
+            Bibliography
+          </h2>
+          <p>
+            <ol class="bibliography">
+              <li>
+                nLab authors (including Urs Schreiber, Bruno Gavranović, Fabian, varkor, Todd Trimble, Toby Bartels, David Corfield, and Mike Schulman).<em> terminal coalgebra for an endofunctor.</em> Accessed July, 2025. URL: <a href=https://ncatlab.org/nlab/show/terminal+coalgebra+for+an+endofunctor>https://ncatlab.org/nlab/show/terminal+coalgebra+for+an+endofunctor</a>.
+              </li>
+            </ol>
+          </p>
+        </section>
+      </article>
+      <div id="sidenotes-bar">
+        <div class="bar-title">
+          <span>
+            Sidenotes
+          </span>
+          <button id="sidenotes-bar-hide">hide <span class=keyboard-shortcut-hint>(s)</span>
+
+          </button>
+        </div>
+      </div>
+    </main>
+    <footer>
+      <a href="../index.html">
+        <div class="logo">
+          <img
+            src="../asset/logo/logo-270.png"
+            alt="Logo"
+          >
+        </div>
+      </a>
+    </footer>
+  </body>
+</html>

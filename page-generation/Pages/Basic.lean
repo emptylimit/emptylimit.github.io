@@ -14,6 +14,9 @@ import Pages.GeneralisedElements
 -- import Pages.Limits
 -- import Pages.Products
 import Pages.Coinduction
+import Pages.ConstructorsAreIsomorphisms
+import Pages.InitialObjectsHaveNoProperSubobjects
+import Pages.SimpleInductiveRuleForInitialAlgebras
 
 /- IMPORTS: Proof-family pages -/
 
@@ -22,6 +25,7 @@ import Pages.FunctorsPreserveCommutativeDiagrams
 import Pages.FunctorsPreserveIsomorphisms
 import Pages.GeneralisedElementsDetermineObjects
 import Pages.RightAdjointsPreserveLimits
+import Pages.AlgebrasFormCategory
 
 
 
@@ -41,9 +45,13 @@ def pagesToRender : List (Page × System.FilePath) :=
   -- , .mk Products.it "discussion/product.html"
   , .mk Coinduction.it "discussion/coinduction.html"
     -- Proof-family
+  , .mk AlgebrasFormCategory.it "proof/algebras-form-a-category.html"
   , .mk FullyFaithfulFunctorsReflectIsomorphisms.it "proof/fully-faithful-functors-reflect-isomorphisms.html"
   , .mk FunctorsPreserveCommutativeDiagrams.it "proof/functors-preserve-commutative-diagrams.html"
   , .mk FunctorsPreserveIsomorphisms.it "proof/functors-preserve-isomorphisms.html"
   , .mk GeneralisedElementsDetermineObjects.it "proof/generalised-elements-determine-objects.html"
   , .mk RightAdjointsPreserveLimits.it "proof/right-adjoints-preserve-limits.html"
+  , .mk ConstructorsAreIsomorphisms.it "proof/constructors-are-isomorphisms.html"
+  , .mk InitialObjectsHaveNoProperSubobjects.it "proof/initial-objects-have-no-proper-subobjects.html"
+  , .mk SimpleInductiveRuleForInitialAlgebras.it "proof/simple-inductive-rule-for-initial-algebras.html"
   ]
