@@ -1757,8 +1757,13 @@ namespace Coinduction
         { readNext :=
             none
         , links :=
-            [ .mk "" "TODO: Fill out the list of links! Go dig up all of the results you've catalogued."
-            , .mk "http://www.tac.mta.ca/tac/volumes/20/10/20-10.pdf" "Algebraic Real Analysis (Referenced by https://ncatlab.org/nlab/show/coalgebra+of+the+real+interval)"
+            [ .mk "http://www.tac.mta.ca/tac/volumes/20/10/20-10.pdf" "Algebraic Real Analysis (Referenced by https://ncatlab.org/nlab/show/coalgebra+of+the+real+interval)"
+            , .mk "../proofs/algebras-form-a-category.html" "Algebras form a category"
+            , .mk "../proof/constructors-are-isomorphisms.html" "Constructors are isomorphisms"
+            , .mk "../proof/initial-objects-have-no-proper-subobjects.html" "Initial objects have no proper subobjects"
+            , .mk "../proof/simple-inductive-rule-for-initial-algebras.html" "Simple inductive rule for initial algebras"
+            , .mk "../proof/adamek-fixed-point-theorem.html" "Adámek's fixed point theorem"
+            , .mk "../proof/coinduction-in-set.html" "Coinduction in $\\mathbf{Set}$"
             ]
         }
     , preamble :=
@@ -1792,3 +1797,15 @@ namespace Coinduction
         |>.qsort «authoring defs».compareTranslations
     }
 end Coinduction
+
+#check Element
+def Page.outlinks (it : Page) : List URL :=
+  it.sections.flatMap <| fun sec =>
+    sec.elements.flatMap <| fun element =>
+      match element with
+      | .body _ => []
+      | .block b =>
+        b.outLink?.toList.map <| fun outlink =>
+          outlink.href
+#eval Coinduction.it.outlinks.forM <| fun url =>
+  IO.println url
