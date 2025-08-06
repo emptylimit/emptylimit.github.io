@@ -1797,15 +1797,3 @@ namespace Coinduction
         |>.qsort «authoring defs».compareTranslations
     }
 end Coinduction
-
-#check Element
-def Page.outlinks (it : Page) : List URL :=
-  it.sections.flatMap <| fun sec =>
-    sec.elements.flatMap <| fun element =>
-      match element with
-      | .body _ => []
-      | .block b =>
-        b.outLink?.toList.map <| fun outlink =>
-          outlink.href
-#eval Coinduction.it.outlinks.forM <| fun url =>
-  IO.println url
