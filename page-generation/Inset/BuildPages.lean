@@ -522,7 +522,7 @@ private def ida.frame.controls (totalFrameCount : Nat) : StateT WriterState Id U
 private def ida.frame.text (texts : List (Option Text)) : StateT WriterState Id Unit := do
   if texts.all Option.isNone then return ()
   inTag "div" [.mk "class" "supporting-text"] do
-    for (frameNumber, text) in (texts |>.map (match · with | none => [.s "~"] | some t => t) |>.enumFrom 1) do
+    for (text, frameNumber) in (texts |>.map (match · with | none => [.s "~"] | some t => t) |>.zipIdx 1) do
       inTag "span" [.mk "class" (if frameNumber = 1 then "" else "fake-hidden")] do
         comment' s!"Frame {frameNumber}"
         _root_.text text
@@ -530,7 +530,7 @@ private def ida.frame.text (texts : List (Option Text)) : StateT WriterState Id 
 /-- Write out the (static) commutative diagrams within an interactive commutative diagram. -/
 private def ida.frame.cdas (ds : List Diagram) : StateT WriterState Id Unit := do
   inTag "div" [.mk "class" "block-static-diagram-container"] do
-    for (frameNumber, d) in ds.enumFrom 1 do
+    for (d, frameNumber) in ds.zipIdx 1 do
       comment' s!"Frame {frameNumber}"
       cda.iframe d (if frameNumber = 1 then "" else "fake-hidden")
 
