@@ -38,7 +38,14 @@ namespace SimpleInductiveRuleForInitialAlgebras
         , .mk
             "Proof"
             [ .body
-                [ .ps "FIXME: $∎$"
+                [ .ps "Since the diagram is already drawn above, we prove the dual result. The condition $T| π ∘ |des ∘ f = T| π ∘ |des ∘ g$ guarantees that $T| π ∘ |des$ factors through $π$; that is, there is a unique map $ε : e → T| e$ (occupying the dashed line drawn above) such that $T| π ∘ |des = ε ∘ π$. This map $ε$ gives a coalgebra structure $e |→{ε} T| e$ such that $π$ is a coalgebra morphism from $j |→{|des} T| j$ to $e |→{ε} T| e$."
+                , .p
+                    [ .s "Since $π$ is an epimorphism in $|C$ and composition of coalgebra morphisms is done by composing maps in $|C$, we see that $π$ is an epimorphism in the category of coalgebras for $T$. Since "
+                    , .a "./initial-objects-have-no-proper-subobjects.html" "terminal objects have no proper quotient objects"
+                    , .s ", $π$ must be an isomorphism in the category of coalgebras. However, for the coequaliser $π$ of $f$ and $g$ to be an isomorphism, we must have $f = g$ to begin with"
+                    , .sn [.s "A worthwhile exercise!"]
+                    , .s ". $∎$"
+                    ]
                 ]
             ]
         , .mk
@@ -47,7 +54,7 @@ namespace SimpleInductiveRuleForInitialAlgebras
                 [ .p
                     [ .s "Our "
                     , .a "../discussion/coinduction.html" "article on coinduction"
-                    , .s " has many example applications of this rule. They include reasoning about addition on the conatural numbers, various properties of functions on colists, and a proof that the \"ZipList\" applicative satisfies the applicative laws."
+                    , .s " has many example applications of this rule. Consequences of the rule as stated include the structural induction schemas on inductive types. Consequences of the dual include reasoning about addition on the conatural numbers, various properties of functions on colists, and a proof that the \"ZipList\" applicative satisfies the applicative laws."
                     ]
                 ]
             ]

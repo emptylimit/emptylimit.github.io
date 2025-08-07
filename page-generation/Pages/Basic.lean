@@ -17,6 +17,8 @@ import Pages.Coinduction
 import Pages.ConstructorsAreIsomorphisms
 import Pages.InitialObjectsHaveNoProperSubobjects
 import Pages.SimpleInductiveRuleForInitialAlgebras
+import Pages.AdamekFixedPointTheorem
+import Pages.CoinductionInSet
 
 /- IMPORTS: Proof-family pages -/
 
@@ -45,7 +47,9 @@ def pagesToRender : List (Page × System.FilePath) :=
   -- , .mk Products.it "discussion/product.html"
   , .mk Coinduction.it "discussion/coinduction.html"
     -- Proof-family
+  , .mk AdamekFixedPointTheorem.it "proof/adamek-fixed-point-theorem.html"
   , .mk AlgebrasFormCategory.it "proof/algebras-form-a-category.html"
+  , .mk CoinductionInSet.it "proof/coinduction-in-set.html"
   , .mk FullyFaithfulFunctorsReflectIsomorphisms.it "proof/fully-faithful-functors-reflect-isomorphisms.html"
   , .mk FunctorsPreserveCommutativeDiagrams.it "proof/functors-preserve-commutative-diagrams.html"
   , .mk FunctorsPreserveIsomorphisms.it "proof/functors-preserve-isomorphisms.html"

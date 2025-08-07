@@ -72,11 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
         tags:   [ "coinduction" ], // "induction", "induct"
       },
       // Proof-family
-      { title:  "Right Adjoints Preserve Limits",
+      { title:  "Adámek's fixed Point Theorem",
         topic:  topicUniversalConstructions,
-        href:   "proof/right-adjoints-preserve-limits.html",
-        tags:   [ "adjunctions",
-                  "right adjoints preserve limits", ], // "adjoints", "limits"
+        href:   "proof/adamek-fixed-point-theorem.html",
+        tags:   [ "adameks fixed point" ], // "adamek", "fixed point"
       },
       { title:  "Fully Faithful Functors Reflect Isomorphisms",
         topic:  topicCategoriesFunctorsNaturalTransformations,
@@ -99,6 +98,17 @@ document.addEventListener('DOMContentLoaded', () => {
         href:   "proof/generalised-elements-determine-objects.html",
         tags:   [ "generalised elements determine objects",
                   "yoneda lemma", ], // "yoneda"
+      },
+      { title:  "Initial Objects Have No Proper Subobjects",
+        topic:  topicUniversalConstructions,
+        href:   "proof/initial-objects-have-no-proper-subobjects.html",
+        tags:   [ "initial objects have no proper subobjects" ], // "initial", "subobject"
+      },
+      { title:  "Right Adjoints Preserve Limits",
+        topic:  topicUniversalConstructions,
+        href:   "proof/right-adjoints-preserve-limits.html",
+        tags:   [ "adjunctions",
+                  "right adjoints preserve limits", ], // "adjoints", "limits"
       },
       // NOTE: These commented out pages don't exist, but I would really like them to exist.
       // { title:  "Functors",
