@@ -133,7 +133,7 @@ namespace Bib
                             , .real "David" "Corfield"
                             ]
                         ]
-      , title       :=  "coinduction"
+      , title       :=  "corecursion"
       , url         :=  "https://ncatlab.org/nlab/show/corecursion"
       }
 
