@@ -7,6 +7,11 @@ document.addEventListener('DOMContentLoaded', () => {
   /** This is a `const` to guarantee no typos in the definition of `pages`. */
   const topicUniversalConstructions = "Universal Constructions";
 
+  /** This is a `const` to guarantee no typos in the definition of `pages`. */
+  const typeWiki = "type-wiki";
+  /** This is a `const` to guarantee no typos in the definition of `pages`. */
+  const typeBlog = "type-blog";
+
   /**
    * An object capturing all pages on the website and their topics.
    * Type: `{ topics: string[],           // Array of topics that will get rendered on "Sort by: Topic"
@@ -39,12 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
     pages: [
       // Discussion-family
       { title:  "Categories",
+        type:   typeWiki,
         topic:  topicCategoriesFunctorsNaturalTransformations,
         href:   "discussion/categories.html",
         tags:   [ "category",
                   "categories", ],
       },
       { title:  "Generalised Elements",
+        type:   typeWiki,
         topic:  topicCategoriesFunctorsNaturalTransformations,
         href:   "discussion/generalised-elements.html",
         tags:   [ "generalised elements", ], // Don't match `' '` characters
@@ -61,50 +68,59 @@ document.addEventListener('DOMContentLoaded', () => {
       //   tags:   [ "colimits" ], // "limits"
       // },
       { title:  "Adjunctions",
+        type:   typeWiki,
         topic:  topicUniversalConstructions,
         href:   "discussion/adjunctions.html",
         tags:   [ "adjunctions",
                   "adjoints", ],
       },
       { title:  "Coinduction",
+        type:   typeWiki,
         topic:  topicUniversalConstructions,
         href:   "discussion/coinduction.html",
         tags:   [ "coinduction" ], // "induction", "induct"
       },
       // Proof-family
       { title:  "Adámek's fixed Point Theorem",
+        type:   typeWiki,
         topic:  topicUniversalConstructions,
         href:   "proof/adamek-fixed-point-theorem.html",
         tags:   [ "adameks fixed point" ], // "adamek", "fixed point"
       },
       { title:  "Fully Faithful Functors Reflect Isomorphisms",
+        type:   typeWiki,
         topic:  topicCategoriesFunctorsNaturalTransformations,
         href:   "proof/fully-faithful-functors-reflect-isomorphisms.html",
         tags:   [ "fully faithful functors reflect isomorphisms", ], // "fully faithful", "functors", "reflect", "isomorphisms"
       },
       { title:  "Functors Preserve Commutative Diagrams",
+        type:   typeWiki,
         topic:  topicCategoriesFunctorsNaturalTransformations,
         href:   "proof/functors-preserve-commutative-diagrams.html",
         tags:   [ "functors preserve commutative diagrams", // "functors", "diagrams"
                   "commutes", ],
       },
       { title:  "Functors Preserve Isomorphisms",
+        type:   typeWiki,
         topic:  topicCategoriesFunctorsNaturalTransformations,
         href:   "proof/functors-preserve-isomorphisms.html",
         tags:   [ "functors preserve isomorphisms" ], // "functors", "isomorphisms"
       },
       { title:  "Generalised Elements Determine Objects",
+        type:   typeWiki,
         topic:  topicUniversalConstructions,
         href:   "proof/generalised-elements-determine-objects.html",
         tags:   [ "generalised elements determine objects",
                   "yoneda lemma", ], // "yoneda"
       },
       { title:  "Initial Objects Have No Proper Subobjects",
+        type:   typeWiki,
         topic:  topicUniversalConstructions,
         href:   "proof/initial-objects-have-no-proper-subobjects.html",
         tags:   [ "initial objects have no proper subobjects" ], // "initial", "subobject"
       },
       { title:  "Right Adjoints Preserve Limits",
+        type:   typeWiki,
         topic:  topicUniversalConstructions,
         href:   "proof/right-adjoints-preserve-limits.html",
         tags:   [ "adjunctions",
@@ -463,6 +479,9 @@ document.addEventListener('DOMContentLoaded', () => {
   /** String designating alphabetical sorting of the glossary. */
   const sortAlphabetical = "sort-alphabetical";
 
+  /** String designating to search only for wiki articles in the glossary. */
+  const searchWiki = typeWiki;
+
   /**
    * Get "Sort by:" radio buttons.
    * This is a thunk so that their current state of them may be retrieved at multiple different times.
@@ -473,6 +492,22 @@ document.addEventListener('DOMContentLoaded', () => {
     Array.from(
       document
       .getElementById("sort-by-container")
+      .children
+    ).filter((element) => (element.tagName === "DIV"))
+    .flatMap((element) => (Array.from(element.children)))
+    .filter((element) => (element.tagName === "INPUT" && element.type === "radio"))
+  );
+
+  /**
+   * Get "Sort by:" radio buttons.
+   * This is a thunk so that their current state of them may be retrieved at multiple different times.
+   * @returns {HTMLElement[]}
+   *  An array holding all of the "Sory by:" `<input type="radio">`s
+   */
+  const getSearchForRadioInputs = () => (
+    Array.from(
+      document
+      .getElementById("search-for-container")
       .children
     ).filter((element) => (element.tagName === "DIV"))
     .flatMap((element) => (Array.from(element.children)))
@@ -492,6 +527,7 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   let glossaryState = {
     sortBy: sortAlphabetical,
+    searchFor: searchWiki,
     filteredPages: pages.pages
   };
 
@@ -500,10 +536,11 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const updateGlossary = () => {
     try {
+      const pagesToSearch = glossaryState.filteredPages.filter((page) => page.type === glossaryState.searchFor);
       const groups =
         glossaryState.sortBy === sortAlphabetical
-        ? groupAlphabetically(glossaryState.filteredPages)
-        : groupByTopic(glossaryState.filteredPages)
+        ? groupAlphabetically(pagesToSearch)
+        : groupByTopic(pagesToSearch)
       ;
       if (groups === null) {
         throw new Error("Groups were unable to be formed!");
@@ -525,6 +562,16 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const handleSortBy = (sortMethod) => {
     glossaryState.sortBy = sortMethod;
+    updateGlossary();
+  };
+
+  /**
+   * Handle change on "Search for:" field, producing a list of pages for the user.
+   * @param {string} searchFor
+   *  Content to switch to searching for
+   */
+  const handleSearchFor = (searchFor) => {
+    glossaryState.searchFor = searchFor;
     updateGlossary();
   };
 
@@ -566,8 +613,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Add event listener for changes to the "Sort by:" field
   getSortByRadioInputs()
+  .forEach((radio) => {
+    radio.addEventListener("click", (e) => handleSortBy(radio.value));
+  })
+  ;
+  // Add event listener for changes to the "Search for:" field
+  getSearchForRadioInputs()
     .forEach((radio) => {
-      radio.addEventListener("click", (e) => handleSortBy(radio.value));
+      radio.addEventListener("click", (e) => handleSearchFor(radio.value));
     })
   ;
   // Add event listener for changes to the search bar
@@ -582,6 +635,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Show results to the user
   document.getElementById("loading-spinner").classList.add("hidden");
   document.getElementById("sort-by-container").classList.remove("hidden");
+  document.getElementById("search-query-container").classList.remove("hidden");
   document.getElementById("page-list").classList.remove("hidden");
   document.getElementById("search-container").classList.remove("hidden");
 });

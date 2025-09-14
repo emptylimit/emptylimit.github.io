@@ -302,7 +302,7 @@ svg.reading-order path.arrow {
 
 /* SECTION: Glossary */
 
-main #sort-by-container,
+main .search-query-container,
 main #search-container {
   /* Size bounding box */
   max-width: 60em;
@@ -319,15 +319,16 @@ main #search-container {
   justify-content: space-evenly;
 }
 @media (width <= 700px) {
-  main #sort-by-container,
+  main .search-query-container,
   main #search-container {
     flex-direction: column;
     min-width: 0;
     width: 60%;
+    line-height: 1.5;
   }
 }
 
-main #sort-by-container {
+main .search-query-container {
   /* Background and border */
   background-color: var(--secondary-background-colour);
   border: calc(var(--border-thickness) / 2) solid var(--border-colour);
