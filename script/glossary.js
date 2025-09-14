@@ -486,14 +486,15 @@ document.addEventListener('DOMContentLoaded', () => {
    * Get "Sort by:" radio buttons.
    * This is a thunk so that their current state of them may be retrieved at multiple different times.
    * @returns {HTMLElement[]}
-   *  An array holding all of the "Sory by:" `<input type="radio">`s
+   *  An array holding all of the "Sort by:" `<input type="radio">`s
    */
   const getSortByRadioInputs = () => (
     Array.from(
       document
-      .getElementById("sort-by-container")
+      .getElementById("search-query-container")
       .children
     ).filter((element) => (element.tagName === "DIV"))
+    .filter((element) => (element.dataset.name === "sort-by"))
     .flatMap((element) => (Array.from(element.children)))
     .filter((element) => (element.tagName === "INPUT" && element.type === "radio"))
   );
@@ -502,14 +503,15 @@ document.addEventListener('DOMContentLoaded', () => {
    * Get "Sort by:" radio buttons.
    * This is a thunk so that their current state of them may be retrieved at multiple different times.
    * @returns {HTMLElement[]}
-   *  An array holding all of the "Sory by:" `<input type="radio">`s
+   *  An array holding all of the "Search for:" `<input type="radio">`s
    */
   const getSearchForRadioInputs = () => (
     Array.from(
       document
-      .getElementById("search-for-container")
+      .getElementById("search-query-container")
       .children
     ).filter((element) => (element.tagName === "DIV"))
+    .filter((element) => (element.dataset.name === "search-for"))
     .flatMap((element) => (Array.from(element.children)))
     .filter((element) => (element.tagName === "INPUT" && element.type === "radio"))
   );
@@ -621,6 +623,7 @@ document.addEventListener('DOMContentLoaded', () => {
   getSearchForRadioInputs()
     .forEach((radio) => {
       radio.addEventListener("click", (e) => handleSearchFor(radio.value));
+      console.debug(radio);
     })
   ;
   // Add event listener for changes to the search bar
@@ -634,7 +637,6 @@ document.addEventListener('DOMContentLoaded', () => {
   handleSortBy(sortAlphabetical);
   // Show results to the user
   document.getElementById("loading-spinner").classList.add("hidden");
-  document.getElementById("sort-by-container").classList.remove("hidden");
   document.getElementById("search-query-container").classList.remove("hidden");
   document.getElementById("page-list").classList.remove("hidden");
   document.getElementById("search-container").classList.remove("hidden");

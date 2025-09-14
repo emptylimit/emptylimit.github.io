@@ -37,28 +37,28 @@
           <img src="asset/loading-spinner/loading-spinner.gif" alt="Loading spinner">
         </div>
         <div class="hidden search-query-container" id="search-query-container">
-          <div id="sort-by-container">
+          <!-- <div id="sort-by-container"> -->
             <label>Sort by:</label>
-            <div>
+            <div data-name="sort-by">
               <input type="radio" name="suggestion-type" value="sort-alphabetical" checked>
               <label>Alphabetical</label>
             </div>
-            <div>
+            <div data-name="sort-by">
               <input type="radio" name="suggestion-type" value="sort-topic">
               <label>Topic</label>
             </div>
-          </div>
-          <div id="search-for-container">
+          <!-- </div> -->
+          <!-- <div id="search-for-container"> -->
             <label>Search for:</label>
-            <div>
+            <div data-name="search-for">
               <input type="radio" name="search-for" value="type-wiki" checked>
               <label>Wiki articles</label>
             </div>
-            <div>
+            <div data-name="search-for">
               <input type="radio" name="search-for" value="type -blog">
               <label>Blog articles</label>
             </div>
-          </div>
+          <!-- </div> -->
         </div>
         <div class="hidden" id="search-container">
           <input type="text" placeholder="Start typing a page title!" id="search-bar">

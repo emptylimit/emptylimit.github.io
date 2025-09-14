@@ -316,12 +316,35 @@ main #search-container {
   /* Align internal items */
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-evenly;
+}
+main .search-query-container {
+  display: grid;
+  grid-template:
+    "a b c"
+    "d e f"
+  ;
+}
+main .search-query-container > div {
+  display: grid;
+  grid-template:
+    "a b"
+  ;
+  grid-template-columns: 2em 100%;
+  column-gap: 0.25em;
+  /* flex-direction: row; */
+  justify-content: start;
+  align-items: center;
 }
 @media (width <= 700px) {
   main .search-query-container,
   main #search-container {
+    /* Align internal items */
+    display: flex;
+    align-items: center;
     flex-direction: column;
+    justify-content: space-evenly;
     min-width: 0;
     width: 60%;
     line-height: 1.5;
