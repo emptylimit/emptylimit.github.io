@@ -732,6 +732,9 @@ main.family .block-section-element > * {
   width: 100%; /* Make all elements of a `.block-section-element` flush left */
 }
 
+main.family #content section > ul {
+  width: calc(100% - 0.5em);
+}
 main.family #content .block-section-element ul {
   width: calc(100% - 2 * var(--side-padding) - 0.5em); /* Fix the widths of lists inside `.block-section-element`s */
 }
@@ -801,10 +804,11 @@ main.family ol.bibliography {
 
 /* SECTION: Proof-family pages: Interactive diagrams */
 
-main.family .interactive-diagram-container {
+main.family .interactive-diagram-container, 
+main.family .framed-diagram-container
+{
   /* Sizing */
   --width: 100%;
-  width: var(--width);
   max-width: var(--width);
   /* Internal content */
   display: flex;
@@ -812,8 +816,13 @@ main.family .interactive-diagram-container {
   align-items: center;
   justify-content: center;
 }
+main.family .interactive-diagram-container {
+  width: var(--width);
+}
 
-main.family .interactive-diagram-frame {
+main.family .interactive-diagram-frame,
+main.family .framed-diagram-frame
+{
   /* Colours */
   background-color: var(--secondary-background-colour);
   /* Sizing */
@@ -828,36 +837,56 @@ main.family .interactive-diagram-frame {
   align-items: center;
   justify-content: center;
 }
-main.family .interactive-diagram-frame > * {
+main.family .interactive-diagram-frame > *,
+main.family .framed-diagram-frame > *
+{
   --margin: 0.5em;
   width: 100%;
   padding-top: var(--margin);
   padding-bottom: var(--margin);
   text-align: center;
 }
-main.family .interactive-diagram-frame > *:first-child {
+main.family .interactive-diagram-frame > *:first-child,
+main.family .framed-diagram-frame > *:first-child
+{
   padding-top: 0; /* Prevent background colour "clipping" into the `.interactive-diagram-frame`'s border */
   margin-top: var(--margin);
 }
-main.family .interactive-diagram-frame > *:not(:last-child) {
+main.family .interactive-diagram-frame > *:not(:last-child),
+main.family .framed-diagram-frame > *:not(:last-child)
+{
   border-bottom: var(--border-thickness) solid var(--border-colour);
 }
 
-main.family .interactive-diagram-frame > .block-static-diagram-container {
+main.family .interactive-diagram-frame > .block-static-diagram-container,
+main.family .framed-diagram-frame > .block-static-diagram-container
+{
   background-color: var(--default-background-colour);
   overflow: hidden;
 }
-main.family .interactive-diagram-frame iframe.block-static-diagram {
+main.family .interactive-diagram-frame iframe.block-static-diagram
+{
   background-color: var(--secondary-background-colour);
 }
+main.family .framed-diagram-frame img.block-static-diagram
+{
+  max-width: 100%;
+  min-width: unset;
+  /* width: 100px; */
+  height: fit-content;
+}
 
-main.family .interactive-diagram-frame > .supporting-text {
+main.family .framed-diagram-frame > .supporting-text,
+main.family .interactive-diagram-frame > .supporting-text
+{
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-main.family .interactive-diagram-frame > .supporting-text > * {
+main.family .interactive-diagram-frame > .supporting-text > *,
+main.family .framed-diagram-frame > .supporting-text > *
+{
   margin-left: var(--margin);
   margin-right: var(--margin);
 }

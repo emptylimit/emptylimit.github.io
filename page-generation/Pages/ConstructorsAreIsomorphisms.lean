@@ -31,7 +31,7 @@ namespace ConstructorsAreIsomorphisms
             [ .body
                 [ .ps "Observe the following."
                 , .ida
-                    [ { cda :=
+                    [ { dia := .cda
                           { href := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgaSJdLFsyLDAsImkiXSxbMiwxLCJUXFwgaSJdLFswLDEsIlReMlxcIGkiXSxbMCwxLCJcXG1hdGhybXtjb25zfSJdLFszLDIsIlRcXCBcXG1hdGhybXtjb25zfSIsMV0sWzEsMiwiXFxleGlzdHMgISBkIiwwLHsic3R5bGUiOnsiYm9keSI6eyJuYW1lIjoiZGFzaGVkIn19fV0sWzAsMywiVFxcIGQiLDIseyJzdHlsZSI6eyJib2R5Ijp7Im5hbWUiOiJkYXNoZWQifX19XV0="
                           , height := some 302
                           }
@@ -39,7 +39,7 @@ namespace ConstructorsAreIsomorphisms
                           [ .s "$T| |cons$ is an algebra homomorphism and $|cons$ is an initial algebra, so there exists a unique algebra morphism $d$ as displayed above. We will show that $d = |cons^{-1}$."
                           ]
                       }
-                    , { cda :=
+                    , { dia := .cda
                           { href := "https://q.uiver.app/#q=WzAsNixbMCwwLCJUXFwgaSJdLFsyLDAsImkiXSxbMiwxLCJUXFwgaSJdLFswLDEsIlReMlxcIGkiXSxbMiwyLCJpIl0sWzAsMiwiVFxcIGkiXSxbMCwxLCJcXG1hdGhybXtjb25zfSJdLFszLDIsIlRcXCBcXG1hdGhybXtjb25zfSIsMV0sWzEsMiwiZCJdLFswLDMsIlRcXCBkIiwyXSxbMiw0LCJcXG1hdGhybXtjb25zfSJdLFszLDUsIlRcXCBcXG1hdGhybXtjb25zfSIsMl0sWzUsNCwiXFxtYXRocm17Y29uc30iLDJdXQ=="
                           , height := some 302
                           }
@@ -47,7 +47,7 @@ namespace ConstructorsAreIsomorphisms
                           [ .s "$|cons$ itself is an algebra homomorphism from $T^2| i |→{T| |cons} T| i$ to $T| i |→{|cons} i$, so the bottom square commutes. The whole diagram thus commutes, showing that $|cons ∘ d$ is an algebra morphism."
                           ]
                       }
-                    , { cda :=
+                    , { dia := .cda
                           { href := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgaSJdLFsyLDAsImkiXSxbMiwyLCJpIl0sWzAsMiwiVFxcIGkiXSxbMCwxLCJcXG1hdGhybXtjb25zfSJdLFszLDIsIlxcbWF0aHJte2NvbnN9IiwyXSxbMSwyLCJcXG1hdGhybXtjb25zfSBcXGNpcmMgZCIsMCx7ImN1cnZlIjotMn1dLFswLDMsIlRcXGxlZnQoIFxcbWF0aHJte2NvbnN9IFxcY2lyYyBkIFxccmlnaHQpIiwyLHsiY3VydmUiOjJ9XSxbMSwyLCIxX2kiLDJdLFswLDMsIlRcXCAxX2kiLDFdXQ=="
                           , height := some 302
                           }
@@ -55,7 +55,7 @@ namespace ConstructorsAreIsomorphisms
                           [ .s "Since $T| i |→{|cons} i$ is initial and $1_i$ is also an algebra morphism to $T| i |→{|cons} i$, we have $1_i = |cons ∘ d$. It remains to show that $d ∘ |cons = 1_{T| i}$."
                           ]
                       }
-                    , { cda :=
+                    , { dia := .cda
                           { href := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgaSJdLFsyLDAsImkiXSxbMiwyLCJUXFwgaSJdLFswLDIsIlReMlxcIGkiXSxbMCwxLCJcXG1hdGhybXtjb25zfSJdLFszLDIsIlRcXCBcXG1hdGhybXtjb25zfSIsMl0sWzEsMiwiZCJdLFswLDMsIlRcXCBkIiwyXSxbMCwyLCJUXFwgXFxtYXRocm17Y29uc30gXFxjaXJjIFRcXCBkIFxcXFw9IFRcXCAxX2kgPSAxX3tUXFwgaX0iLDFdXQ=="
                           , height := some 302
                           }

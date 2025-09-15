@@ -132,7 +132,7 @@ def Text.s : String → Text := ([·]) ∘ TextContent.s
 /- SECTION: Diagrams -/
 
 /-- A (static) commutative diagram. -/
-structure Diagram : Type where
+structure CommutativeDiagram : Type where
   /-- URL to diagram to render in an `<iframe>`, *without* the trailing `"&embed"`. -/
   href : URL
   /--
@@ -143,10 +143,38 @@ structure Diagram : Type where
   -/
   height : Option Nat := some 302
 
+/-- A (static) image. -/
+structure Image : Type where
+  /--
+    The URL of the image, relative to `/asset/article-image/`.
+
+    For example, provide `"example-article/example-image.png"` for this field to reference
+    the image `/asset/article-image/example-article/example-image.png`.
+  -/
+  src : URL
+  /--
+    The alt text for this image, if the user bothered to provide any.
+
+    Default: `none`
+  -/
+  alt : Option String := none
+  /--
+    Width of the `<img>` to render.
+    If `none`, allow the CSS to determine the width and height. It's not very good at it, though.
+
+    Default: `some 500`
+  -/
+  width : Option Nat := some 500
+
+/-- A diagram, either a `CommutativeDiagram` or an `Image`. -/
+inductive Diagram : Type where
+  | cda : CommutativeDiagram → Diagram
+  | img : Image → Diagram
+
 /-- A single frame in an `InteractiveDiagram`. -/
-structure IDFrame : Type where
+structure FramedDiagram : Type where
   /-- The static `Diagram` in this frame. -/
-  cda : Diagram
+  dia : Diagram
   /--
     Optional explanatory text.
 
@@ -161,7 +189,7 @@ structure IDFrame : Type where
   sidenote : Option Text := none
 
 /-- An interactive commutative diagram. -/
-def InteractiveDiagram : Type := List IDFrame
+def InteractiveDiagram : Type := List FramedDiagram
 
 
 
@@ -173,10 +201,24 @@ inductive BodyElement : Type where
   | p : Text → BodyElement
   /-- A `<ul>` of `Text`. -/
   | ul : List Text → BodyElement
-  /-- A (static) commutative `Diagram`. -/
-  | cda : Diagram → BodyElement
+  /-- A (static) `Diagram`. -/
+  | dia : Diagram → BodyElement
+  /-- A (static) `FramedDiagram`. -/
+  | fd : FramedDiagram → BodyElement
   /-- An interactive commutative diagram. -/
   | ida : InteractiveDiagram → BodyElement
+
+/-- Shorthand for including a single `CommutativeDiagram` as a `Diagram`. -/
+def BodyElement.cda : CommutativeDiagram → BodyElement := BodyElement.dia ∘ Diagram.cda
+
+/--
+  Shorthand for including an image `i` with supporting text `t` as a single `FramedDiagram`.
+
+  Default value for `t` is `none`.
+-/
+def BodyElement.img (i : Image) (t : Option Text := none) : BodyElement :=
+  BodyElement.fd
+    { dia := Diagram.img i , text := t }
 
 /-- Shorthand for including a single `String` as a `<p>` tag. -/
 def BodyElement.ps : String → BodyElement := BodyElement.p ∘ ([·]) ∘TextContent.s
@@ -354,21 +396,23 @@ def Page.unescape (page : Page) : Page :=
         | .sn s => .sn (Sidenote.unescape s)
   let Text.unescape (t : Text) : Text :=
         t.map TextContent.unescape
-  let IDFrame.unescape (f : IDFrame) : IDFrame :=
+  let FramedDiagram.unescape (f : FramedDiagram) : FramedDiagram :=
         { f
         with  text      := f.text.map Text.unescape
         ,     sidenote  := f.sidenote.map Text.unescape
         }
   let InteractiveDiagram.unescape (d : InteractiveDiagram) : InteractiveDiagram :=
-        d.map IDFrame.unescape
+        d.map FramedDiagram.unescape
   let BodyElement.unescape (be : BodyElement) : BodyElement :=
         match be with
         | .p t =>
           .p (Text.unescape t)
         | .ul ts =>
           .ul (ts.map Text.unescape)
-        | .cda d =>
-          .cda d
+        | .dia d =>
+          .dia d
+        | .fd d =>
+          .fd (FramedDiagram.unescape d)
         | .ida d =>
           .ida (InteractiveDiagram.unescape d)
   let Element.unescape (e : Element) : Element :=

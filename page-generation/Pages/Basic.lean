@@ -29,6 +29,10 @@ import Pages.GeneralisedElementsDetermineObjects
 import Pages.RightAdjointsPreserveLimits
 import Pages.AlgebrasFormCategory
 
+/- IMPORTS: Blog pages -/
+
+import Pages.BlogCoproductsGroupActions
+
 
 
 /- SECTION: `pagesToRender` -/
@@ -58,4 +62,6 @@ def pagesToRender : List (Page × System.FilePath) :=
   , .mk ConstructorsAreIsomorphisms.it "proof/constructors-are-isomorphisms.html"
   , .mk InitialObjectsHaveNoProperSubobjects.it "proof/initial-objects-have-no-proper-subobjects.html"
   , .mk SimpleInductiveRuleForInitialAlgebras.it "proof/simple-inductive-rule-for-initial-algebras.html"
+    -- Blog articles
+  , .mk BlogCoproductsGroupActions.it "blog/coproducts-via-group-actions.html"
   ]

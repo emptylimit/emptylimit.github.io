@@ -25,6 +25,11 @@
         onto the end of the "See Also" section.
       [ ] Sort the list. Remove duplicates.
       [ ] Maybe `inset` should also do this automatically for any known `URL` which has been referenced in the article?
+  - [ ] `inset` should support some warnings while it builds pages, to echo back to the user. These should include:
+    - [ ] An image has no specified `alt` text
+    - [ ] A bibliography is empty
+    - [ ] A list of authors is empty
+    - [ ] etc
 
 # Known missing pages:
   - [ ] "discussion/functor.html" "Functor"
@@ -35,3 +40,4 @@
   - [ ] "proof/yoneda-embedding-is-fully-faithful.html" "Yoneda Embedding is Fully Faithful"
   - [ ] "proof/characterisation-of-equivalences-of-categories.html" "Characterisation of Equivalences of Categories"
   - [ ] "proof/finite-dimensional-vector-spaces-equivalent-to-matrices.html" "Linear Transformations are Equivalent to Matrices"
+

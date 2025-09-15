@@ -126,6 +126,13 @@ document.addEventListener('DOMContentLoaded', () => {
         tags:   [ "adjunctions",
                   "right adjoints preserve limits", ], // "adjoints", "limits"
       },
+      // Blog articles
+      { title:  "Coproducts via Group Actions",
+        type:   typeBlog,
+        topic:  topicUniversalConstructions,
+        href:   "blog/coproducts-via-group-actions.html",
+        tags:   [ "coproducts via group actions" ] // "coproducts", "group actions"
+      }
       // NOTE: These commented out pages don't exist, but I would really like them to exist.
       // { title:  "Functors",
       //   topic:  topicCategoriesFunctorsNaturalTransformations,
@@ -631,6 +638,25 @@ document.addEventListener('DOMContentLoaded', () => {
   // Add event listener for key down to jump to search bar
   document.addEventListener("keydown", handleKeyDown);
 
+  // Reset radio buttons
+  document.getElementsByName("sort-by")
+    .forEach((element, i) => {
+      if (i == 0) {
+        element.checked = true;
+      } else {
+        element.checked = false;
+      }
+    })
+  ;
+  document.getElementsByName("search-for")
+    .forEach((element, i) => {
+      if (i == 0) {
+        element.checked = true;
+      } else {
+        element.checked = false;
+      }
+    })
+  ;
   // Clear out search bar
   document.getElementById("search-bar").value = "";
   // Produce default list of pages

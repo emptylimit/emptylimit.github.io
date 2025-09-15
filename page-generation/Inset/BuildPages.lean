@@ -474,7 +474,7 @@ private def ul (ts : List Text) : StateT WriterState Id Unit := do
 
   The `extraClasses`, if not `""`, are appended to the written class list.
 -/
-private def cda.iframe (d : Diagram) (extraClasses : String := "") : StateT WriterState Id Unit := do
+private def cda.iframe (d : CommutativeDiagram) (extraClasses : String := "") : StateT WriterState Id Unit := do
   childlessTag "iframe" <|
     let options : List (String × String) :=
       [ .mk "class" ("quiver-embed block-static-diagram" ++ (if extraClasses = "" then "" else s!" {extraClasses}"))
@@ -486,9 +486,62 @@ private def cda.iframe (d : Diagram) (extraClasses : String := "") : StateT Writ
       | some h  => .mk "height" s!"{h}" :: options
 
 /-- Write a (static) commutative diagram. -/
-private def cda (d : Diagram) : StateT WriterState Id Unit := do
+private def cda (d : CommutativeDiagram) : StateT WriterState Id Unit := do
   inTag "div" [.mk "class" "block-static-diagram-container"] do
     cda.iframe d
+
+/--
+  Write out the `<img>` for an image.
+
+  The `extraClasses`, if not `""`, are appended to the written class list.
+-/
+private def img.img (i : Image) (extraClasses : String := "") : StateT WriterState Id Unit := do
+  let options : List (String × String) :=
+      [ .mk "class" ("block-static-diagram" ++ (if extraClasses = "" then "" else s!" {extraClasses}"))
+      , .mk "alt" <|
+        match i.alt with
+        | .none => "No alt text provided. Please complain if you see this message!"
+        | .some t => t
+      , .mk "src" s!"../asset/article-image/{i.src}"
+      ]
+  justTag "img" <|
+    match i.width with
+    | .none => options
+    | .some h => .mk "width" s!"{h}" :: options
+
+/-- Write out an image. -/
+private def img (i : Image) : StateT WriterState Id Unit := do
+  inTag "div" [.mk "class" "block-static-diagram-container"] do
+    img.img i
+
+/-- Write a (static) diagram. -/
+private def dia (d : Diagram) : StateT WriterState Id Unit := do
+  match d with
+  | .cda d => cda d
+  | .img i => img i
+
+/-- Write out the underlying `Diagram` of a `FramedDiagram`. -/
+private def fd.dia (d : Diagram) : StateT WriterState Id Unit := do
+  inTag "div" [.mk "class" "block-static-diagram-container"] do
+    match d with
+    | .cda d => cda.iframe d
+    | .img i => img.img i
+
+/-- Write out the accompanying `Text` of a `FramedDiagram`. -/
+private def fd.text (text : Option Text) : StateT WriterState Id Unit := do
+  match text with
+  | .none => pure ()
+  | .some text =>
+    inTag "div" [.mk "class" "supporting-text"] do
+      inTag' "span" do
+        _root_.text text
+
+/-- Write out a `FramedDiagram`. -/
+private def fd (d : FramedDiagram) : StateT WriterState Id Unit := do
+  inTag "div" [.mk "class" "framed-diagram-container"] do
+    inTag "div" [.mk "class" "framed-diagram-frame"] do
+      fd.dia d.dia
+      fd.text d.text
 
 /--
   Write the controls bar for an interactive commutative diagram.
@@ -527,20 +580,23 @@ private def ida.frame.text (texts : List (Option Text)) : StateT WriterState Id 
         comment' s!"Frame {frameNumber}"
         _root_.text text
 
-/-- Write out the (static) commutative diagrams within an interactive commutative diagram. -/
-private def ida.frame.cdas (ds : List Diagram) : StateT WriterState Id Unit := do
+/-- Write out the (static) diagrams within an interactive commutative diagram. -/
+private def ida.frame.dias (ds : List Diagram) : StateT WriterState Id Unit := do
   inTag "div" [.mk "class" "block-static-diagram-container"] do
     for (d, frameNumber) in ds.zipIdx 1 do
       comment' s!"Frame {frameNumber}"
-      cda.iframe d (if frameNumber = 1 then "" else "fake-hidden")
+      let extraClasses := (if frameNumber = 1 then "" else "fake-hidden")
+      ; match d with
+        | .cda d => cda.iframe d extraClasses
+        | .img i => img.img i extraClasses
 
 /-- Write an interactive commutative diagram. -/
 private def ida (d : InteractiveDiagram) : StateT WriterState Id Unit := do
   set { (←get) with okAsDiscussion := false } -- No `InteractiveDiagram`s on Discussion-family pages
   inTag "div" [.mk "class" "interactive-diagram-container"] do
     inTag "div" [.mk "class" "interactive-diagram-frame"] do
-      ida.frame.cdas (d.map IDFrame.cda)
-      ida.frame.text (d.map IDFrame.text)
+      ida.frame.dias (d.map FramedDiagram.dia)
+      ida.frame.text (d.map FramedDiagram.text)
       ida.frame.controls d.length
 
 /-- Write the `Body` of some container. -/
@@ -549,7 +605,8 @@ private def elementBody (b : Body) : StateT WriterState Id Unit := do
     match e with
     | .p t => p t
     | .ul ts => ul ts
-    | .cda d => cda d
+    | .dia d => dia d
+    | .fd d => fd d
     | .ida d => ida d
 
 /-- Write an `OutLink`. -/

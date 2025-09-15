@@ -31,7 +31,7 @@ namespace AlgebrasFormCategory
             [ .body
                 [ .ps "It is easy to see that identity arrows in $|C$ are algebra morphisms. We next show that composites of algebra morphisms are again algebra morphisms."
                 , .ida
-                    [ { cda :=
+                    [ { dia := .cda
                           { href := "https://q.uiver.app/#q=WzAsNixbMCwwLCJUXFwgYSJdLFsyLDAsImEiXSxbMiwxLCJiIl0sWzIsMiwiYyJdLFswLDEsIlRcXCBiIl0sWzAsMiwiVFxcIGMiXSxbMCwxLCJcXGFscGhhIl0sWzEsMiwiZiJdLFsyLDMsImciXSxbMCw0LCJUXFwgZiIsMl0sWzQsNSwiVFxcIGciLDJdLFs1LDMsIlxcZ2FtbWEiLDJdLFs0LDIsIlxcYmV0YSIsMV1d"
                           , height := some 302
                           }
@@ -39,7 +39,7 @@ namespace AlgebrasFormCategory
                           [ .s "Take algebras and algebra morphisms as displayed."
                           ]
                       }
-                    , { cda :=
+                    , { dia := .cda
                           { href := "https://q.uiver.app/#q=WzAsNixbMCwwLCJUXFwgYSJdLFsyLDAsImEiXSxbMiwyLCJjIl0sWzAsMiwiVFxcIGMiXSxbMCwxLCJUXFwgYiJdLFsyLDEsImIiXSxbMCwxLCJcXGFscGhhIl0sWzMsMiwiXFxnYW1tYSIsMl0sWzAsNCwiVFxcIGYiLDJdLFs0LDMsIlRcXCBnIiwyXSxbMSw1LCJmIl0sWzUsMiwiZyJdLFs0LDUsIlxcYmV0YSIsMV0sWzEsMiwiZyBcXGNpcmMgZiIsMCx7ImN1cnZlIjotNH1dLFswLDMsIlRcXCBnIFxcY2lyYyBUXFwgZiIsMix7ImN1cnZlIjo0fV1d"
                           , height := some 302
                           }
@@ -47,7 +47,7 @@ namespace AlgebrasFormCategory
                           [ .s "Because the inner two squares commute, the whole diagram commutes."
                           ]
                       }
-                    , { cda :=
+                    , { dia := .cda
                           { href := "https://q.uiver.app/#q=WzAsNCxbMCwwLCJUXFwgYSJdLFsyLDAsImEiXSxbMiwyLCJjIl0sWzAsMiwiVFxcIGMiXSxbMCwxLCJcXGFscGhhIl0sWzMsMiwiXFxnYW1tYSIsMl0sWzEsMiwiZyBcXGNpcmMgZiJdLFswLDMsIlRcXCBnIFxcY2lyYyBUXFwgZiIsMl1d"
                           , height := some 302
                           }
